@@ -22,10 +22,10 @@ public class HomeServlet extends HttpServlet {
         // 1. Giả lập lấy dữ liệu từ Database (Tạo danh sách khách sạn)
         List<Hotel> hotels = new ArrayList<>();
         
-        hotels.add(new Hotel("Khách sạn Continental Sài Gòn", "🏨", 5, 9.2, 2847, "Quận 1, Trung tâm Hồ Chí Minh", "2,450,000", 25));
-        hotels.add(new Hotel("Rex Hotel Saigon", "🏢", 5, 9.0, 3421, "Quận 1, Phố đi bộ", "2,890,000", 20));
-        hotels.add(new Hotel("Sheraton Saigon Hotel & Towers", "🌆", 5, 8.9, 1956, "Quận 1, Gần Nhà Thờ Đức Bà", "3,250,000", 15));
-        hotels.add(new Hotel("Caravelle Saigon", "🏙️", 5, 9.1, 2200, "Quận 1, Đối diện Nhà hát Lớn", "2,600,000", 18));
+        hotels.add(new Hotel("Khách sạn Continental Sài Gòn", "🏨", 5, 9.2, 2847, "Quận 1, Trung tâm Hồ Chí Minh", 2450000, 25));
+        hotels.add(new Hotel("Rex Hotel Saigon", "🏢", 5, 9.0, 3421, "Quận 1, Phố đi bộ", 2890000, 20));
+        hotels.add(new Hotel("Sheraton Saigon Hotel & Towers", "🌆", 5, 8.9, 1956, "Quận 1, Gần Nhà Thờ Đức Bà", 3250000, 15));
+        hotels.add(new Hotel("Caravelle Saigon", "🏙️", 5, 9.1, 2200, "Quận 1, Đối diện Nhà hát Lớn", 2600000, 18));
 
         // 2. Đẩy dữ liệu sang View (JSP)
         request.setAttribute("hotelList", hotels);

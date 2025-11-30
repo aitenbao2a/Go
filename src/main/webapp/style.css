@@ -637,7 +637,9 @@ body {
 }
 
 .modal.active {
-	display: flex;
+	display: flex !important;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
