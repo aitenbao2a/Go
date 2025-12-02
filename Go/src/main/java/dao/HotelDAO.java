@@ -20,7 +20,6 @@ public class HotelDAO {
             ResultSet rs = ps.executeQuery();
             
             while (rs.next()) {
-                // Lấy dữ liệu từ bảng SQL
                 String dbName = rs.getString("name");
                 String dbImg = rs.getString("image_icon");
                 int dbStars = rs.getInt("stars");
@@ -30,7 +29,6 @@ public class HotelDAO {
                 double dbPrice = rs.getDouble("price");
                 int dbDiscount = rs.getInt("discount");
 
-                // Tạo đối tượng Hotel
                 Hotel h = new Hotel(dbName, dbImg, dbStars, dbScore, dbReview, dbLoc, dbPrice, dbDiscount);
                 list.add(h);
             }
