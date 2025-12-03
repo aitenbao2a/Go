@@ -11,7 +11,7 @@ public class DBContext {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String dbURL = "jdbc:sqlserver://localhost:14333;databaseName=vietnam_booking;encrypt=false;trustServerCertificate=true;";
-            String user = "dev_user"; 
+            String user = "root"; 
             String pass = "123456";
 
             conn = DriverManager.getConnection(dbURL, user, pass);
@@ -25,6 +25,7 @@ public class DBContext {
         return conn;
     }
     public static void main(String[] args) {
-        new DBContext().getConnection();
+        new DBContext();
+		DBContext.getConnection();
     }
 }

@@ -1,16 +1,17 @@
 package controller;
-
 import dao.UserDAO;
 import model.User;
-import PasswordUtil;
-import com.agoda.util.SessionUtil;
-import com.agoda.util.ValidationUtil;
+import util.PasswordUtil;
+import util.SessionUtil;
+import util.ValidationUtil;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private UserDAO userDAO;

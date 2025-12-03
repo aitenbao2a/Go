@@ -22,6 +22,27 @@ public class Hotel {
 
 	public Hotel() {
 	}
+	
+	public Hotel(int hotelId, String hotelName, String description, String address, String city, String country,
+			int starRating, BigDecimal latitude, BigDecimal longitude, String amenities, String images,
+			Timestamp createdAt, double averageRating, int reviewCount, BigDecimal minPrice) {
+		super();
+		this.hotelId = hotelId;
+		this.hotelName = hotelName;
+		this.description = description;
+		this.address = address;
+		this.city = city;
+		this.country = country;
+		this.starRating = starRating;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.amenities = amenities;
+		this.images = images;
+		this.createdAt = createdAt;
+		this.averageRating = averageRating;
+		this.reviewCount = reviewCount;
+		this.minPrice = minPrice;
+	}
 
 	public int getHotelId() {
 		return hotelId;

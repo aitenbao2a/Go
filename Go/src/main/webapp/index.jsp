@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.core"  prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agoda Clone - Đặt phòng khách sạn giá tốt</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <title>Go - Du lịch là trải nghiệm </title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- Include Header -->
-    <jsp:include page="includes/header.jsp" />
+    <jsp:include page="jsp/header.jsp" />
 
     <!-- Hero Section -->
     <section class="hero">
@@ -179,7 +179,7 @@
     </main>
 
     <!-- Include Footer -->
-    <jsp:include page="includes/footer.jsp" />
+    <jsp:include page="jsp/footer.jsp" />
     <script src="${pageContext.request.contextPath}/js/main.js"></script>
     <script>
         // Set default dates
