@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>GO - Du lịch là trải nghiệm</title>
 <head>
-<link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="css/header.css">
 <body>
 	<header class="header">
 		<div class="header-top">
@@ -37,10 +37,10 @@
 			</nav>
 			<div class="user-actions">
 				<button class="btn-signin"
-					onclick="window.location.href='${pageContext.request.contextPath}/jsp/login.jsp'">Đăng
-					nhập</button>
+					onclick="window.location.href='${pageContext.request.contextPath}/jsp/login.jsp'">
+					Đăng nhập</button>
 				<button class="btn-register"
-					onclick="window.location.href='${pageContext.request.contextPath}/jsp/login.jsp'">Tạo
+					onclick="window.location.href='${pageContext.request.contextPath}/jsp/register.jsp'">Tạo
 					tài khoản</button>
 			</div>
 		</div>
