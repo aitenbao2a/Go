@@ -1,182 +1,107 @@
 .header {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
-	position: sticky;
-	top: 0;
-	z-index: 1000;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 24px;
 }
-
-.header-top {
-	background-color: rgba(0, 0, 0, 0.1);
-	padding: 8px 24px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 13px;
-}
-
-.header-top-left {
-	display: flex;
-	gap: 20px;
-}
-
-.header-top-left a {
-	color: white;
-	text-decoration: none;
-	opacity: 0.9;
-}
-
-.header-top-left a:hover {
-	opacity: 1;
-}
-
 .header-main {
-	padding: 16px 24px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 70px;
 }
-
 .logo {
-	display: flex;
-	align-items: center;
-	cursor: pointer;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
-
-.logo-circles {
-	display: flex;
-	gap: 3px;
+.logo-img {
+    height: 40px;
+    width: auto;
+    transform: scale(2);
+    margin-right: 10px;
 }
-
-.circle {
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-}
-
-.circle-1 {
-	background-color: #FF6B6B;
-}
-
-.circle-2 {
-	background-color: #4ECDC4;
-}
-
-.circle-3 {
-	background-color: #45B7D1;
-}
-
-.circle-4 {
-	background-color: #96CEB4;
-}
-
-.circle-5 {
-	background-color: #FFEAA7;
-}
-
 .logo-text {
-	font-size: 32px;
-	font-weight: 700;
-	margin-left: 10px;
-	letter-spacing: -1px;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1px;
 }
-
-.nav-links {
-	display: flex;
-	gap: 32px;
-	align-items: center;
-}
-
-.nav-link {
-	color: white;
-	text-decoration: none;
-	font-weight: 500;
-	font-size: 15px;
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	padding: 8px 12px;
-	border-radius: 6px;
-	transition: background-color 0.2s;
-}
-
-.nav-link:hover {
-	background-color: rgba(255, 255, 255, 0.15);
-}
-
-.badge {
-	background-color: #e74c3c;
-	color: white;
-	font-size: 9px;
-	padding: 3px 6px;
-	border-radius: 3px;
-	font-weight: 700;
-	text-transform: uppercase;
-}
-
 .user-actions {
-	display: flex;
-	gap: 16px;
-	align-items: center;
+    display: flex;
+    gap: 16px;
+    align-items: center;
 }
-
-.currency {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	cursor: pointer;
-	padding: 6px 10px;
-	border-radius: 6px;
-	transition: background-color 0.2s;
-}
-
-.currency:hover {
-	background-color: rgba(255, 255, 255, 0.15);
-}
-
 .btn-signin, .btn-register {
-	padding: 10px 24px;
-	border-radius: 24px;
-	border: 2px solid white;
-	background: transparent;
-	color: white;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s;
+    padding: 10px 24px;
+    border-radius: 24px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
 }
-
 .btn-register {
-	background: white;
-	color: #667eea;
+    background: white;
+    color: #667eea;
 }
-
 .btn-signin:hover {
-	background: white;
-	color: #667eea;
+    background: white;
+    color: #667eea;
 }
-
 .btn-register:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }
 
-/* Hero Section */
+/* ================= WEATHER WIDGET ================= */
+.weather-widget {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    overflow: hidden;
+    flex-grow: 1; /* chiếm toàn bộ không gian còn lại */
+}
+.weather-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.weather-scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    animation: scrollText 12s linear infinite;
+    flex-grow: 1; /* nội dung scroll chiếm toàn bộ chiều rộng widget */
+}
+@keyframes scrollText {
+    10% { transform: translateX(-100%); }  /* bắt đầu ngoài bên trái */
+    100% { transform: translateX(100%); } /* chạy sang bên phải */
+}
+
+/* ================= HERO (nếu cần) ================= */
 .hero {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	padding: 60px 24px 120px;
-	text-align: center;
-	color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 60px 24px 120px;
+    text-align: center;
+    color: white;
 }
-
 .hero-title {
-	font-size: 48px;
-	font-weight: 700;
-	margin-bottom: 16px;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
 }
-
 .hero-subtitle {
-	font-size: 20px;
-	opacity: 0.95;
-	margin-bottom: 40px;
+    font-size: 20px;
+    opacity: 0.95;
+    margin-bottom: 40px;
 }
