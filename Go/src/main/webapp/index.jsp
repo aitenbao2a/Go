@@ -26,7 +26,7 @@
 					<div class="circle circle-4"></div>
 					<div class="circle circle-5"></div>
 				</div>
-				<div class="logo-text">agoda</div>
+				<div class="logo-text">Go</div>
 			</div>
 			<nav class="nav-links">
 				<a href="#" class="nav-link"> <span class="badge">Hot</span> Máy
