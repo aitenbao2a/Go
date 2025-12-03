@@ -16,7 +16,7 @@ public class Hotel {
 	private String amenities;
 	private String images;
 	private Timestamp createdAt;
-	private double averageRating;
+	private double averageRating;	
 	private int reviewCount;
 	private BigDecimal minPrice;
 

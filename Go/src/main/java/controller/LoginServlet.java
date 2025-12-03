@@ -1,55 +1,81 @@
 package controller;
 
-import dao.UserDAO; // Nhớ tạo file UserDAO.java như hướng dẫn trước
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import dao.UserDAO;
 import model.User;
+import PasswordUtil;
+import com.agoda.util.SessionUtil;
+import com.agoda.util.ValidationUtil;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    private UserDAO userDAO;
+    
+    @Override
+    public void init() {
+        userDAO = new UserDAO();
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-
-        // Xử lý tiếng Việt
-        request.setCharacterEncoding("UTF-8");
-
+        // Nếu đã đăng nhập, redirect về trang chủ
+        if (SessionUtil.isLoggedIn(request)) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+        
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
-        // GỌI DAO ĐỂ KẾT NỐI DATABASE THẬT
-        UserDAO userDao = new UserDAO();
-        // Hàm checkLogin trả về String (email) hoặc User object tùy bạn viết bên DAO
-        // Giả sử bên DAO bạn viết hàm trả về String tên người dùng hoặc null
-        User user = userDao.checkLogin(email, password); 
-
-        if (user != null) {
-            // Đăng nhập thành công
-            HttpSession session = request.getSession();
-            session.setAttribute("userEmail", email);
-            session.setAttribute("account", user);
-            response.sendRedirect("index.jsp");
-        } else {
-            // Đăng nhập thất bại -> Gửi báo lỗi về index
-            request.setAttribute("errorMessage", "Email hoặc mật khẩu không chính xác!");
-            request.setAttribute("emailInput", email); // Giữ lại email để điền lại form
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+        
+        // Validate input
+        if (!ValidationUtil.isValidEmail(email)) {
+            request.setAttribute("error", "Email không hợp lệ");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
         }
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if ("logout".equals(action)) {
-            HttpSession session = request.getSession();
-            session.invalidate();
+        
+        if (!ValidationUtil.isNotEmpty(password)) {
+            request.setAttribute("error", "Vui lòng nhập mật khẩu");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        
+        // Tìm user
+        User user = userDAO.findByEmail(email);
+        
+        if (user == null) {
+            request.setAttribute("error", "Email hoặc mật khẩu không đúng");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        
+        // Kiểm tra mật khẩu
+        if (!PasswordUtil.checkPassword(password, user.getPasswordHash())) {
+            request.setAttribute("error", "Email hoặc mật khẩu không đúng");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        
+        // Đăng nhập thành công
+        SessionUtil.setUserSession(request, user);
+        
+        // Redirect về trang trước đó hoặc trang chủ
+        String redirectUrl = request.getParameter("redirect");
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+            response.sendRedirect(redirectUrl);
+        } else {
             response.sendRedirect("index.jsp");
         }
     }

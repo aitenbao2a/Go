@@ -29,7 +29,7 @@ public class HotelDAO {
                 double dbPrice = rs.getDouble("price");
                 int dbDiscount = rs.getInt("discount");
 
-                Hotel h = new Hotel(dbName, dbImg, dbStars, dbScore, dbReview, dbLoc, dbPrice, dbDiscount);
+                Hotel h = new Hotel();
                 list.add(h);
             }
             conn.close();

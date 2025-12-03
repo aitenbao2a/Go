@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBContext {
     
-    public Connection getConnection() {
+    public static Connection getConnection() {
         Connection conn = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
