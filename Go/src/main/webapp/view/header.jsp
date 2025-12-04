@@ -9,7 +9,6 @@
 	href="${pageContext.request.contextPath}/css/header.css">
 </head>
 <body>
-
 	<header class="header">
 		<div class="header-main">
 			<!-- LOGO -->

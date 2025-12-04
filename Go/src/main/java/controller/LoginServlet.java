@@ -2,7 +2,7 @@ package controller;
 
 import dao.UserDAO;
 import model.User;
-import util.PasswordUtil;
+import util.LoginUtil;
 import util.SessionUtil;
 import util.ValidationUtil;
 
@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		// Kiểm tra mật khẩu
-		if (!PasswordUtil.checkPassword(password, user.getPasswordHash())) {
+		if (!LoginUtil.checkLogin(password, user.getPasswordHash())) {
 			request.setAttribute("error", "Email hoặc mật khẩu không đúng");
 			request.getRequestDispatcher("view/index.jsp").forward(request, response);
 			return;

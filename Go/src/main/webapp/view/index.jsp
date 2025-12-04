@@ -52,7 +52,7 @@
 				Đăng nhập bằng Apple
 			</button>
 			<div class="divider">Hoặc</div>
-			<form action="${pageContext.request.contextPath}/login" method="post">
+			<form action="login" method="post">
 				<div class="form-group">
 					<label class="form-label">Email</label> <input type="email"
 						class="form-input" placeholder="id@email.com" required>

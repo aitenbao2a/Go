@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBContext {
+public class DBCon {
     
     public static Connection getConnection() {
         Connection conn = null;
@@ -25,7 +25,7 @@ public class DBContext {
         return conn;
     }
     public static void main(String[] args) {
-        new DBContext();
-		DBContext.getConnection();
+        new DBCon();
+        DBCon.getConnection();
     }
 }

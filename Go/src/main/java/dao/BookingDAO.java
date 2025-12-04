@@ -12,7 +12,7 @@ public class BookingDAO {
 				+ "check_out_date, number_of_guests, total_price, booking_status, special_requests) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		try (Connection conn = DBContext.getConnection();
+		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			pstmt.setInt(1, booking.getUserId());
@@ -47,7 +47,7 @@ public class BookingDAO {
 				+ "JOIN hotels h ON b.hotel_id = h.hotel_id " + "JOIN rooms r ON b.room_id = r.room_id "
 				+ "JOIN users u ON b.user_id = u.user_id " + "WHERE b.booking_id = ?";
 
-		try (Connection conn = DBContext.getConnection();
+		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setInt(1, bookingId);
@@ -69,7 +69,7 @@ public class BookingDAO {
 				+ "JOIN hotels h ON b.hotel_id = h.hotel_id " + "JOIN rooms r ON b.room_id = r.room_id "
 				+ "WHERE b.user_id = ? " + "ORDER BY b.created_at DESC";
 
-		try (Connection conn = DBContext.getConnection();
+		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setInt(1, userId);
@@ -88,7 +88,7 @@ public class BookingDAO {
 	public boolean updateBookingStatus(int bookingId, String status) {
 		String sql = "UPDATE bookings SET booking_status = ? WHERE booking_id = ?";
 
-		try (Connection conn = DBContext.getConnection();
+		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setString(1, status);
@@ -107,7 +107,7 @@ public class BookingDAO {
 		String checkSql = "SELECT booking_id FROM bookings WHERE booking_id = ? AND user_id = ?";
 		String updateSql = "UPDATE bookings SET booking_status = 'cancelled' WHERE booking_id = ?";
 
-		try (Connection conn = DBContext.getConnection()) {
+		try (Connection conn = DBCon.getConnection()) {
 			// Check ownership
 			try (PreparedStatement checkPstmt = conn.prepareStatement(checkSql)) {
 				checkPstmt.setInt(1, bookingId);
@@ -138,7 +138,7 @@ public class BookingDAO {
 				+ "JOIN users u ON b.user_id = u.user_id " + "WHERE b.booking_status = 'pending' "
 				+ "ORDER BY b.created_at DESC";
 
-		try (Connection conn = DBContext.getConnection();
+		try (Connection conn = DBCon.getConnection();
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)) {
 

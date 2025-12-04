@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import dao.UserDAO;
 import model.User;
-import util.PasswordUtil;
+import util.LoginUtil;
 import util.SessionUtil;
 import util.ValidationUtil;
 
@@ -56,7 +56,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
         
-        if (!PasswordUtil.isValidPassword(password)) {
+        if (!LoginUtil.isValidPassword(password)) {
             request.setAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
@@ -78,7 +78,7 @@ public class RegisterServlet extends HttpServlet {
         // Tạo user mới
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPasswordHash(PasswordUtil.hashPassword(password));
+        newUser.setPasswordHash(LoginUtil.hashPassword(password));
         newUser.setFullName(fullName);
         newUser.setPhone(phone);
         

@@ -43,7 +43,7 @@ public class ReviewDAO {
                     "VALUES (?, ?, ?, ?, ?)";
         
         // Sử dụng try-with-resources
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             pstmt.setInt(1, review.getUserId());
@@ -80,7 +80,7 @@ public class ReviewDAO {
                     "WHERE r.hotel_id = ? " + 
                     "ORDER BY r.created_at DESC";
         
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, hotelId);
@@ -104,7 +104,7 @@ public class ReviewDAO {
                     "JOIN users u ON r.user_id = u.user_id " +
                     "WHERE r.booking_id = ?";
         
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, bookingId);
@@ -125,7 +125,7 @@ public class ReviewDAO {
     public double getAverageRating(int hotelId) {
         String sql = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE hotel_id = ?";
         
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, hotelId);
@@ -147,7 +147,7 @@ public class ReviewDAO {
     public int getReviewCount(int hotelId) {
         String sql = "SELECT COUNT(review_id) AS review_count FROM reviews WHERE hotel_id = ?";
         
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, hotelId);
@@ -168,7 +168,7 @@ public class ReviewDAO {
     public boolean hasUserReviewedBooking(int userId, int bookingId) {
         String sql = "SELECT review_id FROM reviews WHERE user_id = ? AND booking_id = ?";
         
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, userId);
@@ -188,7 +188,7 @@ public class ReviewDAO {
     public boolean updateReview(Review review) {
         String sql = "UPDATE reviews SET rating = ?, comment = ? WHERE review_id = ? AND user_id = ?";
         
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, review.getRating());
@@ -208,7 +208,7 @@ public class ReviewDAO {
     public boolean deleteReview(int reviewId, int userId) {
         String sql = "DELETE FROM reviews WHERE review_id = ? AND user_id = ?";
         
-        try (Connection conn = DBContext.getConnection();
+        try (Connection conn = DBCon.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, reviewId);

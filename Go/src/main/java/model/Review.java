@@ -10,7 +10,6 @@ public class Review {
 	private int rating;
 	private String comment;
 	private Timestamp createdAt;
-
 	private String userName;
 	private String userAvatar;
 
