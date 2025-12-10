@@ -13,7 +13,6 @@
 </head>
 <body>
 	<!-- Include Header -->
-	<jsp:include page="header_success.jsp" />
 	<!-- Hero Section -->
 	<section class="hero">
 		<div class="container">

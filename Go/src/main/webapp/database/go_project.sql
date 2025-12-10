@@ -1,140 +1,125 @@
-﻿-- Tạo database
-CREATE DATABASE go_project;
-GO
+CREATE DATABASE go_project
+    DEFAULT CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 USE go_project;
-GO
-
--- Bảng User
-CREATE TABLE [User] (
-    userId INT PRIMARY KEY,
-    email NVARCHAR(255) NOT NULL UNIQUE,
-    passwordHash NVARCHAR(255) NOT NULL,
-    fullName NVARCHAR(150),
-    phone NVARCHAR(20),
+CREATE TABLE User (
+    userId INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    passwordHash VARCHAR(255) NOT NULL,
+    fullName VARCHAR(150),
+    -- Đã thay NVARCHAR bằng VARCHAR
+    phone VARCHAR(20),
     dateOfBirth DATE,
-    createdAt DATETIME DEFAULT GETDATE(),
-    updatedAt DATETIME DEFAULT GETDATE(),
-    isActive BIT DEFAULT 1
-);
-GO
-
--- Bảng Hotel
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    -- Đã thay TINYINT(1) bằng BOOLEAN
+    isActive BOOLEAN DEFAULT TRUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE Hotel (
-    hotelId INT PRIMARY KEY,
-    hotelName NVARCHAR(255) NOT NULL,
-    description NVARCHAR(MAX),
-    address NVARCHAR(500),
-    city NVARCHAR(100),
-    country NVARCHAR(100),
+    hotelId INT PRIMARY KEY AUTO_INCREMENT,
+    hotelName VARCHAR(255) NOT NULL,
+    description TEXT,
+    address VARCHAR(500),
+    city VARCHAR(100),
+    country VARCHAR(100),
     starRating INT CHECK (starRating >= 0 AND starRating <= 5),
     latitude DECIMAL(10,7),
     longitude DECIMAL(10,7),
-    amenities NVARCHAR(MAX),
-    images NVARCHAR(MAX),
-    createdAt DATETIME DEFAULT GETDATE(),
+    amenities TEXT,
+    images TEXT,
+    createdAt DATETIME DEFAULT NOW(),
     averageRating FLOAT DEFAULT 0,
     reviewCount INT DEFAULT 0,
     minPrice DECIMAL(10,2)
-);
-GO
-
--- Bảng Room
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE Room (
-    roomId INT PRIMARY KEY,
+    roomId INT PRIMARY KEY AUTO_INCREMENT,
     hotelId INT NOT NULL,
-    roomType NVARCHAR(100) NOT NULL,
-    description NVARCHAR(MAX),
+    roomType VARCHAR(100) NOT NULL,
+    description TEXT,
     capacity INT NOT NULL,
     pricePerNight DECIMAL(10,2) NOT NULL,
     totalRooms INT NOT NULL,
     availableRooms INT NOT NULL,
-    amenities NVARCHAR(MAX),
-    images NVARCHAR(MAX),
+    amenities TEXT,
+    images TEXT,
     CONSTRAINT fk_hotel_room FOREIGN KEY (hotelId) REFERENCES Hotel(hotelId)
-);
-GO
-
--- Bảng Booking
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE Booking (
-    bookingId INT PRIMARY KEY,
+    bookingId INT PRIMARY KEY AUTO_INCREMENT,
     userId INT NOT NULL,
     hotelId INT NOT NULL,
     roomId INT NOT NULL,
     checkInDate DATE NOT NULL,
     checkOutDate DATE NOT NULL,
     totalAmount DECIMAL(10,2) NOT NULL,
-    bookingStatus NVARCHAR(50) DEFAULT 'Pending',
-    createdAt DATETIME DEFAULT GETDATE(),
-    CONSTRAINT fk_user_booking FOREIGN KEY (userId) REFERENCES [User](userId),
+    bookingStatus VARCHAR(50) DEFAULT 'Pending',
+    createdAt DATETIME DEFAULT NOW(),
+    CONSTRAINT fk_user_booking FOREIGN KEY (userId) REFERENCES User(userId),
     CONSTRAINT fk_hotel_booking FOREIGN KEY (hotelId) REFERENCES Hotel(hotelId),
     CONSTRAINT fk_room_booking FOREIGN KEY (roomId) REFERENCES Room(roomId)
-);
-GO
-
--- Bảng Payment
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE Payment (
-    paymentId INT PRIMARY KEY,
+    paymentId INT PRIMARY KEY AUTO_INCREMENT,
     bookingId INT NOT NULL,
-    paymentMethod NVARCHAR(50) NOT NULL,
+    paymentMethod VARCHAR(50) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
-    paymentStatus NVARCHAR(50) NOT NULL,
-    transactionId NVARCHAR(100),
-    paymentDate DATETIME DEFAULT GETDATE(),
+    paymentStatus VARCHAR(50) NOT NULL,
+    transactionId VARCHAR(100),
+    paymentDate DATETIME DEFAULT NOW(),
     CONSTRAINT fk_booking_payment FOREIGN KEY (bookingId) REFERENCES Booking(bookingId)
-);
-GO
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Bảng Review
 CREATE TABLE Review (
-    reviewId INT PRIMARY KEY,
+    reviewId INT PRIMARY KEY AUTO_INCREMENT,
     userId INT NOT NULL,
     hotelId INT NOT NULL,
     bookingId INT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
-    comment NVARCHAR(MAX),
-    createdAt DATETIME DEFAULT GETDATE(),
-    userName NVARCHAR(100),
-    userAvatar NVARCHAR(255),
-    CONSTRAINT fk_user_review FOREIGN KEY (userId) REFERENCES [User](userId),
+    comment TEXT,
+    createdAt DATETIME DEFAULT NOW(),
+    userName VARCHAR(100),
+    userAvatar VARCHAR(255),
+    CONSTRAINT fk_user_review FOREIGN KEY (userId) REFERENCES User(userId),
     CONSTRAINT fk_hotel_review FOREIGN KEY (hotelId) REFERENCES Hotel(hotelId),
     CONSTRAINT fk_booking_review FOREIGN KEY (bookingId) REFERENCES Booking(bookingId)
-);
-GO
-INSERT INTO [User] (userId, email, passwordHash, fullName, phone, dateOfBirth, isActive)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO User (email, passwordHash, fullName, phone, dateOfBirth, isActive)
 VALUES
-(1, 'giabao@gmail.com', 'Baocoioioi2016@', 'GiaBao ', '0912345678', '1990-05-10', 1),
-(2, 'bob@example.com', 'B@bSecure9', 'Bob Smith', '0987654321', '1985-12-20', 1),
-(3, 'charlie@example.com', 'C#harlie8', 'Charlie Brown', '0901122334', '1992-03-15', 1),
-(4, 'nguyenvana@gmail.com', 'AnA!1995_z', N'Nguyễn Văn A', '0912111004', '1995-01-25', 1),
-(5, 'tranvanb@gmail.com', 'BTrA#2024v', N'Trần Văn B', '0903222115', '1988-11-12', 1),
-(6, 'lethic@gmail.com', 'CLe$3210vY', N'Lê Thị C', '0989333226', '1998-07-01', 1),
-(7, 'phamvand@gmail.com', 'DPhAm%4567Z', N'Phạm Văn D', '0977444337', '1993-04-19', 1),
-(8, 'hoangthie@gmail.com', 'EHoAnG^5883a', N'Hoàng Thị E', '0945555448', '1983-09-30', 1),
-(9, 'buidinhf@gmail.com', 'FBuI&6992b', N'Bùi Đình F', '0919666559', '1996-02-05', 1),
-(10, 'vothihg@gmail.com', 'GvO*7111AcC', N'Võ Thị G', '0908777660', '1991-10-22', 1),
-(11, 'doanquangh@gmail.com', 'Hdoan(8222Bd', N'Đoàn Quang H', '0987888771', '1987-06-14', 1),
-(12, 'nguyenthihoa@gmail.com', 'Hoa9333!vW', N'Nguyễn Thị Hòa', '0912999882', '1994-08-08', 1),
-(13, 'tranminhkhoi@gmail.com', 'Khoi@1444dE', N'Trần Minh Khôi', '0903000993', '1986-03-29', 1),
-(14, 'lethanhlam@gmail.com', 'Lam#2555fG', N'Lê Thanh Lâm', '0989111004', '1999-12-03', 1),
-(15, 'phamthingoc@gmail.com', 'Ngoc$3666hI', N'Phạm Thị Ngọc', '0977222115', '1992-05-17', 1),
-(16, 'hoangvanphu@gmail.com', 'Phu%4777jK', N'Hoàng Văn Phú', '0945333226', '1984-01-07', 1),
-(17, 'buiduyquang@gmail.com', 'QuAnG5888^lM', N'Bùi Duy Quang', '0919444337', '1997-11-21', 1),
-(18, 'vothixuan@gmail.com', 'XuAn6999&nO', N'Võ Thị Xuân', '0908555448', '1990-06-28', 1),
-(19, 'doanquocthang@gmail.com', 'ThAnG7000*pQ', N'Đoàn Quốc Thắng', '0987666559', '1985-02-10', 1),
-(20, 'nguyenthanhtrung@gmail.com', 'TrUnG8111(rS', N'Nguyễn Thanh Trung', '0912777660', '1993-10-04', 1),
-(21, 'tranvanhieu@gmail.com', 'HieU9222)tU', N'Trần Văn Hiếu', '0903888771', '1989-07-16', 1),
-(22, 'lethuyduong@gmail.com', 'DuOnG1333!vW', N'Lê Thùy Dương', '0989999882', '1995-04-23', 1),
-(23, 'phamvanluc@gmail.com', 'LuC2444@xY', N'Phạm Văn Lực', '0977000993', '1987-12-09', 1),
-(24, 'hoangthihong@gmail.com', 'HoNg3555#zA', N'Hoàng Thị Hồng', '0945111004', '1998-09-02', 1),
-(25, 'buiducminh@gmail.com', 'MiNh4666$Bc', N'Bùi Đức Minh', '0919222115', '1983-05-27', 1),
-(26, 'vothithuy@gmail.com', 'ThUy5777%De', N'Võ Thị Thúy', '0908333226', '1996-01-18', 1),
-(27, 'doanquocan@gmail.com', 'An6888^fGz', N'Đoàn Quốc An', '0987444337', '1991-11-06', 1),
-(28, 'nguyenvantien@gmail.com', 'TieN7999&hI', N'Nguyễn Văn Tiến', '0912555448', '1985-08-11', 1),
-(29, 'tranthinga@gmail.com', 'NgA8000*jK', N'Trần Thị Nga', '0903666559', '1994-03-07', 1),
-(30, 'lethanhhieu@gmail.com', 'HieU9111(lM', N'Lê Thanh Hiếu', '0989777660', '1988-10-24', 1),
-(31, 'phamvanloi@gmail.com', 'LoI1222)nO', N'Phạm Văn Lợi', '0977888771', '1997-06-13', 1),
-(32, 'hoangthixinh@gmail.com', 'XiNh2333!pQ', N'Hoàng Thị Xinh', '0945999882', '1990-02-01', 1),
-(33, 'buitronghiep@gmail.com', 'HieP3444@rS', N'Bùi Trọng Hiệp', '0919000993', '1986-12-25', 1);
+('giabao@gmail.com', 'Baocoioioi2016@', 'GiaBao', '0912345678', '1990-05-10', TRUE),
+('aitenbao2a@gmail.com', '16012005', 'Bob Smith', '0987654321', '1985-12-20', TRUE),
+('charlie@2aexample.com', 'C#harlie8', 'Charlie Brown', '0901122334', '1992-03-15', TRUE),
+('nguyenvana@gmail.com', 'AnA!1995_z', 'Nguyễn Văn A', '0912111004', '1995-01-25', TRUE),
+('tranvanb@gmail.com', 'BTrA#2024v', 'Trần Văn B', '0903222115', '1988-11-12', TRUE),
+('lethic@gmail.com', 'CLe$3210vY', 'Lê Thị C', '0989333226', '1998-07-01', TRUE),
+('phamvand@gmail.com', 'DPhAm%4567Z', 'Phạm Văn D', '0977444337', '1993-04-19', TRUE),
+('hoangthie@gmail.com', 'EHoAnG^5883a', 'Hoàng Thị E', '0945555448', '1983-09-30', TRUE),
+('buidinhf@gmail.com', 'FBuI&6992b', 'Bùi Đình F', '0919666559', '1996-02-05', TRUE),
+('vothihg@gmail.com', 'GvO*7111AcC', 'Võ Thị G', '0908777660', '1991-10-22', TRUE),
+('doanquangh@gmail.com', 'Hdoan(8222Bd', 'Đoàn Quang H', '0987888771', '1987-06-14', TRUE),
+('nguyenthihoa@gmail.com', 'Hoa9333!vW', 'Nguyễn Thị Hòa', '0912999882', '1994-08-08', TRUE),
+('tranminhkhoi@gmail.com', 'Khoi@1444dE', 'Trần Minh Khôi', '0903000993', '1986-03-29', TRUE),
+('lethanhlam@gmail.com', 'Lam#2555fG', 'Lê Thanh Lâm', '0989111004', '1999-12-03', TRUE),
+('phamthingoc@gmail.com', 'Ngoc$3666hI', 'Phạm Thị Ngọc', '0977222115', '1992-05-17', TRUE),
+('hoangvanphu@gmail.com', 'Phu%4777jK', 'Hoàng Văn Phú', '0945333226', '1984-01-07', TRUE),
+('buiduyquang@gmail.com', 'QuAnG5888^lM', 'Bùi Duy Quang', '0919444337', '1997-11-21', TRUE),
+('vothixuan@gmail.com', 'XuAn6999&nO', 'Võ Thị Xuân', '0908555448', '1990-06-28', TRUE),
+('doanquocthang@gmail.com', 'ThAnG7000*pQ', 'Đoàn Quốc Thắng', '0987666559', '1985-02-10', TRUE),
+('nguyenthanhtrung@gmail.com', 'TrUnG8111(rS', 'Nguyễn Thanh Trung', '0912777660', '1993-10-04', TRUE),
+('tranvanhieu@gmail.com', 'HieU9222)tU', 'Trần Văn Hiếu', '0903888771', '1989-07-16', TRUE),
+('lethuyduong@gmail.com', 'DuOnG1333!vW', 'Lê Thùy Dương', '0989999882', '1995-04-23', TRUE),
+('phamvanluc@gmail.com', 'LuC2444@xY', 'Phạm Văn Lực', '0977000993', '1987-12-09', TRUE),
+('hoangthihong@gmail.com', 'HoNg3555#zA', 'Hoàng Thị Hồng', '0945111004', '1998-09-02', TRUE),
+('buiducminh@gmail.com', 'MiNh4666$Bc', 'Bùi Đức Minh', '0919222115', '1983-05-27', TRUE),
+('vothithuy@gmail.com', 'ThUy5777%De', 'Võ Thị Thúy', '0908333226', '1996-01-18', TRUE),
+('doanquocan@gmail.com', 'An6888^fGz', 'Đoàn Quốc An', '0987444337', '1991-11-06', TRUE),
+('nguyenvantien@gmail.com', 'TieN7999&hI', 'Nguyễn Văn Tiến', '0912555448', '1985-08-11', TRUE),
+('tranthinga@gmail.com', 'NgA8000*jK', 'Trần Thị Nga', '0903666559', '1994-03-07', TRUE),
+('lethanhhieu@gmail.com', 'HieU9111(lM', 'Lê Thanh Hiếu', '0989777660', '1988-10-24', TRUE),
+('phamvanloi@gmail.com', 'LoI1222)nO', 'Phạm Văn Lợi', '0977888771', '1997-06-13', TRUE),
+('hoangthixinh@gmail.com', 'XiNh2333!pQ', 'Hoàng Thị Xinh', '0945999882', '1990-02-01', TRUE),
+('buitronghiep@gmail.com', 'HieP3444@rS', 'Bùi Trọng Hiệp', '0919000993', '1986-12-25', TRUE);
 
 INSERT INTO Hotel (hotelId, hotelName, description, address, city, country, starRating, latitude, longitude, amenities, images, minPrice)
 VALUES
@@ -180,7 +165,6 @@ VALUES
 (40, 'Vienna Concert Hotel', 'Near the State Opera House', 'Opernring 2', 'Vienna', 'Austria', 5, 48.2082, 16.3738, 'MusicLounge,Spa,Valet', 'vienna1.jpg,vienna2.jpg', 260.00),
 (41, 'New Delhi Royal Residency', 'Hotel with Mughal architectural inspiration', 'Connaught Place', 'New Delhi', 'India', 4, 28.6139, 77.2090, 'Pool,Catering,Events', 'nd1.jpg,nd2.jpg', 130.00),
 (42, 'Hanoi Cozy Corner', N'Phòng trọ giá rẻ, tiện nghi cơ bản', N'15 Ngõ Huyện', N'Hà Nội', N'Việt Nam', 2, 21.0280, 105.8500, 'WiFi,CommonArea', 'hn3.jpg,hn4.jpg', 25.00);
-GO
 
 INSERT INTO Room (roomId, hotelId, roomType, description, capacity, pricePerNight, totalRooms, availableRooms, amenities, images)
 VALUES
@@ -427,8 +411,6 @@ VALUES
 
 -- HOTEL ID 42: Hanoi Cozy Corner (1 bản ghi)
 (160, 42, N'Standard Twin', N'Phòng Twin tiêu chuẩn, tiện nghi cơ bản', 2, 50.00, 10, 10, 'CommonAreaAccess,AC', 'room160a.jpg,room160b.jpg');
-GO
-
 
 INSERT INTO Booking (bookingId, userId, hotelId, roomId, checkInDate, checkOutDate, totalAmount, bookingStatus)
 VALUES
@@ -485,7 +467,6 @@ VALUES
 (51, 18, 3, 49, '2026-01-11', '2026-01-13', 1000.00, 'Confirmed'),   -- 2 nights @ 500.00
 (52, 19, 6, 50, '2026-01-17', '2026-01-20', 435.00, 'Pending'),      -- 3 nights @ 145.00
 (53, 20, 9, 71, '2026-01-29', '2026-02-01', 5400.00, 'Confirmed');   -- 3 nights @ 1800.00
-GO
 
 INSERT INTO Payment (paymentId, bookingId, paymentMethod, amount, paymentStatus, transactionId)
 VALUES
@@ -539,7 +520,6 @@ VALUES
 (51, 51, 'PayPal', 1000.00, 'Completed', 'TXN051AV'),
 (52, 52, 'Credit Card', 435.00, 'Pending', 'TXN052AW'),
 (53, 53, 'Bank Transfer', 5400.00, 'Completed', 'TXN053AX');
-GO
 
 INSERT INTO Review (reviewId, userId, hotelId, bookingId, rating, comment, userName, userAvatar)
 VALUES
@@ -593,6 +573,5 @@ VALUES
 (51, 18, 3, 51, 5, N'Corner Suite ở Sài Gòn rất rộng, đáng tiền.', N'Võ Thị Xuân', 'female.png'),
 (52, 19, 6, 52, 4, N'Phòng tiêu chuẩn ở Hội An sạch, nhưng không gian hơi chật.', N'Đoàn Quốc Thắng', 'male.png'),
 (53, 20, 9, 53, 5, N'Luxury Villa Phú Quốc là nơi nghỉ dưỡng hoàn hảo nhất.', N'Nguyễn Thanh Trung', 'male.png');
-GO
 
 

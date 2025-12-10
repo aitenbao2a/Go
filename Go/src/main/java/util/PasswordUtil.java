@@ -1,0 +1,134 @@
+package util;
+import org.mindrot.jbcrypt.BCrypt;
+import java.security.SecureRandom;
+import java.util.regex.Pattern;
+
+public class PasswordUtil {
+    
+    private static final int BCRYPT_ROUNDS = 12;
+    private static final Pattern UPPERCASE_PATTERN = Pattern.compile("[A-Z]");
+    private static final Pattern LOWERCASE_PATTERN = Pattern.compile("[a-z]");
+    private static final Pattern DIGIT_PATTERN = Pattern.compile("[0-9]");
+    private static final Pattern SPECIAL_CHAR_PATTERN = Pattern.compile("[!@#$%^&*(),.?\":{}|<>]");
+    
+    /**
+     * Hash password using BCrypt
+     */
+    public static String hashPassword(String plainPassword) {
+        if (plainPassword == null || plainPassword.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(BCRYPT_ROUNDS));
+    }
+    
+    /**
+     * Verify password against hash
+     */
+    public static boolean checkPassword(String plainPassword, String hashedPassword) {
+        if (plainPassword == null || hashedPassword == null) {
+            return false;
+        }
+        try {
+            return BCrypt.checkpw(plainPassword, hashedPassword);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid password hash: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Validate password strength
+     * Requirements: at least 8 chars, 1 uppercase, 1 lowercase, 1 digit
+     */
+    public static boolean isValidPassword(String password) {
+        if (password == null || password.length() < 8) {
+            return false;
+        }
+        
+        boolean hasUpper = UPPERCASE_PATTERN.matcher(password).find();
+        boolean hasLower = LOWERCASE_PATTERN.matcher(password).find();
+        boolean hasDigit = DIGIT_PATTERN.matcher(password).find();
+        
+        return hasUpper && hasLower && hasDigit;
+    }
+    
+    /**
+     * Check password strength level
+     * Returns: 0=weak, 1=medium, 2=strong, 3=very strong
+     */
+    public static int getPasswordStrength(String password) {
+        if (password == null || password.length() < 8) {
+            return 0; // Weak
+        }
+        
+        int strength = 0;
+        
+        if (password.length() >= 12) strength++;
+        if (UPPERCASE_PATTERN.matcher(password).find()) strength++;
+        if (LOWERCASE_PATTERN.matcher(password).find()) strength++;
+        if (DIGIT_PATTERN.matcher(password).find()) strength++;
+        if (SPECIAL_CHAR_PATTERN.matcher(password).find()) strength++;
+        
+        // Map to 0-3 scale
+        if (strength <= 2) return 0; // Weak
+        if (strength == 3) return 1; // Medium
+        if (strength == 4) return 2; // Strong
+        return 3; // Very strong
+    }
+    
+    /**
+     * Generate random password
+     */
+    public static String generateRandomPassword(int length) {
+        if (length < 8) {
+            length = 8;
+        }
+        
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(length);
+        
+        // Ensure at least one of each required type
+        password.append(chars.charAt(random.nextInt(26))); // Uppercase
+        password.append(chars.charAt(26 + random.nextInt(26))); // Lowercase
+        password.append(chars.charAt(52 + random.nextInt(10))); // Digit
+        
+        // Fill remaining with random characters
+        for (int i = 3; i < length; i++) {
+            password.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        
+        // Shuffle the characters
+        char[] passwordArray = password.toString().toCharArray();
+        for (int i = passwordArray.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            char temp = passwordArray[i];
+            passwordArray[i] = passwordArray[j];
+            passwordArray[j] = temp;
+        }
+        
+        return new String(passwordArray);
+    }
+    
+    /**
+     * Get password validation message
+     */
+    public static String getPasswordValidationMessage(String password) {
+        if (password == null || password.isEmpty()) {
+            return "Mật khẩu không được để trống";
+        }
+        if (password.length() < 8) {
+            return "Mật khẩu phải có ít nhất 8 ký tự";
+        }
+        if (!UPPERCASE_PATTERN.matcher(password).find()) {
+            return "Mật khẩu phải có ít nhất 1 chữ hoa";
+        }
+        if (!LOWERCASE_PATTERN.matcher(password).find()) {
+            return "Mật khẩu phải có ít nhất 1 chữ thường";
+        }
+        if (!DIGIT_PATTERN.matcher(password).find()) {
+            return "Mật khẩu phải có ít nhất 1 chữ số";
+        }
+        return "Mật khẩu hợp lệ";
+    }
+}

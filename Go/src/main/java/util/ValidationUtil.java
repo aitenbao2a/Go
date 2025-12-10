@@ -18,5 +18,4 @@ public class ValidationUtil {
         return matcher.matches();
     }
 
-    // Có thể thêm các phương thức kiểm tra khác như isValidPhone, isValidNumber, v.v.
 }

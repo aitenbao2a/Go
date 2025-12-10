@@ -5,33 +5,29 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBCon {
+    static String url = "jdbc:mysql://localhost:1433/go_project?useSSL=false&serverTimezone=UTC";
+    static String user = "root";
+    static String password = "16012005";
 
-    private static final String URL =
-            "jdbc:sqlserver://localhost:1433;databaseName=vietnam_booking;encrypt=false;";
-    private static final String USER = "sa";      
-    private static final String PASS = "123456";  
-
-    public static Connection getConnection() {
+    public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection conn = DriverManager.getConnection(URL, USER, PASS);
-            System.out.println("✔ Kết nối SQL Server thành công!");
-            return conn;
-
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
         } catch (ClassNotFoundException e) {
-            System.out.println(" Không tìm thấy driver SQL Server! (thiếu mssql-jdbc.jar)");
-        } catch (SQLException e) {
-            System.out.println(" Không kết nối được SQL Server:");
-            System.out.println(" Sai USER / PASS ?");
-            System.out.println(" Sai PORT ?");
-            System.out.println(" Sai databaseName ?");
-            System.out.println(" SQL Server chưa bật TCP/IP ?");
+            System.err.println("MySQL JDBC Driver không tìm thấy. Bạn đã thêm JAR chưa?");
+            e.printStackTrace();
         }
-
-        return null;
+        
+        Connection connection = DriverManager.getConnection(url, user, password);
+        return connection;
     }
 
     public static void main(String[] args) {
-        getConnection();
+        try (Connection conn = getConnection()) {
+            if (conn != null) {
+                System.out.println("Kết nối tới database go_project thành công!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Lỗi kết nối database: " + e.getMessage());
+        }
     }
 }
