@@ -46,13 +46,13 @@ public class LoginServlet extends HttpServlet {
         // Validate input
         if (!ValidationUtil.isValidEmail(email)) {
             request.setAttribute("error", "Email không hợp lệ");
-            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
+            request.getRequestDispatcher("view/login_error_login.jsp").forward(request, response);
             return;
         }
         
         if (!ValidationUtil.isNotEmpty(password)) {
             request.setAttribute("error", "Vui lòng nhập mật khẩu");
-            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
+            request.getRequestDispatcher("view/login_error_login.jsp").forward(request, response);
             return;
         }
         
@@ -61,14 +61,14 @@ public class LoginServlet extends HttpServlet {
         
         if (user == null) {
             request.setAttribute("error", "Email hoặc mật khẩu không đúng");
-            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
+            request.getRequestDispatcher("view/login_error_login.jsp").forward(request, response);
             return;
         }
         
         // Kiểm tra mật khẩu
         if (!password.equals(user.getPasswordHash())) {
             request.setAttribute("error", "Email hoặc mật khẩu không đúng");
-            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
+            request.getRequestDispatcher("view/login_error_login.jsp").forward(request, response);
             return;
         }
         

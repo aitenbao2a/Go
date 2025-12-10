@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import model.User;
+
 public class DBCon {
     static String url = "jdbc:mysql://localhost:1433/go_project?useSSL=false&serverTimezone=UTC";
     static String user = "root";
@@ -29,5 +31,5 @@ public class DBCon {
         } catch (SQLException e) {
             System.err.println("Lỗi kết nối database: " + e.getMessage());
         }
-    }
+   }
 }

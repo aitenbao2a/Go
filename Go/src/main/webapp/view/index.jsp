@@ -59,9 +59,9 @@
 
 			<div
 				style="display: flex; justify-content: center; margin-top: 20px; gap: 30px;">
-				<a href="login_error.jsp"
+				<a href="login_error_login.jsp"
 					style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">
-					Quên mật khẩu? </a> <a href="#"
+					Quên mật khẩu? </a> <a href="login_error_register.jsp"
 					style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">
 					Tạo tài khoản </a>
 			</div>
@@ -92,13 +92,7 @@
 				Đăng nhập bằng Apple
 			</button>
 			<div class="divider">Hoặc</div>
-
-			<form action="login" method="post">
-				<div class="form-group">
-					<label class="form-label">Họ và tên</label> <input type="fullname"
-						class="form-input" name="fullname" placeholder="Nguyễn Văn A"
-						required>
-				</div>
+			<form action="${pageContext.request.contextPath}/confirmRegister" method="post">
 				<div class="form-group">
 					<label class="form-label">Email</label> <input type="email"
 						class="form-input" name="email" placeholder="id@email.com"
@@ -114,16 +108,48 @@
 						type="password" class="form-input" name="confirmPassword"
 						placeholder="Xác nhận mật khẩu" required>
 				</div>
-				<button type="submit" class="btn-continue">Tiếp tục</button>
-			</form>
+				<button id="continueRegisterBtn" class="btn-continue">Tiếp tục</button>
+			<div style="text-align: center; margin-top: 10px;"></div>
+		</div>
+	</div>
+	
+	<!-- Confirm Register -->
+	<div class="modal" id="continueRegisterModal">
+		<div class="modal-content">
+			<span class="modal-close" onclick="closeLoginModal()">&times;</span>
+			<h2 class="modal-title">TẠO TÀI KHOẢN</h2>
+				<div class="form-group">
+					<label class="form-label">Họ và tên</label> <input type="text"
+						class="form-input" name="fullName" placeholder="Nguyễn Văn A"
+						required>
+				</div>
+				<div class="form-group">
+					<label class="form-label">Số điện thoại</label> <input type="tel"
+						class="form-input" name="phoneNumber" placeholder="0123456789"
+						required>
+				</div>
+ 					<div class="form-group">
+					<label class="form-label">Giới tính</label> <select name="gender"
+						class="form-input" required>
+						<option value="">Chọn giới tính</option>
+						<option value="male">Nam</option>
+						<option value="female">Nữ</option>
+						<option value="other">Khác</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label class="form-label">Năm sinh</label> <input type="number"
+						class="form-input" name="birthYear" placeholder="Ví dụ: 1990"
+						required min="1900" max="2025">
+				</div>
 
+				<button type="submit" class="btn-continue">Xong</button>
+			</form>
 			<div style="text-align: center; margin-top: 10px;">
-				<a href="#"
-					style="color: #667eea; text-decoration: none; font-size: 15px; font-weight: 500;">
-					Đã có tài khoản </a>
 			</div>
 		</div>
 	</div>
+
 	<!-- Hero Section -->
 	<section class="hero">
 		<div class="container">
@@ -486,6 +512,7 @@
 			loginModal.classList.remove('active');
 		}
 	});
+	// Register Modal
 	const registerModal = document.getElementById('registerModal');
 	const registerBtn = document.getElementById('headerRegisterBtn');
 	
@@ -502,6 +529,25 @@
 	window.addEventListener('click', (event) => {
 		if (event.target === registerModal) {
 			registerModal.classList.remove('active');
+		}
+	});
+	// Continue Register Modal 
+	const continueRegisterModal = document.getElementById('continueRegisterModal');
+	const continueRegisterBtn = document.getElementById('continueRegisterBtn');
+	
+	if (continueRegisterBtn) {
+		continueRegisterBtn.addEventListener('click', () => {
+			continueRegisterModal.classList.add('active');
+		});
+	}
+
+	function closeLoginModal() {
+		continueRegisterModal.classList.remove('active');
+	}
+
+	window.addEventListener('click', (event) => {
+		if (event.target === continueRegisterModal) {
+			continueRegisterModal.classList.remove('active');
 		}
 	});
 

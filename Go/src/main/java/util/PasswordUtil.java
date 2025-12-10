@@ -5,37 +5,11 @@ import java.util.regex.Pattern;
 
 public class PasswordUtil {
     
-    private static final int BCRYPT_ROUNDS = 12;
     private static final Pattern UPPERCASE_PATTERN = Pattern.compile("[A-Z]");
     private static final Pattern LOWERCASE_PATTERN = Pattern.compile("[a-z]");
     private static final Pattern DIGIT_PATTERN = Pattern.compile("[0-9]");
     private static final Pattern SPECIAL_CHAR_PATTERN = Pattern.compile("[!@#$%^&*(),.?\":{}|<>]");
     
-    /**
-     * Hash password using BCrypt
-     */
-    public static String hashPassword(String plainPassword) {
-        if (plainPassword == null || plainPassword.isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
-        }
-        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(BCRYPT_ROUNDS));
-    }
-    
-    /**
-     * Verify password against hash
-     */
-    public static boolean checkPassword(String plainPassword, String hashedPassword) {
-        if (plainPassword == null || hashedPassword == null) {
-            return false;
-        }
-        try {
-            return BCrypt.checkpw(plainPassword, hashedPassword);
-        } catch (IllegalArgumentException e) {
-            System.err.println("Invalid password hash: " + e.getMessage());
-            return false;
-        }
-    }
-
     public static boolean isValidPassword(String password) {
         if (password == null || password.length() < 8) {
             return false;
@@ -50,7 +24,7 @@ public class PasswordUtil {
     
     public static int getPasswordStrength(String password) {
         if (password == null || password.length() < 8) {
-            return 0; // Weak
+            return 0; 
         }
         
         int strength = 0;

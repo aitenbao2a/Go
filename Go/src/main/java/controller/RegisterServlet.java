@@ -78,7 +78,7 @@ public class RegisterServlet extends HttpServlet {
         // Tạo user mới
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPasswordHash(PasswordUtil.hashPassword(password));
+        newUser.setPasswordHash(password);
         newUser.setFullName(fullName);
         newUser.setPhone(phone);
         

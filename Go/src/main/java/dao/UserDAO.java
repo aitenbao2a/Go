@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.Date;
 
 public class UserDAO {
@@ -55,25 +56,39 @@ public class UserDAO {
 	}
 
 	public boolean createUser(User user) {
-		String sql = "INSERT INTO User (userId, email, passwordHash, fullName, phone, dateOfBirth, createdAt, updatedAt, isActive) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
-		int result = 0;
+	    String sql = "INSERT INTO User (email, passwordHash, fullName, phone, dateOfBirth, createdAt, updatedAt, isActive) " +
+	                 "VALUES (?, ?, ?, ?, ?, NOW(), NOW(), ?)";
 
-		try (Connection conn = DBCon.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+	    try (Connection conn = DBCon.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) { 
+	        
+	        ps.setString(1, user.getEmail());
+	        ps.setString(2, user.getPasswordHash());
+	        ps.setString(3, user.getFullName());
+	        ps.setString(4, user.getPhone());
+	   
+	        if (user.getDateOfBirth() != null) {
+	            ps.setDate(5, new java.sql.Date(user.getDateOfBirth().getTime()));
+	        } else {
+	            ps.setNull(5, Types.DATE);
+	        }
 
-			ps.setString(1, user.getEmail());
-			ps.setString(2, user.getPasswordHash());
-			ps.setString(3, user.getFullName());
-			ps.setString(4, user.getPhone());
-			ps.setTime(5, (Time) user.getDateOfBirth());
-			ps.setTimestamp(6, user.getCreatedAt());
-			ps.setTimestamp(7, user.getUpdatedAt());
-			ps.setBoolean(8, true);
-
-			result = ps.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result > 0;
+	        ps.setBoolean(8, true);
+	        
+	        int affectedRows = ps.executeUpdate();
+	        
+	        if (affectedRows > 0) {
+	            try (ResultSet rs = ps.getGeneratedKeys()) {
+	                if (rs.next()) {
+	                    user.setUserId(rs.getInt(1)); 
+	                }
+	            }
+	            return true;
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error creating user: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	    return false;
 	}
 }
