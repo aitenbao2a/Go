@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private UserDAO userDAO;
@@ -27,11 +29,11 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         // Nếu đã đăng nhập, redirect về trang chủ
         if (SessionUtil.isLoggedIn(request)) {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("view/home.jsp");
             return;
         }
         
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("view/login_error_login.jsp").forward(request, response);
     }
     
     @Override
@@ -44,13 +46,13 @@ public class LoginServlet extends HttpServlet {
         // Validate input
         if (!ValidationUtil.isValidEmail(email)) {
             request.setAttribute("error", "Email không hợp lệ");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
             return;
         }
         
         if (!ValidationUtil.isNotEmpty(password)) {
             request.setAttribute("error", "Vui lòng nhập mật khẩu");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
             return;
         }
         
@@ -59,14 +61,14 @@ public class LoginServlet extends HttpServlet {
         
         if (user == null) {
             request.setAttribute("error", "Email hoặc mật khẩu không đúng");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
             return;
         }
         
         // Kiểm tra mật khẩu
-        if (!PasswordUtil.checkPassword(password, user.getPasswordHash())) {
+        if (!password.equals(user.getPasswordHash())) {
             request.setAttribute("error", "Email hoặc mật khẩu không đúng");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_login.jsp").forward(request, response);
             return;
         }
         
@@ -78,7 +80,7 @@ public class LoginServlet extends HttpServlet {
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
             response.sendRedirect(redirectUrl);
         } else {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("view/home.jsp");
         }
     }
 }

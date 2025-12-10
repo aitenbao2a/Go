@@ -59,10 +59,9 @@
 
 			<div
 				style="display: flex; justify-content: center; margin-top: 20px; gap: 30px;">
-				<a href="#"
+				<a href="login_error.jsp"
 					style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">
-					Quên mật khẩu? </a>
-				<a href="#" 
+					Quên mật khẩu? </a> <a href="#"
 					style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">
 					Tạo tài khoản </a>
 			</div>
@@ -96,6 +95,11 @@
 
 			<form action="login" method="post">
 				<div class="form-group">
+					<label class="form-label">Họ và tên</label> <input type="fullname"
+						class="form-input" name="fullname" placeholder="Nguyễn Văn A"
+						required>
+				</div>
+				<div class="form-group">
 					<label class="form-label">Email</label> <input type="email"
 						class="form-input" name="email" placeholder="id@email.com"
 						required>
@@ -105,15 +109,18 @@
 						class="form-input" name="password" placeholder="Nhập mật khẩu"
 						required>
 				</div>
-				<button type="submit" class="btn-continue">Đăng nhập</button>
+				<div class="form-group">
+					<label class="form-label">Xác nhận mật khẩu </label> <input
+						type="password" class="form-input" name="confirmPassword"
+						placeholder="Xác nhận mật khẩu" required>
+				</div>
+				<button type="submit" class="btn-continue">Tiếp tục</button>
 			</form>
 
-			<div style="text-align: center; margin-top: 20px;">
+			<div style="text-align: center; margin-top: 10px;">
 				<a href="#"
-					style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">
-					Quên mật khẩu? </a> <a href="#"
-					style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">
-					Tạo tài khoản </a>
+					style="color: #667eea; text-decoration: none; font-size: 15px; font-weight: 500;">
+					Đã có tài khoản </a>
 			</div>
 		</div>
 	</div>
@@ -229,47 +236,86 @@
 			</div>
 		</div>
 	</section>
-
-
-
 	<!-- Main Content -->
 	<main>
 		<!-- Popular Destinations -->
 		<section class="section">
 			<div class="container">
 				<h2 class="section-title">Điểm đến phổ biến</h2>
-				<div class="destinations-grid">
-					<div class="destination-card"
-						onclick="location.href='search?city=Hồ Chí Minh'">
-						<div class="destination-image">🏙️</div>
-						<div class="destination-info">
-							<div class="destination-name">Hồ Chí Minh</div>
-							<div class="destination-properties">2,847 khách sạn</div>
+				<div class="section-padding">
+					<div class="carousel-container">
+						<button class="nav-button prev-button"
+							onclick="scrollCarousel('prev')">&lt;</button>
+						<div class="scroll-wrapper" id="destinationScrollWrapper">
+							<div class="destinations-grid">
+								<div class="destination-card"
+									onclick="location.href='search?city=Hồ Chí Minh'">
+									<div class="destination-image">🏙️</div>
+									<div class="destination-info">
+										<div class="destination-name">Hồ Chí Minh</div>
+										<div class="destination-properties">2,847 khách sạn</div>
+									</div>
+								</div>
+								<div class="destination-card"
+									onclick="location.href='search?city=Hồ Chí Minh'">
+									<div class="destination-image">🏙️</div>
+									<div class="destination-info">
+										<div class="destination-name">Hồ Chí Minh</div>
+										<div class="destination-properties">2,847 khách sạn</div>
+									</div>
+								</div>
+								<div class="destination-card"
+									onclick="location.href='search?city=Hồ Chí Minh'">
+									<div class="destination-image">🏙️</div>
+									<div class="destination-info">
+										<div class="destination-name">Hồ Chí Minh</div>
+										<div class="destination-properties">2,847 khách sạn</div>
+									</div>
+								</div>
+								<div class="destination-card"
+									onclick="location.href='search?city=Đà Nẵng'">
+									<div class="destination-image">🏖️</div>
+									<div class="destination-info">
+										<div class="destination-name">Đà Nẵng</div>
+										<div class="destination-properties">1,523 khách sạn</div>
+									</div>
+								</div>
+								<div class="destination-card"
+									onclick="location.href='search?city=Hà Nội'">
+									<div class="destination-image">🏛️</div>
+									<div class="destination-info">
+										<div class="destination-name">Hà Nội</div>
+										<div class="destination-properties">1,892 khách sạn</div>
+									</div>
+								</div>
+								<div class="destination-card"
+									onclick="location.href='search?city=Nha Trang'">
+									<div class="destination-image">🌊</div>
+									<div class="destination-info">
+										<div class="destination-name">Nha Trang</div>
+										<div class="destination-properties">986 khách sạn</div>
+									</div>
+								</div>
+								<div class="destination-card"
+									onclick="location.href='search?city=Vũng Tàu'">
+									<div class="destination-image">🏖️</div>
+									<div class="destination-info">
+										<div class="destination-name">Vũng Tàu</div>
+										<div class="destination-properties">1,200 khách sạn</div>
+									</div>
+								</div>
+								<div class="destination-card"
+									onclick="location.href='search?city=Phú Quốc'">
+									<div class="destination-image">🏝️</div>
+									<div class="destination-info">
+										<div class="destination-name">Phú Quốc</div>
+										<div class="destination-properties">1,150 khách sạn</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="destination-card"
-						onclick="location.href='search?city=Đà Nẵng'">
-						<div class="destination-image">🏖️</div>
-						<div class="destination-info">
-							<div class="destination-name">Đà Nẵng</div>
-							<div class="destination-properties">1,523 khách sạn</div>
-						</div>
-					</div>
-					<div class="destination-card"
-						onclick="location.href='search?city=Hà Nội'">
-						<div class="destination-image">🏛️</div>
-						<div class="destination-info">
-							<div class="destination-name">Hà Nội</div>
-							<div class="destination-properties">1,892 khách sạn</div>
-						</div>
-					</div>
-					<div class="destination-card"
-						onclick="location.href='search?city=Nha Trang'">
-						<div class="destination-image">🌊</div>
-						<div class="destination-info">
-							<div class="destination-name">Nha Trang</div>
-							<div class="destination-properties">986 khách sạn</div>
-						</div>
+						<button class="nav-button next-button"
+							onclick="scrollCarousel('next')">&gt;</button>
 					</div>
 				</div>
 			</div>
@@ -282,6 +328,70 @@
 				<h2 class="section-title">Khách sạn đề xuất</h2>
 				<div class="hotels-grid">
 					<!-- Sample Hotel Card 1 -->
+					<div class="hotel-card" onclick="location.href='hotel-detail?id=1'">
+						<div class="hotel-image">
+							<div class="hotel-image-placeholder">🏨</div>
+						</div>
+						<div class="hotel-details">
+							<div class="hotel-header">
+								<div class="hotel-name">Khách sạn Continental Sài Gòn</div>
+								<div class="hotel-rating">
+									<span class="stars">★★★★★</span> <span class="review-score">9.2</span>
+									<span class="review-count">(2,847 đánh giá)</span>
+								</div>
+								<div class="hotel-location">📍 Quận 1, Trung tâm Hồ Chí
+									Minh</div>
+							</div>
+							<div class="hotel-features">
+								<span class="feature-tag">🏊 Hồ bơi</span> <span
+									class="feature-tag">🍴 Nhà hàng</span> <span
+									class="feature-tag">💪 Phòng gym</span> <span
+									class="feature-tag">📶 WiFi miễn phí</span>
+							</div>
+							<div class="hotel-footer">
+								<span class="discount-badge">-25% hôm nay</span>
+								<div class="price-info">
+									<div class="price-label">Giá mỗi đêm từ</div>
+									<div class="price">
+										<span class="price-currency">₫</span>2,450,000
+									</div>
+									<div class="price-note">Đã bao gồm thuế và phí</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="hotel-card" onclick="location.href='hotel-detail?id=1'">
+						<div class="hotel-image">
+							<div class="hotel-image-placeholder">🏨</div>
+						</div>
+						<div class="hotel-details">
+							<div class="hotel-header">
+								<div class="hotel-name">Khách sạn Continental Sài Gòn</div>
+								<div class="hotel-rating">
+									<span class="stars">★★★★★</span> <span class="review-score">9.2</span>
+									<span class="review-count">(2,847 đánh giá)</span>
+								</div>
+								<div class="hotel-location">📍 Quận 1, Trung tâm Hồ Chí
+									Minh</div>
+							</div>
+							<div class="hotel-features">
+								<span class="feature-tag">🏊 Hồ bơi</span> <span
+									class="feature-tag">🍴 Nhà hàng</span> <span
+									class="feature-tag">💪 Phòng gym</span> <span
+									class="feature-tag">📶 WiFi miễn phí</span>
+							</div>
+							<div class="hotel-footer">
+								<span class="discount-badge">-25% hôm nay</span>
+								<div class="price-info">
+									<div class="price-label">Giá mỗi đêm từ</div>
+									<div class="price">
+										<span class="price-currency">₫</span>2,450,000
+									</div>
+									<div class="price-note">Đã bao gồm thuế và phí</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="hotel-card" onclick="location.href='hotel-detail?id=1'">
 						<div class="hotel-image">
 							<div class="hotel-image-placeholder">🏨</div>
@@ -376,6 +486,24 @@
 			loginModal.classList.remove('active');
 		}
 	});
+	const registerModal = document.getElementById('registerModal');
+	const registerBtn = document.getElementById('headerRegisterBtn');
+	
+	if (registerBtn) {
+		registerBtn.addEventListener('click', () => {
+			registerModal.classList.add('active');
+		});
+	}
+
+	function closeLoginModal() {
+		registerModal.classList.remove('active');
+	}
+
+	window.addEventListener('click', (event) => {
+		if (event.target === registerModal) {
+			registerModal.classList.remove('active');
+		}
+	});
 
 	// Date Picker Setup
 	const today = new Date();
@@ -440,6 +568,21 @@
 		document.getElementById('childrenInput').value = guests.children;
 		document.getElementById('roomsInput').value = guests.rooms;
 	}
+	function scrollCarousel(direction) {
+        const scrollWrapper = document.getElementById('destinationScrollWrapper');
+        const scrollDistance = 300; 
+        if (direction === 'next') {
+            scrollWrapper.scrollBy({
+                left: scrollDistance,
+                behavior: 'smooth'
+            });
+        } else if (direction === 'prev') {
+            scrollWrapper.scrollBy({
+                left: -scrollDistance,
+                behavior: 'smooth'
+            });
+        }
+    }
 	</script>
 </body>
 </html>

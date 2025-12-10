@@ -26,11 +26,11 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         if (SessionUtil.isLoggedIn(request)) {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("login_error_login.jsp");
             return;
         }
         
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+        request.getRequestDispatcher("login_error_register.jsp").forward(request, response);
     }
     
     @Override
@@ -46,32 +46,32 @@ public class RegisterServlet extends HttpServlet {
         // Validate inputs
         if (!ValidationUtil.isValidEmail(email)) {
             request.setAttribute("error", "Email không hợp lệ");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_register.jsp").forward(request, response);
             return;
         }
         
         if (!ValidationUtil.isNotEmpty(fullName)) {
             request.setAttribute("error", "Vui lòng nhập họ tên");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_register.jsp").forward(request, response);
             return;
         }
         
         if (!PasswordUtil.isValidPassword(password)) {
             request.setAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_register.jsp").forward(request, response);
             return;
         }
         
         if (!password.equals(confirmPassword)) {
             request.setAttribute("error", "Mật khẩu xác nhận không khớp");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_register.jsp").forward(request, response);
             return;
         }
         
         // Kiểm tra email đã tồn tại
         if (userDAO.emailExists(email)) {
             request.setAttribute("error", "Email đã được sử dụng");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_register.jsp").forward(request, response);
             return;
         }
         
@@ -85,10 +85,10 @@ public class RegisterServlet extends HttpServlet {
         if (userDAO.createUser(newUser)) {
             // Đăng ký thành công, tự động đăng nhập
             SessionUtil.setUserSession(request, newUser);
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("login_error_login.jsp");
         } else {
             request.setAttribute("error", "Đã xảy ra lỗi, vui lòng thử lại");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("login_error_register.jsp").forward(request, response);
         }
     }
 }

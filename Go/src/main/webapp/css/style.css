@@ -14,9 +14,9 @@ body {
 }
 
 .container {
-    max-width: 1280px;
-    margin: 0 auto;
     padding: 0 30px;
+    margin-left: 5%; 
+    margin-right: 5%;
 }
 
 /* ===== HERO SECTION ===== */
@@ -308,13 +308,69 @@ body {
     border-radius: 2px;
 }
 
-/* ===== DESTINATIONS GRID ===== */
-.destinations-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+.section-padding {
+    box-sizing: border-box; 
+ 
+}
+.scroll-wrapper {
+    width: 100%; 
+    overflow-x: auto; 
+    padding-bottom: 15px;
+    scroll-behavior: smooth; 
+    scrollbar-width: none;
+ }
+ .carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center; 
+}
+.nav-button {
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%);
+    z-index: 10;
+    background: white; 
+    color: #4a5568; 
+    border: none;
+    border-radius: 50%; 
+    width: 48px; 
+    height: 48px;
+    font-size: 1.6rem; 
+    line-height: 1; 
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    
+    transition: all 0.3s ease;
 }
 
+.nav-button:hover {
+    background-color: #f0f4f8; 
+    color: #667eea;
+    transform: translateY(-50%) scale(1.05); 
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25); 
+}
+
+.nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: translateY(-50%) scale(1);
+    box-shadow: none;
+}
+.prev-button {
+    left: -20px; 
+}
+
+.next-button {
+    right: -20px; 
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 250px); 
+    width: max-content; 
+    gap: 25px;
+    grid-auto-rows: 1fr;
+}
 .destination-card {
     background: white;
     border-radius: 16px;
@@ -324,6 +380,7 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
+    height: 100%; 
 }
 
 .destination-card::before {
@@ -379,8 +436,8 @@ body {
 /* ===== HOTELS GRID ===== */
 .hotels-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
 }
 
 .hotel-card {
@@ -775,26 +832,14 @@ body {
     .btn-search {
         grid-column: 1 / -1;
     }
-    
-    .destinations-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .hotels-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
+	
+	@media (max-width: 768px) {
+	    .hotels-grid {
+	        grid-template-columns: 1fr;
+	    }
+	}
     .search-form {
         grid-template-columns: 1fr;
     }
     
-    .destinations-grid {
-        grid-template-columns: 1fr;
-    }
 }

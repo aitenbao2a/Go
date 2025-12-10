@@ -32,7 +32,7 @@ public class HotelDAO {
 
 	public List<Hotel> getAllHotels() {
 		List<Hotel> list = new ArrayList<>();
-		String sql = "SELECT * FROM hotels";
+		String sql = "SELECT * FROM Hotel";
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery()) {
@@ -53,7 +53,7 @@ public class HotelDAO {
 	public List<Hotel> searchHotels(String keyword) {
 		List<Hotel> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM hotels WHERE hotel_name LIKE ? OR city LIKE ? OR address LIKE ? OR description LIKE ?";
+		String sql = "SELECT * FROM Hotel WHERE hotel_name LIKE ? OR city LIKE ? OR address LIKE ? OR description LIKE ?";
 
 		try (Connection conn = DBCon.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 

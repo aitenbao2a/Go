@@ -35,11 +35,7 @@ public class PasswordUtil {
             return false;
         }
     }
-    
-    /**
-     * Validate password strength
-     * Requirements: at least 8 chars, 1 uppercase, 1 lowercase, 1 digit
-     */
+
     public static boolean isValidPassword(String password) {
         if (password == null || password.length() < 8) {
             return false;
@@ -52,10 +48,6 @@ public class PasswordUtil {
         return hasUpper && hasLower && hasDigit;
     }
     
-    /**
-     * Check password strength level
-     * Returns: 0=weak, 1=medium, 2=strong, 3=very strong
-     */
     public static int getPasswordStrength(String password) {
         if (password == null || password.length() < 8) {
             return 0; // Weak
@@ -68,17 +60,14 @@ public class PasswordUtil {
         if (LOWERCASE_PATTERN.matcher(password).find()) strength++;
         if (DIGIT_PATTERN.matcher(password).find()) strength++;
         if (SPECIAL_CHAR_PATTERN.matcher(password).find()) strength++;
-        
-        // Map to 0-3 scale
-        if (strength <= 2) return 0; // Weak
-        if (strength == 3) return 1; // Medium
-        if (strength == 4) return 2; // Strong
-        return 3; // Very strong
+
+        if (strength <= 2) return 0; 
+        if (strength == 3) return 1;
+        if (strength == 4) return 2; 
+        return 3; 
     }
     
-    /**
-     * Generate random password
-     */
+  
     public static String generateRandomPassword(int length) {
         if (length < 8) {
             length = 8;
@@ -88,17 +77,14 @@ public class PasswordUtil {
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder(length);
         
-        // Ensure at least one of each required type
-        password.append(chars.charAt(random.nextInt(26))); // Uppercase
-        password.append(chars.charAt(26 + random.nextInt(26))); // Lowercase
-        password.append(chars.charAt(52 + random.nextInt(10))); // Digit
+        password.append(chars.charAt(random.nextInt(26))); 
+        password.append(chars.charAt(26 + random.nextInt(26))); 
+        password.append(chars.charAt(52 + random.nextInt(10)));
         
-        // Fill remaining with random characters
         for (int i = 3; i < length; i++) {
             password.append(chars.charAt(random.nextInt(chars.length())));
         }
         
-        // Shuffle the characters
         char[] passwordArray = password.toString().toCharArray();
         for (int i = passwordArray.length - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
@@ -110,9 +96,6 @@ public class PasswordUtil {
         return new String(passwordArray);
     }
     
-    /**
-     * Get password validation message
-     */
     public static String getPasswordValidationMessage(String password) {
         if (password == null || password.isEmpty()) {
             return "Mật khẩu không được để trống";

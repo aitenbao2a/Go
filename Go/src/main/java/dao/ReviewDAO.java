@@ -6,15 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewDAO {
-
-    // --- Private Helper Method ---
-    
-    /**
-     * Ánh xạ dữ liệu từ ResultSet sang đối tượng Review.
-     * @param rs ResultSet
-     * @return Đối tượng Review
-     * @throws SQLException 
-     */
     private Review extractReviewFromResultSet(ResultSet rs) throws SQLException {
         Review review = new Review();
         review.setReviewId(rs.getInt("review_id"));
