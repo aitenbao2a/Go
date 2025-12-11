@@ -113,43 +113,7 @@
 		</div>
 	</div>
 	
-	<!-- Confirm Register -->
-	<div class="modal" id="continueRegisterModal">
-		<div class="modal-content">
-			<span class="modal-close" onclick="closeLoginModal()">&times;</span>
-			<h2 class="modal-title">TẠO TÀI KHOẢN</h2>
-				<div class="form-group">
-					<label class="form-label">Họ và tên</label> <input type="text"
-						class="form-input" name="fullName" placeholder="Nguyễn Văn A"
-						required>
-				</div>
-				<div class="form-group">
-					<label class="form-label">Số điện thoại</label> <input type="tel"
-						class="form-input" name="phoneNumber" placeholder="0123456789"
-						required>
-				</div>
- 					<div class="form-group">
-					<label class="form-label">Giới tính</label> <select name="gender"
-						class="form-input" required>
-						<option value="">Chọn giới tính</option>
-						<option value="male">Nam</option>
-						<option value="female">Nữ</option>
-						<option value="other">Khác</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label class="form-label">Năm sinh</label> <input type="number"
-						class="form-input" name="birthYear" placeholder="Ví dụ: 1990"
-						required min="1900" max="2025">
-				</div>
-
-				<button type="submit" class="btn-continue">Xong</button>
-			</form>
-			<div style="text-align: center; margin-top: 10px;">
-			</div>
-		</div>
-	</div>
-
+	
 	<!-- Hero Section -->
 	<section class="hero">
 		<div class="container">
@@ -531,26 +495,6 @@
 			registerModal.classList.remove('active');
 		}
 	});
-	// Continue Register Modal 
-	const continueRegisterModal = document.getElementById('continueRegisterModal');
-	const continueRegisterBtn = document.getElementById('continueRegisterBtn');
-	
-	if (continueRegisterBtn) {
-		continueRegisterBtn.addEventListener('click', () => {
-			continueRegisterModal.classList.add('active');
-		});
-	}
-
-	function closeLoginModal() {
-		continueRegisterModal.classList.remove('active');
-	}
-
-	window.addEventListener('click', (event) => {
-		if (event.target === continueRegisterModal) {
-			continueRegisterModal.classList.remove('active');
-		}
-	});
-
 	// Date Picker Setup
 	const today = new Date();
 	const tomorrow = new Date(today);
