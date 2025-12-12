@@ -287,160 +287,152 @@ pageEncoding="UTF-8"%>
 <body>
 <jsp:include page="header.jsp" />
 
-<div class="page-background">
-    <!-- Login Form - Default Display -->
-    <div class="form-container-wrapper">
-        <div class="auth-card">
-            <h2 class="modal-title">ĐĂNG NHẬP</h2>
-            
-            <button class="social-btn btn-google">
-                <img src="${pageContext.request.contextPath}/images/logo_google.png"
-                    class="logo_google-img" height="20" width="20"> Đăng nhập bằng Google
-            </button>
-            
-            <button class="social-btn btn-facebook">
-                <img src="${pageContext.request.contextPath}/images/logo_facebook.webp"
-                    class="logo_facebook-img" height="20" width="20"> Đăng nhập bằng Facebook
-            </button>
-            
-            <button class="social-btn btn-apple">
-                <img src="${pageContext.request.contextPath}/images/logo_apple.png"
-                    class="logo_apple-img" height="20" width="20"> Đăng nhập bằng Apple
-            </button>
-            
-            <div class="divider">Hoặc</div>
-            
-            <form action="${pageContext.request.contextPath}/login" method="post">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" name="email" placeholder="id@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Mật khẩu</label>
-                    <input type="password" class="form-input" name="password" placeholder="Nhập mật khẩu" required>
-                </div>
-                
-                <button type="submit" class="btn-continue">Đăng nhập</button>
-            </form>
-            
-            <div style="display: flex; justify-content: center; margin-top: 20px; gap: 30px;">
-                <a href="login_error_login.jsp" style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">Quên mật khẩu?</a>
-                <a href="#" id="headerRegisterBtn" style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">Tạo tài khoản</a>
-            </div>
-        </div>
-    </div>
-</div>
+	<div class="page-background">
+		<div class="form-container-wrapper">
+			<div class="auth-card">
+				<h2 class="modal-title">ĐĂNG NHẬP</h2>
+				<button class="social-btn btn-google">
+					<img src="${pageContext.request.contextPath}/images/logo_google.png"
+						class="logo_google-img" height="20" width="20" viewBox="0 0 18 18">
+					Đăng nhập bằng Google
+				</button>
 
-<!-- Register Modal -->
-<div class="modal" id="registerModal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeLoginModal('register')">&times;</span>
-        <h2 class="modal-title">TẠO TÀI KHOẢN</h2>
-        
-        <button class="social-btn btn-google">
-            <img src="${pageContext.request.contextPath}/images/logo_google.png"
-                class="logo_google-img" height="20" width="20"> Đăng nhập bằng Google
-        </button>
-        
-        <button class="social-btn btn-facebook">
-            <img src="${pageContext.request.contextPath}/images/logo_facebook.webp"
-                class="logo_facebook-img" height="20" width="20"> Đăng nhập bằng Facebook
-        </button>
-        
-        <button class="social-btn btn-apple">
-            <img src="${pageContext.request.contextPath}/images/logo_apple.png"
-                class="logo_apple-img" height="20" width="20"> Đăng nhập bằng Apple
-        </button>
-        
-        <div class="divider">Hoặc</div>
-        
-        <form>
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-input" name="email" placeholder="id@email.com" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Mật khẩu</label>
-                <input type="password" class="form-input" name="password" placeholder="Nhập mật khẩu" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Xác nhận mật khẩu</label>
-                <input type="password" class="form-input" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
-            </div>
-            <button id="continueRegisterBtn" type="button" class="btn-continue">Tiếp tục</button>
-        </form>
-        
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="#" id="backToLoginBtn" style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">Đã có tài khoản</a>
-        </div>
-    </div>
-</div>
+				<button class="social-btn btn-facebook">
+					<img
+						src="${pageContext.request.contextPath}/images/logo_facebook.webp"
+						class="logo_facebook-img" height="20" width="20"
+						viewBox="0 0 18 18"> Đăng nhập bằng Facebook
+				</button>
+				<button class="social-btn btn-apple">
+					<img src="${pageContext.request.contextPath}/images/logo_apple.png"
+						class="logo_apple-img" height="20" width="20" viewBox="0 0 18 18">
+					Đăng nhập bằng Apple
+				</button>
+				<div class="divider">Hoặc</div>
+				<form action="${pageContext.request.contextPath}/login"
+					method="post">
+					<div class="form-group">
+						<label class="form-label">Email</label> <input type="email"
+							class="form-input" name="email"
+							value="${emailValue != null ? emailValue : ''}"
+							placeholder="id@email.com" required>
+						<c:if test="${not empty emailError}">
+							<span style="color: red; font-size: 0.85rem">${emailError}</span>
+						</c:if>
+					</div>
 
-<!-- Confirm Register -->
-<div class="modal" id="continueRegisterModal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeLoginModal('continueRegister')">&times;</span>
-        <h2 class="modal-title">TẠO TÀI KHOẢN</h2>
-        <form action="${pageContext.request.contextPath}/confirmRegister" method="post">
-            <div class="form-group">
-                <label class="form-label">Họ và tên</label>
-                <input type="text" class="form-input" name="fullName" placeholder="Nguyễn Văn A" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Số điện thoại</label>
-                <input type="tel" class="form-input" name="phoneNumber" placeholder="0123456789" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Giới tính</label>
-                <select name="gender" class="form-input" required>
-                    <option value="">Chọn giới tính</option>
-                    <option value="male">Nam</option>
-                    <option value="female">Nữ</option>
-                    <option value="other">Khác</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Năm sinh</label>
-                <input type="number" class="form-input" name="birthYear" placeholder="Ví dụ: 2005" required min="1900" max="2025">
-            </div>
-            
-            <button type="submit" class="btn-continue">Xong</button>
-        </form>
-    </div>
-</div>
+					<div class="form-group">
+						<label class="form-label">Mật khẩu</label> <input type="password"
+							class="form-input" name="password" placeholder="Nhập mật khẩu"
+							required>
+						<c:if test="${not empty passwordError}">
+							<span style="color: red; font-size: 0.85rem">${passwordError}</span>
+						</c:if>
+					</div>
 
-<jsp:include page="footer.jsp" />
+					<c:if test="${not empty loginError}">
+						<div style="color: red; font-size: 0.85rem; margin-top: 5px;">${loginError}</div>
+					</c:if>
+					<button type="submit" class="btn-continue">Đăng nhập</button>
+				</form>
+				<div
+					style="display: flex; justify-content: center; margin-top: 20px; gap: 30px;">
+					<a
+						href="${pageContext.request.contextPath}/view/login_error_login.jsp"
+						id="headerRegisterBtn"
+						style="float: right; color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500; margin-left: 30px;">
+						Quên mật khẩu</a> <a
+						href="${pageContext.request.contextPath}/view/login_error_register.jsp"
+						id="headerRegisterBtn"
+						style="float: right; color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500; margin-left: 30px;">
+						Tạo tài khoản </a>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Register Modal -->
+	<div
+		class="modal ${not empty emailError || not empty passwordError || not empty confirmPasswordError ? 'active' : ''}"
+		id="registerModal">
+		<div class="modal-content">
+			<span class="modal-close" onclick="closeRegisterModal()">&times;</span>
+			<h2 class="modal-title">TẠO TÀI KHOẢN</h2>
+			<button class="social-btn btn-google">
+				<img src="${pageContext.request.contextPath}/images/logo_google.png"
+					class="logo_google-img" height="20" width="20" viewBox="0 0 18 18">
+				Đăng nhập bằng Google
+			</button>
+
+			<button class="social-btn btn-facebook">
+				<img
+					src="${pageContext.request.contextPath}/images/logo_facebook.webp"
+					class="logo_facebook-img" height="20" width="20"
+					viewBox="0 0 18 18"> Đăng nhập bằng Facebook
+			</button>
+			<button class="social-btn btn-apple">
+				<img src="${pageContext.request.contextPath}/images/logo_apple.png"
+					class="logo_apple-img" height="20" width="20" viewBox="0 0 18 18">
+				Đăng nhập bằng Apple
+			</button>
+			<div class="divider">Hoặc</div>
+			<form action="${pageContext.request.contextPath}/register"
+				method="post">
+				<div class="form-group">
+					<label class="form-label">Email</label> <input type="email"
+						class="form-input" name="email" placeholder="id@email.com"
+						value="${emailValue != null ? emailValue : ''}">
+					<c:if test="${not empty emailError}">
+						<span style="color: red; font-size: 0.85rem">${emailError}</span>
+					</c:if>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Mật khẩu</label> <input type="password"
+						class="form-input" name="password" placeholder="Nhập mật khẩu">
+					<c:if test="${not empty passwordError}">
+						<span style="color: red; font-size: 0.85rem">${passwordError}</span>
+					</c:if>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Xác nhận mật khẩu</label> <input
+						type="password" class="form-input" name="confirmPassword"
+						placeholder="Xác nhận mật khẩu">
+					<c:if test="${not empty confirmPasswordError}">
+						<span style="color: red; font-size: 0.85rem">${confirmPasswordError}</span>
+					</c:if>
+				</div>
+
+				<button type="submit" class="btn-continue">Tiếp tục</button>
+			</form>
+		</div>
+	</div>
+
+	<jsp:include page="footer.jsp" />
 
 <script>
 // Modal logic
 const registerModal = document.getElementById('registerModal');
-const continueRegisterModal = document.getElementById('continueRegisterModal');
+const loginModal = document.getElementById('loginModal');
 
-// Show Register modal when clicking "Tạo tài khoản"
+// Show Register modal
+document.getElementById('headerLoginBtn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginModal.classList.add('active');
+    loginModal.classList.remove('active'); // Ẩn login nếu đang mở
+});
+
+
 document.getElementById('headerRegisterBtn')?.addEventListener('click', (e) => {
     e.preventDefault();
     registerModal.classList.add('active');
 });
 
-// Back to Login - close register modal
-document.getElementById('backToLoginBtn')?.addEventListener('click', (e) => {
-    e.preventDefault();
+// Close modal
+function closeRegisterModal() {
     registerModal.classList.remove('active');
-});
-
-// Show Continue Register modal when clicking "Tiếp tục"
-document.getElementById('continueRegisterBtn')?.addEventListener('click', () => {
-    registerModal.classList.remove('active');
-    continueRegisterModal.classList.add('active');
-});
-
-// Close specific modal
-function closeLoginModal(modalType) {
-    if (modalType === 'register') {
-        registerModal.classList.remove('active');
-    } else if (modalType === 'continueRegister') {
-        continueRegisterModal.classList.remove('active');
-    }
 }
 
 // Close modal when clicking outside
@@ -448,10 +440,10 @@ window.addEventListener('click', (event) => {
     if (event.target === registerModal) {
         registerModal.classList.remove('active');
     }
-    if (event.target === continueRegisterModal) {
-        continueRegisterModal.classList.remove('active');
-    }
 });
+
+
 </script>
+
 </body>
 </html>
