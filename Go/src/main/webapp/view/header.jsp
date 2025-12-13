@@ -27,7 +27,7 @@
     cursor: pointer;
 }
 .logo-img {
-    height: 40px;
+    height: 35px;
     width: auto;
     transform: scale(2);
     margin-right: 10px;
@@ -120,15 +120,15 @@
 
 <header class="header">
     <div class="header-main">
-        <!-- LOGO -->
-        <div class="logo" onclick="window.location.reload()">
-            <img src="${pageContext.request.contextPath}/images/logo.png" class="logo-img">
-            <div class="logo-text">GO</div>
-        </div>
+              <!-- LOGO -->
+			<a href="index.jsp"> <img
+				src="${pageContext.request.contextPath}/images/logo.png"
+				class="logo-img">
 
-        <!-- WEATHER WIDGET -->
-         <div class="weather-widget">
-            <div class="weather-scroll" id="weatherText">Thành Phố Hồ Chí Minh - Trời nắng - 25C</div>
+			</a>
+			<!-- WEATHER WIDGET -->
+        <div class="weather-widget">
+            <div class="weather-scroll" id="weatherText">Đang tải...</div>
         </div>
 
         <!-- USER ACTIONS -->
