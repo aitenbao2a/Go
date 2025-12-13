@@ -22,10 +22,12 @@
 			<div class="search-box">
 				<form class="search-form" action="search" method="get">
 					<!-- Destination -->
-					<div class="form-field">
+					<div class="form-field" style="position: relative;">
 						<label class="form-label">Điểm đến</label> <input type="text"
-							class="form-input" name="destination"
-							placeholder="Bạn muốn đi đâu?" required>
+							class="form-input" id="destinationInput" name="keyword"
+							placeholder="Bạn muốn đi đâu? (VD: Vũng Tàu)" autocomplete="off"
+							required>
+						<div id="suggestions" class="suggestions-box"></div>
 					</div>
 
 					<!-- Check-in Date -->
@@ -336,6 +338,50 @@
 		document.getElementById('childrenInput').value = guests.children;
 		document.getElementById('roomsInput').value = guests.rooms;
 	}
+	// search
+	const input = document.getElementById('destinationInput');
+    const suggestionBox = document.getElementById('suggestions');
+    let timeout = null;
+
+    input.addEventListener('input', function() {
+        const query = this.value;
+        if (query.length < 2) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            //API OpenStreetMap
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&countrycodes=vn&addressdetails=1&limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestionBox.innerHTML = '';
+                    if (data.length > 0) {
+                        suggestionBox.style.display = 'block';
+                        data.forEach(item => {
+                            const div = document.createElement('div');
+                            div.className = 'suggestion-item';
+                            div.textContent = item.display_name; 
+                            div.onclick = function() {
+                                let cityName = item.address.city || item.address.town || item.address.state || item.display_name;
+                                input.value = cityName; 
+                                suggestionBox.style.display = 'none';
+                            };
+                            suggestionBox.appendChild(div);
+                        });
+                    } else {
+                        suggestionBox.style.display = 'none';
+                    }
+                });
+        }, 300);
+    });
+    // Ẩn gợi ý
+    document.addEventListener('click', function(e) {
+        if (e.target !== input) {
+            suggestionBox.style.display = 'none';
+        }
+    });
 	</script>
 </body>
 </html>

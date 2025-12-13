@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import model.User;
 
 public class DBCon {
-    static String url = "jdbc:mysql://localhost:1433/go_project?useSSL=false&serverTimezone=UTC";
+    static String url = "jdbc:mysql://localhost:3306/go_project?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     static String user = "root";
-    static String password = "16012005";
+    static String password = "13072005";
 
     public static Connection getConnection() throws SQLException {
         try {
