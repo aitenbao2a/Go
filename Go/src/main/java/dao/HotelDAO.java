@@ -12,18 +12,21 @@ public class HotelDAO {
 
 	private Hotel mapResultSetToHotel(ResultSet rs) throws SQLException {
 		Hotel h = new Hotel();
-		h.setHotelId(rs.getInt("hotel_id"));
-		h.setHotelName(rs.getString("hotel_name"));
+		h.setHotelId(rs.getInt("hotelId"));
+		h.setHotelName(rs.getString("hotelName"));
 		h.setDescription(rs.getString("description"));
 		h.setAddress(rs.getString("address"));
 		h.setCity(rs.getString("city"));
 		h.setCountry(rs.getString("country"));
-		h.setStarRating(rs.getInt("star_rating"));
+		h.setStarRating(rs.getInt("starRating"));
 		h.setLatitude(rs.getBigDecimal("latitude"));
 		h.setLongitude(rs.getBigDecimal("longitude"));
 		h.setAmenities(rs.getString("amenities"));
 		h.setImages(rs.getString("images"));
-		h.setCreatedAt(rs.getTimestamp("created_at"));
+		h.setCreatedAt(rs.getTimestamp("createdAt"));
+		h.setAverageRating(rs.getDouble("averageRating"));
+        h.setReviewCount(rs.getInt("reviewCount"));
+        h.setMinPrice(rs.getBigDecimal("minPrice"));
 
 		return h;
 	}
@@ -52,23 +55,23 @@ public class HotelDAO {
 
 	public List<Hotel> searchHotels(String keyword) {
 		List<Hotel> list = new ArrayList<>();
-
-		String sql = "SELECT * FROM Hotel WHERE hotel_name LIKE ? OR city LIKE ? OR address LIKE ? OR description LIKE ?";
+		
+		String sql = "SELECT * FROM Hotel WHERE hotelName LIKE ? OR city LIKE ? OR address LIKE ?";
 
 		try (Connection conn = DBCon.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			String searchPattern = "%" + keyword + "%";
-
 			ps.setString(1, searchPattern);
 			ps.setString(2, searchPattern);
 			ps.setString(3, searchPattern);
 			ps.setString(4, searchPattern);
 
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					list.add(mapResultSetToHotel(rs));
-				}
-			}
+			System.out.println("Đang tìm kiếm với từ khóa: " + searchPattern);
+
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            list.add(mapResultSetToHotel(rs)); // Dùng hàm map cũ của bạn
+	        }
 
 		} catch (Exception e) {
 			e.printStackTrace();
