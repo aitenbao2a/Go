@@ -90,6 +90,7 @@ VALUES
 ('giabao@gmail.com', 'Baocoioioi2016@', 'GiaBao', '0912345678', '1990-05-10', TRUE),
 ('aitenbao2a@gmail.com', '16012005', 'Bob Smith', '0987654321', '1985-12-20', TRUE),
 ('charlie@2aexample.com', 'C#harlie8', 'Charlie Brown', '0901122334', '1992-03-15', TRUE),
+('nongvandi@gmail.com', '13072005', 'NongDi', '0323456789', '2005-07-13', TRUE),
 ('nguyenvana@gmail.com', 'AnA!1995_z', 'Nguyễn Văn A', '0912111004', '1995-01-25', TRUE),
 ('tranvanb@gmail.com', 'BTrA#2024v', 'Trần Văn B', '0903222115', '1988-11-12', TRUE),
 ('lethic@gmail.com', 'CLe$3210vY', 'Lê Thị C', '0989333226', '1998-07-01', TRUE),
@@ -574,4 +575,5 @@ VALUES
 (52, 19, 6, 52, 4, N'Phòng tiêu chuẩn ở Hội An sạch, nhưng không gian hơi chật.', N'Đoàn Quốc Thắng', 'male.png'),
 (53, 20, 9, 53, 5, N'Luxury Villa Phú Quốc là nơi nghỉ dưỡng hoàn hảo nhất.', N'Nguyễn Thanh Trung', 'male.png');
 
+SELECT * FROM Hotel;
 
