@@ -1,41 +1,64 @@
 package util;
 
 import model.User;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
+
 public class SessionUtil {
-    
-    private static final String USER_SESSION_KEY = "currentUser";
-    private static final String USER_ID_KEY = "currentUserId";
 
+    private static final String USER_SESSION_KEY = "user";
+
+    /**
+     * Lưu user vào session
+     */
     public static void setUserSession(HttpServletRequest request, User user) {
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession();
         session.setAttribute(USER_SESSION_KEY, user);
-        session.setAttribute(USER_ID_KEY, user.getUserId()); 
-        session.setMaxInactiveInterval(30 * 60); // Timeout sau 30 phút
-    }
-    public static boolean isLoggedIn(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        return session != null && session.getAttribute(USER_SESSION_KEY) != null;
     }
 
-    public static void clearSession(HttpServletRequest request) {
+    /**
+     * Lấy user từ session
+     */
+    public static User getUserFromSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate();
+            return (User) session.getAttribute(USER_SESSION_KEY);
+        }
+        return null;
+    }
+
+    /**
+     * Kiểm tra user đã đăng nhập chưa
+     */
+    public static boolean isLoggedIn(HttpServletRequest request) {
+        return getUserFromSession(request) != null;
+    }
+
+    /**
+     * Xóa user khỏi session (logout)
+     */
+    public static void clearUserSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.removeAttribute(USER_SESSION_KEY);
+            // Hoặc có thể invalidate toàn bộ session:
+            // session.invalidate();
         }
     }
-    public static int getUserId(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            Integer userId = (Integer) session.getAttribute(USER_ID_KEY);
-            return userId != null ? userId : 0;
-        }
-        return 0;
+
+    /**
+     * Lấy email của user đang đăng nhập
+     */
+    public static String getUserEmail(HttpServletRequest request) {
+        User user = getUserFromSession(request);
+        return user != null ? user.getEmail() : null;
+    }
+
+    /**
+     * Lấy ID của user đang đăng nhập
+     */
+    public static Integer getUserId(HttpServletRequest request) {
+        User user = getUserFromSession(request);
+        return user != null ? user.getUserId() : null;
     }
 }
