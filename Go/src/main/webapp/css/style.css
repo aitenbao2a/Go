@@ -324,11 +324,14 @@ body {
 	scroll-behavior: smooth;
 	scrollbar-width: none;
 }
+.scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
 
 .carousel-container {
 	position: relative;
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .nav-button {

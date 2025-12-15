@@ -13,12 +13,19 @@ import java.util.List;
 @WebServlet("/search") 
 public class SearchServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 
     	request.setCharacterEncoding("UTF-8");
     	
+    	
         String keyword = request.getParameter("keyword"); 
+        System.out.println("Từ khóa nhận được: " + keyword);
         HotelDAO dao = new HotelDAO();
         List<Hotel> list;
         if (keyword != null && !keyword.isEmpty()) {

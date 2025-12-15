@@ -231,86 +231,104 @@
 		<main>
 			<!-- Popular Destinations -->
 			<section class="section">
-				<div class="container">
-					<h2 class="section-title">Điểm đến phổ biến</h2>
-					<div class="section-padding">
-						<div class="carousel-container">
-							<button class="nav-button prev-button"
-								onclick="scrollCarousel('prev')">&lt;</button>
-							<div class="scroll-wrapper" id="destinationScrollWrapper">
-								<div class="destinations-grid">
-									<div class="destination-card"
-										onclick="location.href='search?city=Hồ Chí Minh'">
-										<div class="destination-image">🏙️</div>
-										<div class="destination-info">
-											<div class="destination-name">Hồ Chí Minh</div>
-											<div class="destination-properties">2,847 khách sạn</div>
-										</div>
-									</div>
-									<div class="destination-card"
-										onclick="location.href='search?city=Hồ Chí Minh'">
-										<div class="destination-image">🏙️</div>
-										<div class="destination-info">
-											<div class="destination-name">Hồ Chí Minh</div>
-											<div class="destination-properties">2,847 khách sạn</div>
-										</div>
-									</div>
-									<div class="destination-card"
-										onclick="location.href='search?city=Hồ Chí Minh'">
-										<div class="destination-image">🏙️</div>
-										<div class="destination-info">
-											<div class="destination-name">Hồ Chí Minh</div>
-											<div class="destination-properties">2,847 khách sạn</div>
-										</div>
-									</div>
-									<div class="destination-card"
-										onclick="location.href='search?city=Đà Nẵng'">
-										<div class="destination-image">🏖️</div>
-										<div class="destination-info">
-											<div class="destination-name">Đà Nẵng</div>
-											<div class="destination-properties">1,523 khách sạn</div>
-										</div>
-									</div>
-									<div class="destination-card"
-										onclick="location.href='search?city=Hà Nội'">
-										<div class="destination-image">🏛️</div>
-										<div class="destination-info">
-											<div class="destination-name">Hà Nội</div>
-											<div class="destination-properties">1,892 khách sạn</div>
-										</div>
-									</div>
-									<div class="destination-card"
-										onclick="location.href='search?city=Nha Trang'">
-										<div class="destination-image">🌊</div>
-										<div class="destination-info">
-											<div class="destination-name">Nha Trang</div>
-											<div class="destination-properties">986 khách sạn</div>
-										</div>
-									</div>
-									<div class="destination-card"
-										onclick="location.href='search?city=Vũng Tàu'">
-										<div class="destination-image">🏖️</div>
-										<div class="destination-info">
-											<div class="destination-name">Vũng Tàu</div>
-											<div class="destination-properties">1,200 khách sạn</div>
-										</div>
-									</div>
-									<div class="destination-card"
-										onclick="location.href='search?city=Phú Quốc'">
-										<div class="destination-image">🏝️</div>
-										<div class="destination-info">
-											<div class="destination-name">Phú Quốc</div>
-											<div class="destination-properties">1,150 khách sạn</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<button class="nav-button next-button"
-								onclick="scrollCarousel('next')">&gt;</button>
-						</div>
-					</div>
-				</div>
-			</section>
+    <div class="container">
+        <h2 class="section-title">Điểm đến phổ biến</h2>
+        <div class="section-padding">
+            <div class="carousel-container">
+                <button class="nav-button prev-button" onclick="scrollCarousel('prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="scroll-wrapper" id="destinationScrollWrapper">
+                    <div class="destinations-grid">
+                        
+                        <div class="destination-card" onclick="location.href='search?keyword=Hồ Chí Minh'">
+                            <div class="destination-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?q=80&w=300&h=200&fit=crop" 
+                                     alt="Hồ Chí Minh">
+                            </div>
+                            <div class="destination-info">
+                                <div class="destination-name">Hồ Chí Minh</div>
+                                <div class="destination-properties">2,847 khách sạn</div>
+                            </div>
+                        </div>
+
+                        <div class="destination-card" onclick="location.href='search?keyword=Hà Nội'">
+                            <div class="destination-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1599708153386-52c6f6630a96?q=80&w=300&h=200&fit=crop" 
+                                     alt="Hà Nội">
+                            </div>
+                            <div class="destination-info">
+                                <div class="destination-name">Hà Nội</div>
+                                <div class="destination-properties">1,892 khách sạn</div>
+                            </div>
+                        </div>
+
+                        <div class="destination-card" onclick="location.href='search?keyword=Đà Nẵng'">
+                            <div class="destination-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=300&h=200&fit=crop" 
+                                     alt="Đà Nẵng">
+                            </div>
+                            <div class="destination-info">
+                                <div class="destination-name">Đà Nẵng</div>
+                                <div class="destination-properties">1,523 khách sạn</div>
+                            </div>
+                        </div>
+
+                        <div class="destination-card" onclick="location.href='search?keyword=Đà Lạt'">
+                            <div class="destination-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1626013628626-d62153549007?q=80&w=300&h=200&fit=crop" 
+                                     alt="Đà Lạt">
+                            </div>
+                            <div class="destination-info">
+                                <div class="destination-name">Đà Lạt</div>
+                                <div class="destination-properties">1,100 khách sạn</div>
+                            </div>
+                        </div>
+
+                        <div class="destination-card" onclick="location.href='search?keyword=Nha Trang'">
+                            <div class="destination-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1563273941-8316315d0711?q=80&w=300&h=200&fit=crop" 
+                                     alt="Nha Trang">
+                            </div>
+                            <div class="destination-info">
+                                <div class="destination-name">Nha Trang</div>
+                                <div class="destination-properties">986 khách sạn</div>
+                            </div>
+                        </div>
+
+                        <div class="destination-card" onclick="location.href='search?keyword=Vũng Tàu'">
+                            <div class="destination-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1623596700814-7276d333830e?q=80&w=300&h=200&fit=crop" 
+                                     alt="Vũng Tàu">
+                            </div>
+                            <div class="destination-info">
+                                <div class="destination-name">Vũng Tàu</div>
+                                <div class="destination-properties">1,200 khách sạn</div>
+                            </div>
+                        </div>
+                        
+                        <div class="destination-card" onclick="location.href='search?keyword=Phú Quốc'">
+                            <div class="destination-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1590435987157-586b02661877?q=80&w=300&h=200&fit=crop" 
+                                     alt="Phú Quốc">
+                            </div>
+                            <div class="destination-info">
+                                <div class="destination-name">Phú Quốc</div>
+                                <div class="destination-properties">1,150 khách sạn</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <button class="nav-button next-button" onclick="scrollCarousel('next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
 			<!-- Featured Hotels -->
 			<section class="section"

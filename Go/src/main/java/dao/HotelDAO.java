@@ -70,12 +70,27 @@ public class HotelDAO {
 
 	        ResultSet rs = ps.executeQuery();
 	        while (rs.next()) {
-	            list.add(mapResultSetToHotel(rs)); // Dùng hàm map cũ của bạn
+	            list.add(mapResultSetToHotel(rs));
 	        }
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	public Hotel getHotelById(int id) {
+	    String sql = "SELECT * FROM Hotel WHERE hotelId = ?";
+	    try (Connection conn = DBCon.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ps.setInt(1, id);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return mapResultSetToHotel(rs);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
 }

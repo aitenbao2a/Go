@@ -816,7 +816,7 @@
 										maxFractionDigits="0" />
 								</span>
 							</div>
-							<a href="booking.jsp?hotelId=${h.hotelId}" class="btn-detail">Xem
+							<a href="hotel-detail?id=${h.hotelId}" class="btn-detail">Xem
 								phòng <i class="fas fa-arrow-right"></i>
 							</a>
 						</div>
