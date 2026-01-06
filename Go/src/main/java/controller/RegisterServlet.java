@@ -85,7 +85,7 @@ public class RegisterServlet extends HttpServlet {
 
         if (userDAO.createUser(newUser)) {
             SessionUtil.setUserSession(request, newUser);
-            response.sendRedirect("login_error_login.jsp");
+            response.sendRedirect("view/login_error_login.jsp");
         } else {
             request.setAttribute("generalError", "Đã xảy ra lỗi, vui lòng thử lại");
             request.getRequestDispatcher("view/login_error_register.jsp").forward(request, response);

@@ -14,7 +14,7 @@ import java.util.Date;
 public class UserDAO {
 
 	public User findByEmail(String email) {
-		String sql = "SELECT email, passwordHash, fullName FROM User WHERE email = ?";
+		String sql = "SELECT email, passwordHash, fullName, role FROM User WHERE email = ?";
 		User user = null;
 
 		try (Connection conn = DBCon.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -27,6 +27,7 @@ public class UserDAO {
 					user.setEmail(rs.getString("email"));
 					user.setPasswordHash(rs.getString("passwordHash"));
 					user.setFullName(rs.getString("fullName"));
+					user.setRole(rs.getString("role"));
 				}
 			}
 
@@ -56,8 +57,8 @@ public class UserDAO {
 	}
 
 	public boolean createUser(User user) {
-		String sql = "INSERT INTO User (email, passwordHash, fullName, phone, dateOfBirth, isActive) "
-				+ "VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO User (email, passwordHash, fullName, phone, dateOfBirth, isActive, role) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -68,6 +69,7 @@ public class UserDAO {
 			ps.setString(4, null);
 			ps.setString(5, null);
 			ps.setBoolean(6, true);
+			ps.setString(7, "REGISTERED");
 
 			int affectedRows = ps.executeUpdate();
 

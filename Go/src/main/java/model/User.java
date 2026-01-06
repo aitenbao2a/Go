@@ -13,6 +13,7 @@ public class User {
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 	private boolean isActive;
+	private String role;
 
 	public User() {
 	}
@@ -100,5 +101,13 @@ public class User {
 	public String toString() {
 		return "User{" + "userId=" + userId + ", email='" + email + '\'' + ", fullName='" + fullName + '\''
 				+ ", phone='" + phone + '\'' + '}';
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

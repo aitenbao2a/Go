@@ -7,38 +7,41 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/search") 
+@WebServlet("/search")
 public class SearchServlet extends HttpServlet {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-    	request.setCharacterEncoding("UTF-8");
-    	
-    	
-        String keyword = request.getParameter("keyword"); 
-        System.out.println("Từ khóa nhận được: " + keyword);
-        HotelDAO dao = new HotelDAO();
-        List<Hotel> list;
-        if (keyword != null && !keyword.isEmpty()) {
-            // Nếu có từ khóa -> Tìm kiếm
-             list = dao.searchHotels(keyword); 
-        } else {
-            // Nếu không nhập gì -> Lấy tất cả
-            list = dao.getAllHotels();
+        request.setCharacterEncoding("UTF-8");
+
+        String keyword = request.getParameter("keyword");
+        if (keyword != null) {
+            keyword = keyword.trim();
         }
-        // 3. Đẩy dữ liệu sang JSP để hiển thị
-        request.setAttribute("listHotels", list);
+
+        System.out.println("Keyword nhận được: " + keyword);
+
+        HotelDAO dao = new HotelDAO();
+        List<Hotel> hotels;
+
+        if (keyword == null || keyword.isEmpty()) {
+            hotels = dao.getAllHotels();
+        } else {
+            hotels = dao.searchHotels(keyword);
+        }
+
+        request.setAttribute("listHotels", hotels);
         request.setAttribute("searchKeyword", keyword);
-        // 4. Chuyển hướng về trang index.jsp
-        request.getRequestDispatcher("view/hotel_search.jsp").forward(request, response);
+
+        request.getRequestDispatcher("view/hotel_search.jsp")
+               .forward(request, response);
     }
 }

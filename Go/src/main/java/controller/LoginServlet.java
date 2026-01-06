@@ -73,6 +73,18 @@ public class LoginServlet extends HttpServlet {
         // ===== LOGIN SUCCESS =====
         SessionUtil.setUserSession(request, user);
 
-        response.sendRedirect(request.getContextPath() + "/view/home.jsp");
-    }
+      String role = user.getRole();
+      if (role == null) {
+          response.sendRedirect(request.getContextPath() + "/view/home.jsp");
+          return;
+      }
+
+      if ("ADMIN".equalsIgnoreCase(role)) {
+          response.sendRedirect(request.getContextPath() + "/view/admin.jsp");
+      } else if ("REGISTERED".equalsIgnoreCase(role)) {
+          response.sendRedirect(request.getContextPath() + "/view/home.jsp");
+      } else {
+          response.sendRedirect(request.getContextPath() + "/view/home.jsp");
+      }
+  }
 }

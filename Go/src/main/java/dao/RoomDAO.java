@@ -33,4 +33,9 @@ public class RoomDAO {
         }
         return list;
     }
+
+	public Room getRoomById(int roomId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -35,7 +35,7 @@ public class HotelDetailServlet extends HttpServlet {
                 request.setAttribute("listRooms", rooms);
                 request.getRequestDispatcher("view/hotel_detail.jsp").forward(request, response);
             } else {
-                response.sendRedirect("index.jsp"); // Không tìm thấy thì về trang chủ
+                response.sendRedirect("index.jsp"); 
             }
             
         } catch (Exception e) {
