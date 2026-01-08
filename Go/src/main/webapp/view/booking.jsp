@@ -1,16 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn"%>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đặt phòng - ${hotel.hotelName}</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
 body {
     background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .booking-container {
@@ -32,7 +38,6 @@ body {
     font-weight: 800;
     color: #1a202c;
     margin: 0 0 8px 0;
-    letter-spacing: -0.02em;
 }
 
 .breadcrumb {
@@ -46,11 +51,6 @@ body {
 .breadcrumb a {
     color: #6366f1;
     text-decoration: none;
-    transition: color 0.3s;
-}
-
-.breadcrumb a:hover {
-    color: #4f46e5;
 }
 
 .booking-grid {
@@ -65,7 +65,6 @@ body {
     padding: 36px;
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    animation: slideUp 0.6s ease;
 }
 
 .booking-summary {
@@ -75,7 +74,6 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 100px;
-    animation: slideUp 0.6s ease 0.2s both;
 }
 
 .form-section {
@@ -143,6 +141,7 @@ body {
     font-size: 1rem;
     transition: all 0.3s ease;
     background: #fafbfc;
+    box-sizing: border-box;
 }
 
 .form-textarea {
@@ -158,11 +157,6 @@ body {
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
-.form-input:hover, .form-select:hover, .form-textarea:hover {
-    border-color: #d1d5db;
-}
-
-/* Booking Summary Styles */
 .hotel-info {
     margin-bottom: 24px;
     padding-bottom: 24px;
@@ -198,6 +192,14 @@ body {
     color: #1a202c;
 }
 
+.room-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
 .detail-row {
     display: flex;
     align-items: center;
@@ -205,14 +207,6 @@ body {
     font-size: 0.95rem;
     color: #4b5563;
     margin-bottom: 10px;
-}
-
-.detail-row:last-child {
-    margin-bottom: 0;
-}
-
-.detail-icon {
-    font-size: 1.1rem;
 }
 
 .price-breakdown {
@@ -240,16 +234,6 @@ body {
     color: #6366f1;
 }
 
-.summary-label {
-    font-weight: 500;
-}
-
-.summary-amount {
-    font-weight: 600;
-    color: #1a202c;
-}
-
-/* Checkbox Styling */
 .checkbox-wrapper {
     display: flex;
     align-items: flex-start;
@@ -277,11 +261,6 @@ body {
     font-weight: 600;
 }
 
-.checkbox-label a:hover {
-    text-decoration: underline;
-}
-
-/* Submit Button */
 .btn-submit {
     width: 100%;
     padding: 18px;
@@ -292,40 +271,15 @@ body {
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s;
     box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-submit::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-}
-
-.btn-submit:hover::before {
-    width: 400px;
-    height: 400px;
 }
 
 .btn-submit:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
 }
 
-.btn-submit:active {
-    transform: translateY(-1px);
-}
-
-/* Error Message */
 .error-message {
     background: #fee2e2;
     color: #991b1b;
@@ -333,40 +287,12 @@ body {
     border-radius: 12px;
     margin-bottom: 24px;
     border-left: 4px solid #ef4444;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    animation: shake 0.5s ease;
 }
 
-.error-icon {
-    font-size: 1.5rem;
-}
-
-/* Animations */
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-}
-
-/* Responsive */
 @media (max-width: 1024px) {
     .booking-grid {
         grid-template-columns: 1fr;
     }
-    
     .booking-summary {
         position: static;
         order: -1;
@@ -374,33 +300,8 @@ body {
 }
 
 @media (max-width: 768px) {
-    .booking-container {
-        padding: 0 16px;
-        margin: 20px auto;
-    }
-    
-    .page-header {
-        padding: 20px;
-    }
-    
-    .page-header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .booking-form {
-        padding: 24px;
-    }
-    
-    .booking-summary {
-        padding: 20px;
-    }
-    
     .form-row {
         grid-template-columns: 1fr;
-    }
-    
-    .section-title {
-        font-size: 1.2rem;
     }
 }
 </style>
@@ -411,7 +312,6 @@ body {
     <main style="min-height: 100vh; padding: 40px 0;">
         <div class="booking-container">
             
-            <!-- Page Header -->
             <div class="page-header">
                 <div class="breadcrumb">
                     <a href="${pageContext.request.contextPath}/">Trang chủ</a>
@@ -423,10 +323,9 @@ body {
                 <h1>Hoàn tất đặt phòng</h1>
             </div>
 
-            <!-- Error Message -->
             <c:if test="${not empty error}">
                 <div class="error-message">
-                    <span class="error-icon">⚠️</span>
+                    <i class="fas fa-exclamation-triangle"></i>
                     <span>${error}</span>
                 </div>
             </c:if>
@@ -434,13 +333,48 @@ body {
             <div class="booking-grid">
                 <!-- Booking Form -->
                 <div class="booking-form">
-                    <form action="${pageContext.request.contextPath}/booking" method="post">
+                    <form action="${pageContext.request.contextPath}/booking" method="post" id="bookingForm">
                         <input type="hidden" name="roomId" value="${room.roomId}">
                         <input type="hidden" name="hotelId" value="${hotel.hotelId}">
-                        <input type="hidden" name="checkIn" value="${checkIn}">
-                        <input type="hidden" name="checkOut" value="${checkOut}">
-                        <input type="hidden" name="nights" value="${nights}">
-                        <input type="hidden" name="numberOfRooms" value="${numberOfRooms}">
+                        <input type="hidden" id="pricePerNight" value="${room.pricePerNight}">
+
+                        <!-- Booking Dates Section -->
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <span class="section-icon">📅</span>
+                                Thông tin đặt phòng
+                            </h2>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Ngày nhận phòng<span class="required">*</span>
+                                    </label>
+                                    <input type="date" name="checkIn" id="checkIn" class="form-input"
+                                        value="${checkIn}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Ngày trả phòng<span class="required">*</span>
+                                    </label>
+                                    <input type="date" name="checkOut" id="checkOut" class="form-input"
+                                        value="${checkOut}" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Số lượng phòng<span class="required">*</span>
+                                </label>
+                                <select name="numberOfRooms" id="numberOfRooms" class="form-select" required>
+                                    <option value="1" ${numberOfRooms == 1 ? 'selected' : ''}>1 phòng</option>
+                                    <option value="2" ${numberOfRooms == 2 ? 'selected' : ''}>2 phòng</option>
+                                    <option value="3" ${numberOfRooms == 3 ? 'selected' : ''}>3 phòng</option>
+                                    <option value="4" ${numberOfRooms == 4 ? 'selected' : ''}>4 phòng</option>
+                                    <option value="5" ${numberOfRooms == 5 ? 'selected' : ''}>5 phòng</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <!-- Guest Information -->
                         <div class="form-section">
@@ -455,16 +389,14 @@ body {
                                         Họ và tên<span class="required">*</span>
                                     </label>
                                     <input type="text" name="guestName" class="form-input"
-                                        value="${user.fullName}" required 
-                                        placeholder="Nhập họ tên đầy đủ">
+                                        value="${user.fullName}" required placeholder="Nhập họ tên đầy đủ">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">
                                         Email<span class="required">*</span>
                                     </label>
                                     <input type="email" name="guestEmail" class="form-input"
-                                        value="${user.email}" required 
-                                        placeholder="email@example.com">
+                                        value="${user.email}" required placeholder="email@example.com">
                                 </div>
                             </div>
 
@@ -474,8 +406,7 @@ body {
                                         Số điện thoại<span class="required">*</span>
                                     </label>
                                     <input type="tel" name="guestPhone" class="form-input"
-                                        value="${user.phone}" required 
-                                        placeholder="0912 345 678">
+                                        value="${user.phone}" required placeholder="0912 345 678">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">
@@ -508,20 +439,20 @@ body {
                             </div>
                         </div>
 
-                        <!-- Terms and Conditions -->
+                        <!-- Terms -->
                         <div class="form-section">
                             <div class="checkbox-wrapper">
                                 <input type="checkbox" id="terms" required>
                                 <label for="terms" class="checkbox-label">
                                     Tôi đã đọc và đồng ý với 
                                     <a href="#" target="_blank">Điều khoản sử dụng</a> và 
-                                    <a href="#" target="_blank">Chính sách bảo mật</a> của Go Travel
+                                    <a href="#" target="_blank">Chính sách bảo mật</a>
                                 </label>
                             </div>
                         </div>
 
                         <button type="submit" class="btn-submit">
-                            Xác nhận đặt phòng
+                            Tiếp tục thanh toán
                         </button>
                     </form>
                 </div>
@@ -531,50 +462,65 @@ body {
                     <div class="hotel-info">
                         <div class="hotel-name">${hotel.hotelName}</div>
                         <div class="hotel-address">
-                            <span>📍</span>
+                            <i class="fas fa-map-marker-alt"></i>
                             <span>${hotel.address}, ${hotel.city}</span>
+                             <div class="hotel-name">${room.roomType}</div>
                         </div>
                     </div>
 
                     <div class="room-details">
+                        <!-- Hiển thị ảnh phòng -->
+                        <c:set var="roomImgs" value="${fn:split(room.images, ',')}" />
+                        <c:if test="${not empty roomImgs[0]}">
+                            <img src="${roomImgs[0]}" class="room-image" alt="${room.roomType}">
+                        </c:if>
+                        
                         <div class="room-type">${room.roomType}</div>
+                        
                         <div class="detail-row">
-                            <span class="detail-icon">📅</span>
-                            <span>Nhận phòng: <strong>${checkIn}</strong></span>
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Nhận phòng: <strong id="displayCheckIn">${checkIn}</strong></span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-icon">📅</span>
-                            <span>Trả phòng: <strong>${checkOut}</strong></span>
+                            <i class="fas fa-calendar-times"></i>
+                            <span>Trả phòng: <strong id="displayCheckOut">${checkOut}</strong></span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-icon">🌙</span>
-                            <span><strong>${nights}</strong> đêm</span>
+                            <i class="fas fa-moon"></i>
+                            <span><strong id="displayNights">${nights}</strong> đêm</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-icon">🚪</span>
-                            <span><strong>${numberOfRooms}</strong> phòng</span>
+                            <i class="fas fa-door-open"></i>
+                            <span><strong id="displayRooms">${numberOfRooms}</strong> phòng</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-users"></i>
+                            <span>Tối đa ${room.capacity} người/phòng</span>
                         </div>
                     </div>
 
                     <div class="price-breakdown">
                         <div class="summary-row">
-                            <span class="summary-label">
-                                <fmt:formatNumber value="${room.pricePerNight}" pattern="#,###" />₫ 
-                                × ${nights} đêm × ${numberOfRooms} phòng
+                            <span id="priceLabel">
+                                <span id="pricePerNightDisplay">
+                                    <fmt:formatNumber value="${room.pricePerNight}" pattern="#,###" />
+                                </span>₫ 
+                                × <span id="nightsDisplay">${nights}</span> đêm 
+                                × <span id="roomsDisplay">${numberOfRooms}</span> phòng
                             </span>
-                            <span class="summary-amount">
+                            <span id="subtotalAmount">
                                 <fmt:formatNumber value="${room.pricePerNight * nights * numberOfRooms}" pattern="#,###" />₫
                             </span>
                         </div>
                         <div class="summary-row">
-                            <span class="summary-label">Thuế và phí dịch vụ (10%)</span>
-                            <span class="summary-amount">
+                            <span>Thuế và phí dịch vụ (10%)</span>
+                            <span id="taxAmount">
                                 <fmt:formatNumber value="${(room.pricePerNight * nights * numberOfRooms) * 0.1}" pattern="#,###" />₫
                             </span>
                         </div>
                         <div class="summary-row total">
                             <span>Tổng thanh toán</span>
-                            <span class="amount">
+                            <span class="amount" id="totalAmount">
                                 <fmt:formatNumber value="${(room.pricePerNight * nights * numberOfRooms) * 1.1}" pattern="#,###" />₫
                             </span>
                         </div>
@@ -582,7 +528,7 @@ body {
 
                     <div style="padding: 16px; background: #f0fdf4; border-radius: 12px; border: 2px solid #86efac;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                            <span style="font-size: 1.2rem;">✅</span>
+                            <i class="fas fa-check-circle" style="font-size: 1.2rem; color: #166534;"></i>
                             <span style="font-weight: 700; color: #166534;">Miễn phí hủy phòng</span>
                         </div>
                         <div style="font-size: 0.85rem; color: #166534;">
@@ -595,5 +541,81 @@ body {
     </main>
 
     <jsp:include page="footer.jsp" />
+
+    <script>
+        // Lấy giá từ hidden input
+        const priceInput = document.getElementById('pricePerNight');
+        const pricePerNightValue = priceInput && priceInput.value ? parseFloat(priceInput.value) : 0;
+        
+        console.log("Price value:", pricePerNightValue);
+        
+        // Set minimum date (hôm nay)
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('checkIn').setAttribute('min', today);
+        
+        // Update check-out minimum khi check-in thay đổi
+        document.getElementById('checkIn').addEventListener('change', function() {
+            const checkInDate = new Date(this.value);
+            checkInDate.setDate(checkInDate.getDate() + 1);
+            const minCheckOut = checkInDate.toISOString().split('T')[0];
+            document.getElementById('checkOut').setAttribute('min', minCheckOut);
+            
+            if (document.getElementById('checkOut').value <= this.value) {
+                document.getElementById('checkOut').value = minCheckOut;
+            }
+            calculatePrice();
+        });
+
+        document.getElementById('checkOut').addEventListener('change', calculatePrice);
+        document.getElementById('numberOfRooms').addEventListener('change', calculatePrice);
+
+        function formatNumber(num) {
+            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function calculatePrice() {
+            const checkIn = document.getElementById('checkIn').value;
+            const checkOut = document.getElementById('checkOut').value;
+            const numberOfRooms = parseInt(document.getElementById('numberOfRooms').value) || 1;
+
+            if (!checkIn || !checkOut) {
+                return;
+            }
+
+            const checkInDate = new Date(checkIn);
+            const checkOutDate = new Date(checkOut);
+            const timeDiff = checkOutDate - checkInDate;
+            const nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+            if (nights <= 0) {
+                alert('Ngày trả phòng phải sau ngày nhận phòng!');
+                return;
+            }
+
+            // Update display
+            document.getElementById('displayCheckIn').textContent = checkIn;
+            document.getElementById('displayCheckOut').textContent = checkOut;
+            document.getElementById('displayNights').textContent = nights;
+            document.getElementById('displayRooms').textContent = numberOfRooms;
+            
+            document.getElementById('nightsDisplay').textContent = nights;
+            document.getElementById('roomsDisplay').textContent = numberOfRooms;
+
+            // Tính giá
+            const subtotal = pricePerNightValue * nights * numberOfRooms;
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            // Update amounts
+            document.getElementById('subtotalAmount').textContent = formatNumber(subtotal) + '₫';
+            document.getElementById('taxAmount').textContent = formatNumber(tax) + '₫';
+            document.getElementById('totalAmount').textContent = formatNumber(total) + '₫';
+        }
+
+        // Khởi tạo khi load trang
+        window.addEventListener('load', function() {
+            calculatePrice();
+        });
+    </script>
 </body>
 </html>

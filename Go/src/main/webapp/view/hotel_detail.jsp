@@ -8,7 +8,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>${hotel.hotelName}-Chi tiết</title>
+<title>${hotel.hotelName}-Chitiết</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/style.css">
 <link rel="stylesheet"
@@ -149,7 +149,7 @@
 </head>
 <body>
 
-	<jsp:include page="header.jsp" />
+	<jsp:include page="headerHome.jsp" />
 
 	<div class="detail-container">
 		<div class="hotel-header-detail">
@@ -225,8 +225,9 @@
 									value="${room.pricePerNight}" type="currency"
 									currencySymbol="₫" />
 							</span> <a
-								href="view/booking.jsp?hotelId=${hotel.hotelId}&roomId=${room.roomId}"
+								href="${pageContext.request.contextPath}/booking?hotelId=${hotel.hotelId}&roomId=${room.roomId}"
 								class="btn-book"> Đặt ngay </a>
+
 						</div>
 					</div>
 				</div>
