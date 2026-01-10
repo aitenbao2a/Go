@@ -32,33 +32,46 @@ CREATE TABLE Hotel (
     reviewCount INT DEFAULT 0,
     minPrice DECIMAL(10,2)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE Room (
-    roomId INT PRIMARY KEY AUTO_INCREMENT,
-    hotelId INT NOT NULL,
-    roomType VARCHAR(100) NOT NULL,
-    description TEXT,
-    capacity INT NOT NULL,
-    pricePerNight DECIMAL(10,2) NOT NULL,
-    totalRooms INT NOT NULL,
-    availableRooms INT NOT NULL,
-    amenities TEXT,
-    images TEXT,
-    CONSTRAINT fk_hotel_room FOREIGN KEY (hotelId) REFERENCES Hotel(hotelId)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE Booking (
-    bookingId INT PRIMARY KEY AUTO_INCREMENT,
-    userId INT NOT NULL,
-    hotelId INT NOT NULL,
-    roomId INT NOT NULL,
-    checkInDate DATE NOT NULL,
-    checkOutDate DATE NOT NULL,
-    totalAmount DECIMAL(10,2) NOT NULL,
-    bookingStatus VARCHAR(50) DEFAULT 'Pending',
-    createdAt DATETIME DEFAULT NOW(),
-    CONSTRAINT fk_user_booking FOREIGN KEY (userId) REFERENCES User(userId),
-    CONSTRAINT fk_hotel_booking FOREIGN KEY (hotelId) REFERENCES Hotel(hotelId),
-    CONSTRAINT fk_room_booking FOREIGN KEY (roomId) REFERENCES Room(roomId)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+	CREATE TABLE Room (
+		roomId INT PRIMARY KEY AUTO_INCREMENT,
+		hotelId INT NOT NULL,
+		roomType VARCHAR(100) NOT NULL,
+		description TEXT,
+		capacity INT NOT NULL,
+		pricePerNight DECIMAL(10,2) NOT NULL,
+		totalRooms INT NOT NULL,
+		availableRooms INT NOT NULL,
+		amenities TEXT,
+		images TEXT,
+		CONSTRAINT fk_hotel_room FOREIGN KEY (hotelId) REFERENCES Hotel(hotelId)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    
+    select * from booking;
+	CREATE TABLE Booking (
+		bookingId INT PRIMARY KEY AUTO_INCREMENT,
+		userId INT NOT NULL,
+		hotelId INT NOT NULL,
+		roomId INT NOT NULL,
+		checkInDate DATE NOT NULL,
+		checkOutDate DATE NOT NULL,
+		numberOfRooms INT NOT NULL,
+		numberOfGuests INT NOT NULL,
+		guestName VARCHAR(100) NOT NULL,
+		guestEmail VARCHAR(100) NOT NULL,
+		guestPhone VARCHAR(20) NOT NULL,
+		specialRequests TEXT,
+		totalAmount DECIMAL(10,2) NOT NULL,
+		bookingStatus VARCHAR(50) DEFAULT 'Pending',
+		createdAt DATETIME DEFAULT NOW(),
+		paymentMethod VARCHAR(50),
+		paymentStatus VARCHAR(50) DEFAULT 'Pending',
+		CONSTRAINT fk_user_booking 
+			FOREIGN KEY (userId) REFERENCES User(userId),
+		CONSTRAINT fk_hotel_booking 
+			FOREIGN KEY (hotelId) REFERENCES Hotel(hotelId),
+		CONSTRAINT fk_room_booking 
+			FOREIGN KEY (roomId) REFERENCES Room(roomId)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE Payment (
     paymentId INT PRIMARY KEY AUTO_INCREMENT,
     bookingId INT NOT NULL,
@@ -169,306 +182,241 @@ VALUES
 
 INSERT INTO Room (roomId, hotelId, roomType, description, capacity, pricePerNight, totalRooms, availableRooms, amenities, images)
 VALUES
--- HOTEL ID 1: Grand Palace (USA/Miami)
-(1, 1, 'Single', 'Single room with balcony', 1, 220.00, 10, 10, 'WiFi,TV', 'room1a.jpg,room1b.jpg'),
-(2, 1, 'Double', 'Double room with sea view', 2, 300.00, 5, 5, 'WiFi,TV,Balcony', 'room2a.jpg,room2b.jpg'),
-(6, 1, 'Executive Suite', N'Phòng Suite điều hành, có phòng khách riêng', 3, 550.00, 3, 2, 'WiFi,Jacuzzi,DiningArea,Bar', 'room6a.jpg,room6b.jpg'),
-(16, 1, 'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 380.00, 10, 10, 'WiFi,Balcony,Seaview', 'room16a.jpg,room16b.jpg'),
-(26, 1, 'Single Economy', N'Phòng đơn tiết kiệm', 1, 130.00, 10, 10, 'WiFi,AC', 'room26a.jpg,room26b.jpg'),
-(36, 1, 'Deluxe King', N'Phòng King Deluxe', 2, 400.00, 8, 6, 'WiFi,Balcony,CityView', 'room36a.jpg,room36b.jpg'),
-(46, 1, 'Superior Double', N'Phòng Double cao cấp, tầm nhìn ra biển', 2, 420.00, 10, 8, 'WiFi,TV,Balcony,Seaview', 'room46a.jpg,room46b.jpg'),
-(56, 1, 'Triple Room', N'Phòng 3 người lớn', 3, 390.00, 10, 10, 'WiFi,ThreeBeds', 'room56a.jpg,room56b.jpg'),
-(66, 1, 'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 250.00, 20, 19, 'WiFi,AC', 'room66a.jpg,room66b.jpg'),
-(76, 1, 'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 350.00, 15, 15, 'WiFi,Balcony,CityView', 'room76a.jpg,room76b.jpg'),
-(86, 1, 'Executive Double', N'Phòng điều hành 1 giường đôi', 2, 490.00, 5, 4, 'LoungeAccess,PremiumAmenities', 'room86a.jpg,room86b.jpg'),
+(1, 1, 'Single', 'Single room with balcony', 1, 220.00, 10, 10, 'WiFi,TV', 'database/images/miniRoom/room1a.jpg,database/images/miniRoom/room1b.jpg,database/images/miniRoom/room1c.jpg,database/images/miniRoom/room1d.jpg,database/images/miniRoom/room1e.jpg'),
+(2, 1, 'Double', 'Double room with sea view', 2, 300.00, 5, 5, 'WiFi,TV,Balcony', 'database/images/miniRoom/room2a.jpg,database/images/miniRoom/room2b.jpg,database/images/miniRoom/room2c.jpg,database/images/miniRoom/room2d.jpg,database/images/miniRoom/room2e.jpg'),
+(6, 1, 'Executive Suite', N'Phòng Suite điều hành, có phòng khách riêng', 3, 550.00, 3, 2, 'WiFi,Jacuzzi,DiningArea,Bar', 'database/images/miniRoom/room6a.jpg,database/images/miniRoom/room6b.jpg,database/images/miniRoom/room6c.jpg,database/images/miniRoom/room6d.jpg,database/images/miniRoom/room6e.jpg'),
+(16, 1, 'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 380.00, 10, 10, 'WiFi,Balcony,Seaview', 'database/images/miniRoom/room16a.jpg,database/images/miniRoom/room16b.jpg,database/images/miniRoom/room16c.jpg,database/images/miniRoom/room16d.jpg,database/images/miniRoom/room16e.jpg'),
+(26, 1, 'Single Economy', N'Phòng đơn tiết kiệm', 1, 130.00, 10, 10, 'WiFi,AC', 'database/images/miniRoom/room26a.jpg,database/images/miniRoom/room26b.jpg,database/images/miniRoom/room26c.jpg,database/images/miniRoom/room26d.jpg,database/images/miniRoom/room26e.jpg'),
+(36, 1, 'Deluxe King', N'Phòng King Deluxe', 2, 400.00, 8, 6, 'WiFi,Balcony,CityView', 'database/images/miniRoom/room36a.jpg,database/images/miniRoom/room36b.jpg,database/images/miniRoom/room36c.jpg,database/images/miniRoom/room36d.jpg,database/images/miniRoom/room36e.jpg'),
+(46, 1, 'Superior Double', N'Phòng Double cao cấp, tầm nhìn ra biển', 2, 420.00, 10, 8, 'WiFi,TV,Balcony,Seaview', 'database/images/miniRoom/room46a.jpg,database/images/miniRoom/room46b.jpg,database/images/miniRoom/room46c.jpg,database/images/miniRoom/room46d.jpg,database/images/miniRoom/room46e.jpg'),
+(56, 1, 'Triple Room', N'Phòng 3 người lớn', 3, 390.00, 10, 10, 'WiFi,ThreeBeds', 'database/images/miniRoom/room56a.jpg,database/images/miniRoom/room56b.jpg,database/images/miniRoom/room56c.jpg,database/images/miniRoom/room56d.jpg,database/images/miniRoom/room56e.jpg'),
+(66, 1, 'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 250.00, 20, 19, 'WiFi,AC', 'database/images/miniRoom/room66a.jpg,database/images/miniRoom/room66b.jpg,database/images/miniRoom/room66c.jpg,database/images/miniRoom/room66d.jpg,database/images/miniRoom/room66e.jpg'),
+(76, 1, 'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 350.00, 15, 15, 'WiFi,Balcony,CityView', 'database/images/miniRoom/room76a.jpg,database/images/miniRoom/room76b.jpg,database/images/miniRoom/room76c.jpg,database/images/miniRoom/room76d.jpg,database/images/miniRoom/room76e.jpg'),
+(86, 1, 'Executive Double', N'Phòng điều hành 1 giường đôi', 2, 490.00, 5, 4, 'LoungeAccess,PremiumAmenities', 'database/images/miniRoom/room86a.jpg,database/images/miniRoom/room86b.jpg,database/images/miniRoom/room86c.jpg,database/images/miniRoom/room86d.jpg,database/images/miniRoom/room86e.jpg'),
 
--- HOTEL ID 2: City Inn (USA/New York)
-(3, 2, 'Standard', 'Standard room in city center', 2, 130.00, 8, 8, 'WiFi,TV', 'room3a.jpg,room3b.jpg'),
-(12, 2, 'Superior Twin', N'Phòng Twin cao cấp, tầm nhìn đẹp', 2, 210.00, 18, 18, 'WiFi,Minibar,Desk', 'room12a.jpg,room12b.jpg'),
-(22, 2, 'Business Class', N'Phòng dành cho khách công tác', 1, 195.00, 12, 12, 'HighSpeedWiFi,LargeDesk', 'room22a.jpg,room22b.jpg'),
-(32, 2, 'Executive Double', N'Phòng điều hành 1 giường đôi', 2, 350.00, 6, 6, 'LoungeAccess,PremiumAmenities', 'room32a.jpg,room32b.jpg'),
-(42, 2, 'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 140.00, 15, 15, 'WiFi,TV', 'room42a.jpg,room42b.jpg'),
-(52, 2, 'Junior Suite', N'Phòng Suite nhỏ, khu vực sinh hoạt riêng', 2, 380.00, 7, 7, 'WiFi,MiniLounge', 'room52a.jpg,room52b.jpg'),
-(62, 2, 'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 155.00, 20, 18, 'WiFi,TV', 'room62a.jpg,room62b.jpg'),
-(72, 2, 'Deluxe Double', N'Phòng Deluxe 1 giường đôi', 2, 290.00, 10, 9, 'WiFi,Balcony', 'room72a.jpg,room72b.jpg'),
-(82, 2, 'Superior Twin', N'Phòng Twin cao cấp', 2, 235.00, 15, 15, 'WiFi,Minibar,Desk', 'room82a.jpg,room82b.jpg'),
-(92, 2, 'Triple Room', N'Phòng 3 người', 3, 280.00, 10, 10, 'WiFi,ThreeBeds', 'room92a.jpg,room92b.jpg'),
+(3, 2, 'Standard', 'Standard room in city center', 2, 130.00, 8, 8, 'WiFi,TV', 'database/images/miniRoom/room3a.jpg,database/images/miniRoom/room3b.jpg,database/images/miniRoom/room3c.jpg,database/images/miniRoom/room3d.jpg,database/images/miniRoom/room3e.jpg'),
+(12, 2, 'Superior Twin', N'Phòng Twin cao cấp, tầm nhìn đẹp', 2, 210.00, 18, 18, 'WiFi,Minibar,Desk', 'database/images/miniRoom/room12a.jpg,database/images/miniRoom/room12b.jpg,database/images/miniRoom/room12c.jpg,database/images/miniRoom/room12d.jpg,database/images/miniRoom/room12e.jpg'),
+(22, 2, 'Business Class', N'Phòng dành cho khách công tác', 1, 195.00, 12, 12, 'HighSpeedWiFi,LargeDesk', 'database/images/miniRoom/room22a.jpg,database/images/miniRoom/room22b.jpg,database/images/miniRoom/room22c.jpg,database/images/miniRoom/room22d.jpg,database/images/miniRoom/room22e.jpg'),
+(32, 2, 'Executive Double', N'Phòng điều hành 1 giường đôi', 2, 350.00, 6, 6, 'LoungeAccess,PremiumAmenities', 'database/images/miniRoom/room32a.jpg,database/images/miniRoom/room32b.jpg,database/images/miniRoom/room32c.jpg,database/images/miniRoom/room32d.jpg,database/images/miniRoom/room32e.jpg'),
+(42, 2, 'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 140.00, 15, 15, 'WiFi,TV', 'database/images/miniRoom/room42a.jpg,database/images/miniRoom/room42b.jpg,database/images/miniRoom/room42c.jpg,database/images/miniRoom/room42d.jpg,database/images/miniRoom/room42e.jpg'),
+(52, 2, 'Junior Suite', N'Phòng Suite nhỏ, khu vực sinh hoạt riêng', 2, 380.00, 7, 7, 'WiFi,MiniLounge', 'database/images/miniRoom/room52a.jpg,database/images/miniRoom/room52b.jpg,database/images/miniRoom/room52c.jpg,database/images/miniRoom/room52d.jpg,database/images/miniRoom/room52e.jpg'),
+(62, 2, 'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 155.00, 20, 18, 'WiFi,TV', 'database/images/miniRoom/room62a.jpg,database/images/miniRoom/room62b.jpg,database/images/miniRoom/room62c.jpg,database/images/miniRoom/room62d.jpg,database/images/miniRoom/room62e.jpg'),
+(72, 2, 'Deluxe Double', N'Phòng Deluxe 1 giường đôi', 2, 290.00, 10, 9, 'WiFi,Balcony', 'database/images/miniRoom/room72a.jpg,database/images/miniRoom/room72b.jpg,database/images/miniRoom/room72c.jpg,database/images/miniRoom/room72d.jpg,database/images/miniRoom/room72e.jpg'),
+(82, 2, 'Superior Twin', N'Phòng Twin cao cấp', 2, 235.00, 15, 15, 'WiFi,Minibar,Desk', 'database/images/miniRoom/room82a.jpg,database/images/miniRoom/room82b.jpg,database/images/miniRoom/room82c.jpg,database/images/miniRoom/room82d.jpg,database/images/miniRoom/room82e.jpg'),
+(92, 2, 'Triple Room', N'Phòng 3 người', 3, 280.00, 10, 10, 'WiFi,ThreeBeds', 'database/images/miniRoom/room92a.jpg,database/images/miniRoom/room92b.jpg,database/images/miniRoom/room92c.jpg,database/images/miniRoom/room92d.jpg,database/images/miniRoom/room92e.jpg'),
 
--- HOTEL ID 3: Khách sạn Sài Gòn Panorama (Việt Nam/Hồ Chí Minh)
-(8, 3, N'Budget Single', N'Phòng đơn giá rẻ, tiện nghi cơ bản', 1, 90.00, 30, 25, 'WiFi,AC', 'room8a.jpg,room8b.jpg'),
-(18, 3, N'Studio Apartment', N'Căn hộ Studio có bếp nhỏ', 2, 200.00, 6, 6, 'Kitchenette,Laundry,WiFi', 'room18a.jpg,room18b.jpg'),
-(28, 3, N'Family Suite', N'Phòng Suite cho gia đình', 4, 450.00, 5, 4, 'TwoRooms,Kitchenette', 'room28a.jpg,room28b.jpg'),
-(38, 3, N'Connecting Twin', N'Hai phòng Twin thông nhau', 4, 380.00, 10, 10, 'WiFi,TwoRooms', 'room38a.jpg,room38b.jpg'),
-(49, 3, N'Corner Suite', N'Phòng Suite góc với không gian rộng', 3, 500.00, 4, 3, 'DoubleView,LoungeAccess', 'room49a.jpg,room49b.jpg'),
-(59, 3, N'Connecting Twin', N'Hai phòng Twin có cửa thông', 4, 370.00, 8, 8, 'WiFi,TwoRooms', 'room59a.jpg,room59b.jpg'),
-(69, 3, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 105.00, 15, 15, 'WiFi,TV', 'room69a.jpg,room69b.jpg'),
-(79, 3, N'Triple Room', N'Phòng 3 người', 3, 230.00, 10, 9, 'WiFi,ThreeBeds', 'room79a.jpg,room79b.jpg'),
-(89, 3, N'Junior Suite', N'Phòng Suite nhỏ', 2, 300.00, 5, 5, 'WiFi,MiniLounge', 'room89a.jpg,room89b.jpg'),
+(8, 3, N'Budget Single', N'Phòng đơn giá rẻ, tiện nghi cơ bản', 1, 90.00, 30, 25, 'WiFi,AC', 'database/images/miniRoom/room8a.jpg,database/images/miniRoom/room8b.jpg,database/images/miniRoom/room8c.jpg,database/images/miniRoom/room8d.jpg,database/images/miniRoom/room8e.jpg'),
+(18, 3, N'Studio Apartment', N'Căn hộ Studio có bếp nhỏ', 2, 200.00, 6, 6, 'Kitchenette,Laundry,WiFi', 'database/images/miniRoom/room18a.jpg,database/images/miniRoom/room18b.jpg,database/images/miniRoom/room18c.jpg,database/images/miniRoom/room18d.jpg,database/images/miniRoom/room18e.jpg'),
+(28, 3, N'Family Suite', N'Phòng Suite cho gia đình', 4, 450.00, 5, 4, 'TwoRooms,Kitchenette', 'database/images/miniRoom/room28a.jpg,database/images/miniRoom/room28b.jpg,database/images/miniRoom/room28c.jpg,database/images/miniRoom/room28d.jpg,database/images/miniRoom/room28e.jpg'),
+(38, 3, N'Connecting Twin', N'Hai phòng Twin thông nhau', 4, 380.00, 10, 10, 'WiFi,TwoRooms', 'database/images/miniRoom/room38a.jpg,database/images/miniRoom/room38b.jpg,database/images/miniRoom/room38c.jpg,database/images/miniRoom/room38d.jpg,database/images/miniRoom/room38e.jpg'),
+(49, 3, N'Corner Suite', N'Phòng Suite góc với không gian rộng', 3, 500.00, 4, 3, 'DoubleView,LoungeAccess', 'database/images/miniRoom/room49a.jpg,database/images/miniRoom/room49b.jpg,database/images/miniRoom/room49c.jpg,database/images/miniRoom/room49d.jpg,database/images/miniRoom/room49e.jpg'),
+(59, 3, N'Connecting Twin', N'Hai phòng Twin có cửa thông', 4, 370.00, 8, 8, 'WiFi,TwoRooms', 'database/images/miniRoom/room59a.jpg,database/images/miniRoom/room59b.jpg,database/images/miniRoom/room59c.jpg,database/images/miniRoom/room59d.jpg,database/images/miniRoom/room59e.jpg'),
+(69, 3, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 105.00, 15, 15, 'WiFi,TV', 'database/images/miniRoom/room69a.jpg,database/images/miniRoom/room69b.jpg,database/images/miniRoom/room69c.jpg,database/images/miniRoom/room69d.jpg,database/images/miniRoom/room69e.jpg'),
+(79, 3, N'Triple Room', N'Phòng 3 người', 3, 230.00, 10, 9, 'WiFi,ThreeBeds', 'database/images/miniRoom/room79a.jpg,database/images/miniRoom/room79b.jpg,database/images/miniRoom/room79c.jpg,database/images/miniRoom/room79d.jpg,database/images/miniRoom/room79e.jpg'),
+(89, 3, N'Junior Suite', N'Phòng Suite nhỏ', 2, 300.00, 5, 5, 'WiFi,MiniLounge', 'database/images/miniRoom/room89a.jpg,database/images/miniRoom/room89b.jpg,database/images/miniRoom/room89c.jpg,database/images/miniRoom/room89d.jpg,database/images/miniRoom/room89e.jpg'),
 
--- HOTEL ID 4: Hà Nội Cổ Kính Inn (Việt Nam/Hà Nội)
-(11, 4, N'Standard Double', N'Phòng tiêu chuẩn, 1 giường đôi', 2, 150.00, 20, 18, 'WiFi,Desk,AC', 'room11a.jpg,room11b.jpg'),
-(21, 4, N'Attic Room', N'Phòng áp mái độc đáo', 2, 160.00, 5, 5, 'SlantedRoof,UniqueDesign', 'room21a.jpg,room21b.jpg'),
-(31, 4, N'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 220.00, 12, 12, 'WiFi,Minibar,Desk', 'room31a.jpg,room31b.jpg'),
-(41, 4, N'Superior Double', N'Phòng Double cao cấp', 2, 230.00, 10, 10, 'WiFi,Desk,Minibar', 'room41a.jpg,room41b.jpg'),
-(53, 4, N'Presidential Villa', N'Biệt thự Tổng thống, hồ bơi riêng', 6, 3500.00, 1, 1, 'PrivatePool,Butler,Sauna,Bar', 'room53a.jpg,room53b.jpg'),
-(63, 4, N'Attic Double', N'Phòng áp mái độc đáo 1 giường đôi', 2, 185.00, 5, 5, 'SlantedRoof,UniqueDesign', 'room63a.jpg,room63b.jpg'),
-(73, 4, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 140.00, 20, 20, 'WiFi,TV', 'room73a.jpg,room73b.jpg'),
-(83, 4, 'Family Room', N'Phòng gia đình cho 4 người', 4, 350.00, 8, 8, 'WiFi,TwoBeds', 'room83a.jpg,room83b.jpg'),
-(93, 4, 'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 160.00, 15, 14, 'WiFi,AC', 'room93a.jpg,room93b.jpg'),
+(11, 4, N'Standard Double', N'Phòng tiêu chuẩn, 1 giường đôi', 2, 150.00, 20, 18, 'WiFi,Desk,AC', 'database/images/miniRoom/room11a.jpg,database/images/miniRoom/room11b.jpg,database/images/miniRoom/room11c.jpg,database/images/miniRoom/room11d.jpg,database/images/miniRoom/room11e.jpg'),
+(21, 4, N'Attic Room', N'Phòng áp mái độc đáo', 2, 160.00, 5, 5, 'SlantedRoof,UniqueDesign', 'database/images/miniRoom/room21a.jpg,database/images/miniRoom/room21b.jpg,database/images/miniRoom/room21c.jpg,database/images/miniRoom/room21d.jpg,database/images/miniRoom/room21e.jpg'),
+(31, 4, N'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 220.00, 12, 12, 'WiFi,Minibar,Desk', 'database/images/miniRoom/room31a.jpg,database/images/miniRoom/room31b.jpg,database/images/miniRoom/room31c.jpg,database/images/miniRoom/room31d.jpg,database/images/miniRoom/room31e.jpg'),
+(41, 4, N'Superior Double', N'Phòng Double cao cấp', 2, 230.00, 10, 10, 'WiFi,Desk,Minibar', 'database/images/miniRoom/room41a.jpg,database/images/miniRoom/room41b.jpg,database/images/miniRoom/room41c.jpg,database/images/miniRoom/room41d.jpg,database/images/miniRoom/room41e.jpg'),
+(53, 4, N'Presidential Villa', N'Biệt thự Tổng thống, hồ bơi riêng', 6, 3500.00, 1, 1, 'PrivatePool,Butler,Sauna,Bar', 'database/images/miniRoom/room53a.jpg,database/images/miniRoom/room53b.jpg,database/images/miniRoom/room53c.jpg,database/images/miniRoom/room53d.jpg,database/images/miniRoom/room53e.jpg'),
+(63, 4, N'Attic Double', N'Phòng áp mái độc đáo 1 giường đôi', 2, 185.00, 5, 5, 'SlantedRoof,UniqueDesign', 'database/images/miniRoom/room63a.jpg,database/images/miniRoom/room63b.jpg,database/images/miniRoom/room63c.jpg,database/images/miniRoom/room63d.jpg,database/images/miniRoom/room63e.jpg'),
+(73, 4, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 140.00, 20, 20, 'WiFi,TV', 'database/images/miniRoom/room73a.jpg,database/images/miniRoom/room73b.jpg,database/images/miniRoom/room73c.jpg,database/images/miniRoom/room73d.jpg,database/images/miniRoom/room73e.jpg'),
+(83, 4, 'Family Room', N'Phòng gia đình cho 4 người', 4, 350.00, 8, 8, 'WiFi,TwoBeds', 'database/images/miniRoom/room83a.jpg,database/images/miniRoom/room83b.jpg,database/images/miniRoom/room83c.jpg,database/images/miniRoom/room83d.jpg,database/images/miniRoom/room83e.jpg'),
+(93, 4, 'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 160.00, 15, 14, 'WiFi,AC', 'database/images/miniRoom/room93a.jpg,database/images/miniRoom/room93b.jpg,database/images/miniRoom/room93c.jpg,database/images/miniRoom/room93d.jpg,database/images/miniRoom/room93e.jpg'),
 
--- HOTEL ID 5: Resort Biển Đà Nẵng (Việt Nam/Đà Nẵng)
-(4, 5, N'Deluxe King', N'Phòng Deluxe sang trọng, giường King size', 2, 350.00, 12, 10, 'WiFi,Minibar,Desk,AC', 'room4a.jpg,room4b.jpg'),
-(14, 5, N'Single Economy', N'Phòng đơn tiết kiệm, không có cửa sổ', 1, 110.00, 10, 10, 'WiFi,AC', 'room14a.jpg,room14b.jpg'),
-(24, 5, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 170.00, 15, 13, 'WiFi,AC', 'room24a.jpg,room24b.jpg'),
-(34, 5, N'Superior Double', N'Phòng Double cao cấp', 2, 250.00, 10, 10, 'WiFi,Balcony', 'room34a.jpg,room34b.jpg'),
-(47, 5, N'Family Suite', N'Phòng Suite cho gia đình 4 người', 4, 600.00, 5, 5, 'TwoRooms,Kitchenette,Balcony', 'room47a.jpg,room47b.jpg'),
-(57, 5, N'Honeymoon Villa', N'Biệt thự trăng mật lãng mạn', 2, 950.00, 2, 2, 'Jacuzzi,PrivateTerrace', 'room57a.jpg,room57b.jpg'),
-(67, 5, N'Premium Suite', N'Phòng Suite cao cấp', 3, 750.00, 4, 4, 'PrivateLoungeAccess,Minibar', 'room67a.jpg,room67b.jpg'),
-(77, 5, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 130.00, 10, 10, 'WiFi,AC', 'room77a.jpg,room77b.jpg'),
-(87, 5, N'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 310.00, 12, 12, 'WiFi,Minibar,Desk', 'room87a.jpg,room87b.jpg'),
+(4, 5, N'Deluxe King', N'Phòng Deluxe sang trọng, giường King size', 2, 350.00, 12, 10, 'WiFi,Minibar,Desk,AC', 'database/images/miniRoom/room4a.jpg,database/images/miniRoom/room4b.jpg,database/images/miniRoom/room4c.jpg,database/images/miniRoom/room4d.jpg,database/images/miniRoom/room4e.jpg'),
+(14, 5, N'Single Economy', N'Phòng đơn tiết kiệm, không có cửa sổ', 1, 110.00, 10, 10, 'WiFi,AC', 'database/images/miniRoom/room14a.jpg,database/images/miniRoom/room14b.jpg,database/images/miniRoom/room14c.jpg,database/images/miniRoom/room14d.jpg,database/images/miniRoom/room14e.jpg'),
+(24, 5, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 170.00, 15, 13, 'WiFi,AC', 'database/images/miniRoom/room24a.jpg,database/images/miniRoom/room24b.jpg,database/images/miniRoom/room24c.jpg,database/images/miniRoom/room24d.jpg,database/images/miniRoom/room24e.jpg'),
+(34, 5, N'Superior Double', N'Phòng Double cao cấp', 2, 250.00, 10, 10, 'WiFi,Balcony', 'database/images/miniRoom/room34a.jpg,database/images/miniRoom/room34b.jpg,database/images/miniRoom/room34c.jpg,database/images/miniRoom/room34d.jpg,database/images/miniRoom/room34e.jpg'),
+(47, 5, N'Family Suite', N'Phòng Suite cho gia đình 4 người', 4, 600.00, 5, 5, 'TwoRooms,Kitchenette,Balcony', 'database/images/miniRoom/room47a.jpg,database/images/miniRoom/room47b.jpg,database/images/miniRoom/room47c.jpg,database/images/miniRoom/room47d.jpg,database/images/miniRoom/room47e.jpg'),
+(57, 5, N'Honeymoon Villa', N'Biệt thự trăng mật lãng mạn', 2, 950.00, 2, 2, 'Jacuzzi,PrivateTerrace', 'database/images/miniRoom/room57a.jpg,database/images/miniRoom/room57b.jpg,database/images/miniRoom/room57c.jpg,database/images/miniRoom/room57d.jpg,database/images/miniRoom/room57e.jpg'),
+(67, 5, N'Premium Suite', N'Phòng Suite cao cấp', 3, 750.00, 4, 4, 'PrivateLoungeAccess,Minibar', 'database/images/miniRoom/room67a.jpg,database/images/miniRoom/room67b.jpg,database/images/miniRoom/room67c.jpg,database/images/miniRoom/room67d.jpg,database/images/miniRoom/room67e.jpg'),
+(77, 5, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 130.00, 10, 10, 'WiFi,AC', 'database/images/miniRoom/room77a.jpg,database/images/miniRoom/room77b.jpg,database/images/miniRoom/room77c.jpg,database/images/miniRoom/room77d.jpg,database/images/miniRoom/room77e.jpg'),
+(87, 5, N'Deluxe Twin', N'Phòng Deluxe 2 giường đơn', 2, 310.00, 12, 12, 'WiFi,Minibar,Desk', 'database/images/miniRoom/room87a.jpg,database/images/miniRoom/room87b.jpg,database/images/miniRoom/room87c.jpg,database/images/miniRoom/room87d.jpg,database/images/miniRoom/room87e.jpg'),
 
--- HOTEL ID 6: Khách sạn Phố Hội (Việt Nam/Hội An)
-(9, 6, N'Honeymoon Suite', N'Phòng dành cho tuần trăng mật lãng mạn', 2, 480.00, 2, 2, 'PrivateBalcony,Champagne,SpaAccess', 'room9a.jpg,room9b.jpg'),
-(19, 6, N'Corner Deluxe', N'Phòng Deluxe góc, có hai mặt thoáng', 2, 310.00, 4, 4, 'DoubleView,Desk,Minibar', 'room19a.jpg,room19b.jpg'),
-(29, 6, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 120.00, 10, 10, 'WiFi,TV', 'room29a.jpg,room29b.jpg'),
-(39, 6, N'Premium King', N'Phòng King cao cấp nhất', 2, 450.00, 3, 3, 'LoungeAccess,EspressoMachine', 'room39a.jpg,room39b.jpg'),
-(50, 6, N'Standard Double', N'Phòng tiêu chuẩn, 1 giường đôi', 2, 145.00, 20, 19, 'WiFi,Desk,AC', 'room50a.jpg,room50b.jpg'),
-(60, 6, N'Superior Single', N'Phòng đơn cao cấp', 1, 170.00, 15, 15, 'WiFi,AC,Minibar', 'room60a.jpg,room60b.jpg'),
-(70, 6, N'Quad Room', N'Phòng 4 giường đơn', 4, 330.00, 7, 7, 'FourBeds,Desk', 'room70a.jpg,room70b.jpg'),
-(80, 6, N'Deluxe King', N'Phòng King Deluxe', 2, 360.00, 10, 10, 'WiFi,Balcony', 'room80a.jpg,room80b.jpg'),
-(90, 6, N'Premium Suite', N'Phòng Suite cao cấp nhất', 3, 680.00, 2, 2, 'EspressoMachine,PrivateBalcony', 'room90a.jpg,room90b.jpg'),
+(9, 6, N'Honeymoon Suite', N'Phòng dành cho tuần trăng mật lãng mạn', 2, 480.00, 2, 2, 'PrivateBalcony,Champagne,SpaAccess', 'database/images/miniRoom/room9a.jpg,database/images/miniRoom/room9b.jpg,database/images/miniRoom/room9c.jpg,database/images/miniRoom/room9d.jpg,database/images/miniRoom/room9e.jpg'),
+(19, 6, N'Corner Deluxe', N'Phòng Deluxe góc, có hai mặt thoáng', 2, 310.00, 4, 4, 'DoubleView,Desk,Minibar', 'database/images/miniRoom/room19a.jpg,database/images/miniRoom/room19b.jpg,database/images/miniRoom/room19c.jpg,database/images/miniRoom/room19d.jpg,database/images/miniRoom/room19e.jpg'),
+(29, 6, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 120.00, 10, 10, 'WiFi,TV', 'database/images/miniRoom/room29a.jpg,database/images/miniRoom/room29b.jpg,database/images/miniRoom/room29c.jpg,database/images/miniRoom/room29d.jpg,database/images/miniRoom/room29e.jpg'),
+(39, 6, N'Premium King', N'Phòng King cao cấp nhất', 2, 450.00, 3, 3, 'LoungeAccess,EspressoMachine', 'database/images/miniRoom/room39a.jpg,database/images/miniRoom/room39b.jpg,database/images/miniRoom/room39c.jpg,database/images/miniRoom/room39d.jpg,database/images/miniRoom/room39e.jpg'),
+(50, 6, N'Standard Double', N'Phòng tiêu chuẩn, 1 giường đôi', 2, 145.00, 20, 19, 'WiFi,Desk,AC', 'database/images/miniRoom/room50a.jpg,database/images/miniRoom/room50b.jpg,database/images/miniRoom/room50c.jpg,database/images/miniRoom/room50d.jpg,database/images/miniRoom/room50e.jpg'),
+(60, 6, N'Superior Single', N'Phòng đơn cao cấp', 1, 170.00, 15, 15, 'WiFi,AC,Minibar', 'database/images/miniRoom/room60a.jpg,database/images/miniRoom/room60b.jpg,database/images/miniRoom/room60c.jpg,database/images/miniRoom/room60d.jpg,database/images/miniRoom/room60e.jpg'),
+(70, 6, N'Quad Room', N'Phòng 4 giường đơn', 4, 330.00, 7, 7, 'FourBeds,Desk', 'database/images/miniRoom/room70a.jpg,database/images/miniRoom/room70b.jpg,database/images/miniRoom/room70c.jpg,database/images/miniRoom/room70d.jpg,database/images/miniRoom/room70e.jpg'),
+(80, 6, N'Deluxe King', N'Phòng King Deluxe', 2, 360.00, 10, 10, 'WiFi,Balcony', 'database/images/miniRoom/room80a.jpg,database/images/miniRoom/room80b.jpg,database/images/miniRoom/room80c.jpg,database/images/miniRoom/room80d.jpg,database/images/miniRoom/room80e.jpg'),
+(90, 6, N'Premium Suite', N'Phòng Suite cao cấp nhất', 3, 680.00, 2, 2, 'EspressoMachine,PrivateBalcony', 'database/images/miniRoom/room90a.jpg,database/images/miniRoom/room90b.jpg,database/images/miniRoom/room90c.jpg,database/images/miniRoom/room90d.jpg,database/images/miniRoom/room90e.jpg'),
 
--- HOTEL ID 7: Huế Imperial (Việt Nam/Huế)
-(10, 7, N'Triple Room', N'Phòng 3 người, phù hợp nhóm bạn', 3, 250.00, 15, 15, 'WiFi,TV,Desk', 'room10a.jpg,room10b.jpg'),
-(20, 7, N'Connecting Room', N'Hai phòng tiêu chuẩn có cửa thông nhau', 4, 400.00, 10, 8, 'WiFi,TwoTVs,TwoBaths', 'room20a.jpg,room20b.jpg'),
-(30, 7, N'Quad Room', N'Phòng 4 giường đơn', 4, 300.00, 8, 8, 'FourBeds,Desk', 'room30a.jpg,room30b.jpg'),
-(40, 7, N'Single Economy', N'Phòng đơn tiêu chuẩn, giá thấp', 1, 85.00, 15, 15, 'WiFi,AC', 'room40a.jpg,room40b.jpg'),
-(44, 7, N'Deluxe King', N'Phòng Deluxe sang trọng, giường King size', 2, 330.00, 15, 12, 'WiFi,Minibar,Desk,AC', 'room44a.jpg,room44b.jpg'),
-(54, 7, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 160.00, 20, 17, 'WiFi,AC', 'room54a.jpg,room54b.jpg'),
-(64, 7, N'Family Connected', N'Phòng gia đình có cửa thông nhau', 5, 490.00, 6, 6, 'TwoBaths,TwoTVs', 'room64a.jpg,room64b.jpg'),
-(74, 7, N'Superior Double', N'Phòng Double cao cấp', 2, 270.00, 10, 10, 'WiFi,Minibar,Desk', 'room74a.jpg,room74b.jpg'),
-(84, 7, 'Business Twin', N'Phòng Twin cho khách công tác', 2, 250.00, 10, 10, 'HighSpeedWiFi,Desk', 'room84a.jpg,room84b.jpg'),
+(10, 7, N'Triple Room', N'Phòng 3 người, phù hợp nhóm bạn', 3, 250.00, 15, 15, 'WiFi,TV,Desk', 'database/images/miniRoom/room10a.jpg,database/images/miniRoom/room10b.jpg,database/images/miniRoom/room10c.jpg,database/images/miniRoom/room10d.jpg,database/images/miniRoom/room10e.jpg'),
+(20, 7, N'Connecting Room', N'Hai phòng tiêu chuẩn có cửa thông nhau', 4, 400.00, 10, 8, 'WiFi,TwoTVs,TwoBaths', 'database/images/miniRoom/room20a.jpg,database/images/miniRoom/room20b.jpg,database/images/miniRoom/room20c.jpg,database/images/miniRoom/room20d.jpg,database/images/miniRoom/room20e.jpg'),
+(30, 7, N'Quad Room', N'Phòng 4 giường đơn', 4, 300.00, 8, 8, 'FourBeds,Desk', 'database/images/miniRoom/room30a.jpg,database/images/miniRoom/room30b.jpg,database/images/miniRoom/room30c.jpg,database/images/miniRoom/room30d.jpg,database/images/miniRoom/room30e.jpg'),
+(40, 7, N'Single Economy', N'Phòng đơn tiêu chuẩn, giá thấp', 1, 85.00, 15, 15, 'WiFi,AC', 'database/images/miniRoom/room40a.jpg,database/images/miniRoom/room40b.jpg,database/images/miniRoom/room40c.jpg,database/images/miniRoom/room40d.jpg,database/images/miniRoom/room40e.jpg'),
+(44, 7, N'Deluxe King', N'Phòng Deluxe sang trọng, giường King size', 2, 330.00, 15, 12, 'WiFi,Minibar,Desk,AC', 'database/images/miniRoom/room44a.jpg,database/images/miniRoom/room44b.jpg,database/images/miniRoom/room44c.jpg,database/images/miniRoom/room44d.jpg,database/images/miniRoom/room44e.jpg'),
+(54, 7, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 160.00, 20, 17, 'WiFi,AC', 'database/images/miniRoom/room54a.jpg,database/images/miniRoom/room54b.jpg,database/images/miniRoom/room54c.jpg,database/images/miniRoom/room54d.jpg,database/images/miniRoom/room54e.jpg'),
+(64, 7, N'Family Connected', N'Phòng gia đình có cửa thông nhau', 5, 490.00, 6, 6, 'TwoBaths,TwoTVs', 'database/images/miniRoom/room64a.jpg,database/images/miniRoom/room64b.jpg,database/images/miniRoom/room64c.jpg,database/images/miniRoom/room64d.jpg,database/images/miniRoom/room64e.jpg'),
+(74, 7, N'Superior Double', N'Phòng Double cao cấp', 2, 270.00, 10, 10, 'WiFi,Minibar,Desk', 'database/images/miniRoom/room74a.jpg,database/images/miniRoom/room74b.jpg,database/images/miniRoom/room74c.jpg,database/images/miniRoom/room74d.jpg,database/images/miniRoom/room74e.jpg'),
+(84, 7, 'Business Twin', N'Phòng Twin cho khách công tác', 2, 250.00, 10, 10, 'HighSpeedWiFi,Desk', 'database/images/miniRoom/room84a.jpg,database/images/miniRoom/room84b.jpg,database/images/miniRoom/room84c.jpg,database/images/miniRoom/room84d.jpg,database/images/miniRoom/room84e.jpg'),
 
--- HOTEL ID 8: Nha Trang Ocean View (Việt Nam/Nha Trang)
-(5, 8, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn, tầm nhìn thành phố', 2, 180.00, 25, 20, 'WiFi,TV,Desk', 'room5a.jpg,room5b.jpg'),
-(15, 8, N'Presidential Suite', N'Phòng tổng thống, tiện nghi cao cấp nhất', 4, 2500.00, 1, 1, 'PrivateChef,Sauna,Gym,Bar', 'room15a.jpg,room15b.jpg'),
-(25, 8, N'Deluxe Double', N'Phòng Deluxe 1 giường đôi', 2, 280.00, 10, 8, 'WiFi,Balcony,Seaview', 'room25a.jpg,room25b.jpg'),
-(35, 8, N'Family Connected', N'Phòng gia đình có cửa thông', 5, 480.00, 5, 5, 'TwoBaths,TwoTVs', 'room35a.jpg,room35b.jpg'),
-(48, 8, N'Single Economy', N'Phòng đơn giá rẻ, tiện nghi cơ bản', 1, 100.00, 30, 28, 'WiFi,AC', 'room48a.jpg,room48b.jpg'),
-(58, 8, N'Business King', N'Phòng King size cho khách công tác', 1, 220.00, 12, 11, 'HighSpeedWiFi,LargeDesk', 'room58a.jpg,room58b.jpg'),
-(68, 8, N'Studio Apartment', N'Căn hộ Studio có bếp nhỏ', 2, 230.00, 5, 4, 'Kitchenette,Laundry,WiFi', 'room68a.jpg,room68b.jpg'),
-(78, 8, N'Executive Suite', N'Phòng Suite điều hành', 3, 620.00, 3, 3, 'LoungeAccess,DiningArea', 'room78a.jpg,room78b.jpg'),
-(88, 8, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 195.00, 20, 20, 'WiFi,TV', 'room88a.jpg,room88b.jpg'),
+(5, 8, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn, tầm nhìn thành phố', 2, 180.00, 25, 20, 'WiFi,TV,Desk', 'database/images/miniRoom/room5a.jpg,database/images/miniRoom/room5b.jpg,database/images/miniRoom/room5c.jpg,database/images/miniRoom/room5d.jpg,database/images/miniRoom/room5e.jpg'),
+(15, 8, N'Presidential Suite', N'Phòng tổng thống, tiện nghi cao cấp nhất', 4, 2500.00, 1, 1, 'PrivateChef,Sauna,Gym,Bar', 'database/images/miniRoom/room15a.jpg,database/images/miniRoom/room15b.jpg,database/images/miniRoom/room15c.jpg,database/images/miniRoom/room15d.jpg,database/images/miniRoom/room15e.jpg'),
+(25, 8, N'Deluxe Double', N'Phòng Deluxe 1 giường đôi', 2, 280.00, 10, 8, 'WiFi,Balcony,Seaview', 'database/images/miniRoom/room25a.jpg,database/images/miniRoom/room25b.jpg,database/images/miniRoom/room25c.jpg,database/images/miniRoom/room25d.jpg,database/images/miniRoom/room25e.jpg'),
+(35, 8, N'Family Connected', N'Phòng gia đình có cửa thông', 5, 480.00, 5, 5, 'TwoBaths,TwoTVs', 'database/images/miniRoom/room35a.jpg,database/images/miniRoom/room35b.jpg,database/images/miniRoom/room35c.jpg,database/images/miniRoom/room35d.jpg,database/images/miniRoom/room35e.jpg'),
+(48, 8, N'Single Economy', N'Phòng đơn giá rẻ, tiện nghi cơ bản', 1, 100.00, 30, 28, 'WiFi,AC', 'database/images/miniRoom/room48a.jpg,database/images/miniRoom/room48b.jpg,database/images/miniRoom/room48c.jpg,database/images/miniRoom/room48d.jpg,database/images/miniRoom/room48e.jpg'),
+(58, 8, N'Business King', N'Phòng King size cho khách công tác', 1, 220.00, 12, 11, 'HighSpeedWiFi,LargeDesk', 'database/images/miniRoom/room58a.jpg,database/images/miniRoom/room58b.jpg,database/images/miniRoom/room58c.jpg,database/images/miniRoom/room58d.jpg,database/images/miniRoom/room58e.jpg'),
+(68, 8, N'Studio Apartment', N'Căn hộ Studio có bếp nhỏ', 2, 230.00, 5, 4, 'Kitchenette,Laundry,WiFi', 'database/images/miniRoom/room68a.jpg,database/images/miniRoom/room68b.jpg,database/images/miniRoom/room68c.jpg,database/images/miniRoom/room68d.jpg,database/images/miniRoom/room68e.jpg'),
+(78, 8, N'Executive Suite', N'Phòng Suite điều hành', 3, 620.00, 3, 3, 'LoungeAccess,DiningArea', 'database/images/miniRoom/room78a.jpg,database/images/miniRoom/room78b.jpg,database/images/miniRoom/room78c.jpg,database/images/miniRoom/room78d.jpg,database/images/miniRoom/room78e.jpg'),
+(88, 8, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 195.00, 20, 20, 'WiFi,TV', 'database/images/miniRoom/room88a.jpg,database/images/miniRoom/room88b.jpg,database/images/miniRoom/room88c.jpg,database/images/miniRoom/room88d.jpg,database/images/miniRoom/room88e.jpg'),
 
--- HOTEL ID 9: Phú Quốc Marina (Việt Nam/Phú Quốc)
-(13, 9, N'Beachfront Villa', N'Biệt thự sát biển có hồ bơi riêng', 4, 1200.00, 1, 1, 'PrivatePool,Kitchen,Seaview,Butler', 'room13a.jpg,room13b.jpg'),
-(23, 9, N'Premium Suite', N'Phòng Suite cao cấp', 3, 650.00, 4, 3, 'PrivateLoungeAccess,Minibar', 'room23a.jpg,room23b.jpg'),
-(33, 9, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 190.00, 15, 14, 'WiFi,AC', 'room33a.jpg,room33b.jpg'),
-(43, 9, N'Deluxe Double', N'Phòng Deluxe 1 giường đôi', 2, 270.00, 10, 9, 'WiFi,Balcony', 'room43a.jpg,room43b.jpg'),
-(51, 9, N'Deluxe Twin', N'Phòng Deluxe 2 giường đơn, view đẹp', 2, 350.00, 18, 18, 'WiFi,Minibar,Desk', 'room51a.jpg,room51b.jpg'),
-(61, 9, N'Garden View Bungalow', N'Bungalow nhìn ra vườn', 2, 310.00, 10, 9, 'Terrace,Hammock', 'room61a.jpg,room61b.jpg'),
-(71, 9, N'Luxury Villa', N'Biệt thự sang trọng với tầm nhìn biển', 5, 1800.00, 1, 1, 'OceanView,PrivatePool,Butler', 'room71a.jpg,room71b.jpg'),
-(81, 9, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 200.00, 20, 18, 'WiFi,AC', 'room81a.jpg,room81b.jpg'),
-(91, 9, N'Connecting King', N'Hai phòng King thông nhau', 4, 750.00, 3, 3, 'TwoRooms,KingBeds', 'room91a.jpg,room91b.jpg'),
+(13, 9, N'Beachfront Villa', N'Biệt thự sát biển có hồ bơi riêng', 4, 1200.00, 1, 1, 'PrivatePool,Kitchen,Seaview,Butler', 'database/images/miniRoom/room13a.jpg,database/images/miniRoom/room13b.jpg,database/images/miniRoom/room13c.jpg,database/images/miniRoom/room13d.jpg,database/images/miniRoom/room13e.jpg'),
+(23, 9, N'Premium Suite', N'Phòng Suite cao cấp', 3, 650.00, 4, 3, 'PrivateLoungeAccess,Minibar', 'database/images/miniRoom/room23a.jpg,database/images/miniRoom/room23b.jpg,database/images/miniRoom/room23c.jpg,database/images/miniRoom/room23d.jpg,database/images/miniRoom/room23e.jpg'),
+(33, 9, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 190.00, 15, 14, 'WiFi,AC', 'database/images/miniRoom/room33a.jpg,database/images/miniRoom/room33b.jpg,database/images/miniRoom/room33c.jpg,database/images/miniRoom/room33d.jpg,database/images/miniRoom/room33e.jpg'),
+(43, 9, N'Deluxe Double', N'Phòng Deluxe 1 giường đôi', 2, 270.00, 10, 9, 'WiFi,Balcony', 'database/images/miniRoom/room43a.jpg,database/images/miniRoom/room43b.jpg,database/images/miniRoom/room43c.jpg,database/images/miniRoom/room43d.jpg,database/images/miniRoom/room43e.jpg'),
+(51, 9, N'Deluxe Twin', N'Phòng Deluxe 2 giường đơn, view đẹp', 2, 350.00, 18, 18, 'WiFi,Minibar,Desk', 'database/images/miniRoom/room51a.jpg,database/images/miniRoom/room51b.jpg,database/images/miniRoom/room51c.jpg,database/images/miniRoom/room51d.jpg,database/images/miniRoom/room51e.jpg'),
+(61, 9, N'Garden View Bungalow', N'Bungalow nhìn ra vườn', 2, 310.00, 10, 9, 'Terrace,Hammock', 'database/images/miniRoom/room61a.jpg,database/images/miniRoom/room61b.jpg,database/images/miniRoom/room61c.jpg,database/images/miniRoom/room61d.jpg,database/images/miniRoom/room61e.jpg'),
+(71, 9, N'Luxury Villa', N'Biệt thự sang trọng với tầm nhìn biển', 5, 1800.00, 1, 1, 'OceanView,PrivatePool,Butler', 'database/images/miniRoom/room71a.jpg,database/images/miniRoom/room71b.jpg,database/images/miniRoom/room71c.jpg,database/images/miniRoom/room71d.jpg,database/images/miniRoom/room71e.jpg'),
+(81, 9, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 200.00, 20, 18, 'WiFi,AC', 'database/images/miniRoom/room81a.jpg,database/images/miniRoom/room81b.jpg,database/images/miniRoom/room81c.jpg,database/images/miniRoom/room81d.jpg,database/images/miniRoom/room81e.jpg'),
+(91, 9, N'Connecting King', N'Hai phòng King thông nhau', 4, 750.00, 3, 3, 'TwoRooms,KingBeds', 'database/images/miniRoom/room91a.jpg,database/images/miniRoom/room91b.jpg,database/images/miniRoom/room91c.jpg,database/images/miniRoom/room91d.jpg,database/images/miniRoom/room91e.jpg'),
 
--- HOTEL ID 10: Đà Lạt Mộng Mơ (Việt Nam/Đà Lạt)
-(7, 10, N'Family Room', N'Phòng lớn cho gia đình có 4 người', 4, 320.00, 7, 7, 'WiFi,TwoBeds,KidsPlay', 'room7a.jpg,room7b.jpg'),
-(17, 10, N'Bungalow Garden View', N'Bungalow nhìn ra vườn, yên tĩnh', 2, 280.00, 8, 5, 'Terrace,Hammock,AC', 'room17a.jpg,room17b.jpg'),
-(27, 10, N'Superior King', N'Phòng King cao cấp', 2, 260.00, 15, 15, 'WiFi,Minibar', 'room27a.jpg,room27b.jpg'),
-(37, 10, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 165.00, 20, 20, 'WiFi,AC', 'room37a.jpg,room37b.jpg'),
-(45, 10, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 175.00, 25, 25, 'WiFi,TV,Desk', 'room45a.jpg,room45b.jpg'),
-(55, 10, N'Executive Twin', N'Phòng Twin điều hành, tiện nghi cao cấp', 2, 300.00, 10, 10, 'LoungeAccess,PremiumAmenities', 'room55a.jpg,room55b.jpg'),
-(65, 10, N'Deluxe King', N'Phòng King Deluxe, view đẹp', 2, 290.00, 15, 15, 'WiFi,Balcony,CityView', 'room65a.jpg,room65b.jpg'),
-(75, 10, N'Single Economy', N'Phòng đơn tiết kiệm', 1, 95.00, 10, 10, 'WiFi,AC', 'room75a.jpg,room75b.jpg'),
-(85, 10, N'Connecting Double', N'Hai phòng Double thông nhau', 4, 420.00, 5, 5, 'WiFi,TwoRooms', 'room85a.jpg,room85b.jpg'), 
+(7, 10, N'Family Room', N'Phòng lớn cho gia đình có 4 người', 4, 320.00, 7, 7, 'WiFi,TwoBeds,KidsPlay', 'database/images/miniRoom/room7a.jpg,database/images/miniRoom/room7b.jpg,database/images/miniRoom/room7c.jpg,database/images/miniRoom/room7d.jpg,database/images/miniRoom/room7e.jpg'),
+(17, 10, N'Bungalow Garden View', N'Bungalow nhìn ra vườn, yên tĩnh', 2, 280.00, 8, 5, 'Terrace,Hammock,AC', 'database/images/miniRoom/room17a.jpg,database/images/miniRoom/room17b.jpg,database/images/miniRoom/room17c.jpg,database/images/miniRoom/room17d.jpg,database/images/miniRoom/room17e.jpg'),
+(27, 10, N'Superior King', N'Phòng King cao cấp', 2, 260.00, 15, 15, 'WiFi,Minibar', 'database/images/miniRoom/room27a.jpg,database/images/miniRoom/room27b.jpg,database/images/miniRoom/room27c.jpg,database/images/miniRoom/room27d.jpg,database/images/miniRoom/room27e.jpg'),
+(37, 10, N'Standard Double', N'Phòng tiêu chuẩn 1 giường đôi', 2, 165.00, 20, 20, 'WiFi,AC', 'database/images/miniRoom/room37a.jpg,database/images/miniRoom/room37b.jpg,database/images/miniRoom/room37c.jpg,database/images/miniRoom/room37d.jpg,database/images/miniRoom/room37e.jpg'),
+(45, 10, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 175.00, 25, 25, 'WiFi,TV,Desk', 'database/images/miniRoom/room45a.jpg,database/images/miniRoom/room45b.jpg,database/images/miniRoom/room45c.jpg,database/images/miniRoom/room45d.jpg,database/images/miniRoom/room45e.jpg'),
+(55, 10, N'Executive Twin', N'Phòng Twin điều hành, tiện nghi cao cấp', 2, 300.00, 10, 10, 'LoungeAccess,PremiumAmenities', 'database/images/miniRoom/room55a.jpg,database/images/miniRoom/room55b.jpg,database/images/miniRoom/room55c.jpg,database/images/miniRoom/room55d.jpg,database/images/miniRoom/room55e.jpg'),
+(65, 10, N'Deluxe King', N'Phòng King Deluxe, view đẹp', 2, 290.00, 15, 15, 'WiFi,Balcony,CityView', 'database/images/miniRoom/room65a.jpg,database/images/miniRoom/room65b.jpg,database/images/miniRoom/room65c.jpg,database/images/miniRoom/room65d.jpg,database/images/miniRoom/room65e.jpg'),
+(75, 10, N'Single Economy', N'Phòng đơn tiết kiệm', 1, 95.00, 10, 10, 'WiFi,AC', 'database/images/miniRoom/room75a.jpg,database/images/miniRoom/room75b.jpg,database/images/miniRoom/room75c.jpg,database/images/miniRoom/room75d.jpg,database/images/miniRoom/room75e.jpg'),
+(85, 10, N'Connecting Double', N'Hai phòng Double thông nhau', 4, 420.00, 5, 5, 'WiFi,TwoRooms', 'database/images/miniRoom/room85a.jpg,database/images/miniRoom/room85b.jpg,database/images/miniRoom/room85c.jpg,database/images/miniRoom/room85d.jpg,database/images/miniRoom/room85e.jpg'),
 
--- HOTEL ID 11: Cần Thơ Mekong Oasis (3 bản ghi)
-(94, 11, N'Standard Double', N'Phòng đôi tiêu chuẩn nhìn ra sông', 2, 115.00, 10, 8, 'WiFi,RiverView', 'room94a.jpg,room94b.jpg'),
-(95, 11, N'Triple Room', N'Phòng 3 người', 3, 150.00, 5, 4, 'WiFi,ThreeBeds', 'room95a.jpg,room95b.jpg'),
-(96, 11, N'Suite River View', N'Phòng Suite cao cấp nhìn toàn cảnh sông', 2, 250.00, 2, 2, 'Balcony,Minibar,RiverView', 'room96a.jpg,room96b.jpg'),
+(94, 11, N'Standard Double', N'Phòng đôi tiêu chuẩn nhìn ra sông', 2, 115.00, 10, 8, 'WiFi,RiverView', 'database/images/miniRoom/room94a.jpg,database/images/miniRoom/room94b.jpg,database/images/miniRoom/room94c.jpg,database/images/miniRoom/room94d.jpg,database/images/miniRoom/room94e.jpg'),
+(95, 11, N'Triple Room', N'Phòng 3 người', 3, 150.00, 5, 4, 'WiFi,ThreeBeds', 'database/images/miniRoom/room95a.jpg,database/images/miniRoom/room95b.jpg,database/images/miniRoom/room95c.jpg,database/images/miniRoom/room95d.jpg,database/images/miniRoom/room95e.jpg'),
+(96, 11, N'Suite River View', N'Phòng Suite cao cấp nhìn toàn cảnh sông', 2, 250.00, 2, 2, 'Balcony,Minibar,RiverView', 'database/images/miniRoom/room96a.jpg,database/images/miniRoom/room96b.jpg,database/images/miniRoom/room96c.jpg,database/images/miniRoom/room96d.jpg,database/images/miniRoom/room96e.jpg'),
 
--- HOTEL ID 12: Hạ Long Bay View (2 bản ghi)
-(97, 12, N'Deluxe King', N'Phòng Deluxe có ban công nhìn ra vịnh', 2, 380.00, 15, 12, 'WiFi,BayView,Balcony', 'room97a.jpg,room97b.jpg'),
-(98, 12, N'Presidential Suite', N'Phòng Tổng thống cao cấp nhất', 4, 1500.00, 1, 1, 'PrivateTerrace,SpaAccess', 'room98a.jpg,room98b.jpg'),
+(97, 12, N'Deluxe King', N'Phòng Deluxe có ban công nhìn ra vịnh', 2, 380.00, 15, 12, 'WiFi,BayView,Balcony', 'database/images/miniRoom/room97a.jpg,database/images/miniRoom/room97b.jpg,database/images/miniRoom/room97c.jpg,database/images/miniRoom/room97d.jpg,database/images/miniRoom/room97e.jpg'),
+(98, 12, N'Presidential Suite', N'Phòng Tổng thống cao cấp nhất', 4, 1500.00, 1, 1, 'PrivateTerrace,SpaAccess', 'database/images/miniRoom/room98a.jpg,database/images/miniRoom/room98b.jpg,database/images/miniRoom/room98c.jpg,database/images/miniRoom/room98d.jpg,database/images/miniRoom/room98e.jpg'),
 
--- HOTEL ID 13: Khách sạn Kim Long (1 bản ghi)
-(99, 13, N'Single Economy', N'Phòng đơn tiết kiệm, không có cửa sổ', 1, 60.00, 20, 18, 'WiFi,AC', 'room99a.jpg,room99b.jpg'),
+(99, 13, N'Single Economy', N'Phòng đơn tiết kiệm, không có cửa sổ', 1, 60.00, 20, 18, 'WiFi,AC', 'database/images/miniRoom/room99a.jpg,database/images/miniRoom/room99b.jpg,database/images/miniRoom/room99c.jpg,database/images/miniRoom/room99d.jpg,database/images/miniRoom/room99e.jpg'),
 
--- HOTEL ID 14: Sapa Retreat (3 bản ghi)
-(100, 14, N'Mountain View Deluxe', N'Phòng Deluxe nhìn ra núi', 2, 220.00, 10, 10, 'Heating,MountainView', 'room100a.jpg,room100b.jpg'),
-(101, 14, N'Family Bungalow', N'Bungalow gia đình', 4, 350.00, 5, 5, 'Fireplace,FourBeds', 'room101a.jpg,room101b.jpg'),
-(102, 14, N'Premium Suite', N'Phòng Suite cao cấp có lò sưởi', 2, 450.00, 3, 2, 'Hammam,LoungeAccess', 'room102a.jpg,room102b.jpg'),
+(100, 14, N'Mountain View Deluxe', N'Phòng Deluxe nhìn ra núi', 2, 220.00, 10, 10, 'Heating,MountainView', 'database/images/miniRoom/room100a.jpg,database/images/miniRoom/room100b.jpg,database/images/miniRoom/room100c.jpg,database/images/miniRoom/room100d.jpg,database/images/miniRoom/room100e.jpg'),
+(101, 14, N'Family Bungalow', N'Bungalow gia đình', 4, 350.00, 5, 5, 'Fireplace,FourBeds', 'database/images/miniRoom/room101a.jpg,database/images/miniRoom/room101b.jpg,database/images/miniRoom/room101c.jpg,database/images/miniRoom/room101d.jpg,database/images/miniRoom/room101e.jpg'),
+(102, 14, N'Premium Suite', N'Phòng Suite cao cấp có lò sưởi', 2, 450.00, 3, 2, 'Hammam,LoungeAccess', 'database/images/miniRoom/room102a.jpg,database/images/miniRoom/room102b.jpg,database/images/miniRoom/room102c.jpg,database/images/miniRoom/room102d.jpg,database/images/miniRoom/room102e.jpg'),
 
--- HOTEL ID 15: Vũng Tàu Lighthouse (2 bản ghi)
-(103, 15, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 130.00, 15, 15, 'WiFi,BeachAccess', 'room103a.jpg,room103b.jpg'),
-(104, 15, N'Family Room', N'Phòng lớn cho gia đình', 4, 200.00, 8, 8, 'KidsClub,TwoBeds', 'room104a.jpg,room104b.jpg'),
+(103, 15, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 130.00, 15, 15, 'WiFi,BeachAccess', 'database/images/miniRoom/room103a.jpg,database/images/miniRoom/room103b.jpg,database/images/miniRoom/room103c.jpg,database/images/miniRoom/room103d.jpg,database/images/miniRoom/room103e.jpg'),
+(104, 15, N'Family Room', N'Phòng lớn cho gia đình', 4, 200.00, 8, 8, 'KidsClub,TwoBeds', 'database/images/miniRoom/room104a.jpg,database/images/miniRoom/room104b.jpg,database/images/miniRoom/room104c.jpg,database/images/miniRoom/room104d.jpg,database/images/miniRoom/room104e.jpg'),
 
--- HOTEL ID 16: Quy Nhơn Seafront (3 bản ghi)
-(105, 16, N'Deluxe King Seaview', N'Phòng King Deluxe nhìn ra biển', 2, 250.00, 12, 10, 'WiFi,Seaview,Balcony', 'room105a.jpg,room105b.jpg'),
-(106, 16, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 170.00, 15, 15, 'WiFi,AC', 'room106a.jpg,room106b.jpg'),
-(107, 16, N'Executive Suite', N'Phòng Suite điều hành', 2, 400.00, 3, 3, 'GymAccess,Minibar', 'room107a.jpg,room107b.jpg'),
+(105, 16, N'Deluxe King Seaview', N'Phòng King Deluxe nhìn ra biển', 2, 250.00, 12, 10, 'WiFi,Seaview,Balcony', 'database/images/miniRoom/room105a.jpg,database/images/miniRoom/room105b.jpg,database/images/miniRoom/room105c.jpg,database/images/miniRoom/room105d.jpg,database/images/miniRoom/room105e.jpg'),
+(106, 16, N'Standard Twin', N'Phòng tiêu chuẩn 2 giường đơn', 2, 170.00, 15, 15, 'WiFi,AC', 'database/images/miniRoom/room106a.jpg,database/images/miniRoom/room106b.jpg,database/images/miniRoom/room106c.jpg,database/images/miniRoom/room106d.jpg,database/images/miniRoom/room106e.jpg'),
+(107, 16, N'Executive Suite', N'Phòng Suite điều hành', 2, 400.00, 3, 3, 'GymAccess,Minibar', 'database/images/miniRoom/room107a.jpg,database/images/miniRoom/room107b.jpg,database/images/miniRoom/room107c.jpg,database/images/miniRoom/room107d.jpg,database/images/miniRoom/room107e.jpg'),
 
--- HOTEL ID 17: Thanh Hóa Sunset (1 bản ghi)
-(108, 17, N'Standard Double', N'Phòng đôi tiêu chuẩn', 2, 85.00, 25, 20, 'WiFi,Breakfast', 'room108a.jpg,room108b.jpg'),
+(108, 17, N'Standard Double', N'Phòng đôi tiêu chuẩn', 2, 85.00, 25, 20, 'WiFi,Breakfast', 'database/images/miniRoom/room108a.jpg,database/images/miniRoom/room108b.jpg,database/images/miniRoom/room108c.jpg,database/images/miniRoom/room108d.jpg,database/images/miniRoom/room108e.jpg'),
 
--- HOTEL ID 18: Tuy Hòa Pearl (2 bản ghi)
-(109, 18, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 70.00, 10, 10, 'WiFi,AC', 'room109a.jpg,room109b.jpg'),
-(110, 18, N'Superior Double', N'Phòng đôi cao cấp', 2, 120.00, 8, 8, 'WiFi,Minibar', 'room110a.jpg,room110b.jpg'),
+(109, 18, N'Standard Single', N'Phòng đơn tiêu chuẩn', 1, 70.00, 10, 10, 'WiFi,AC', 'database/images/miniRoom/room109a.jpg,database/images/miniRoom/room109b.jpg,database/images/miniRoom/room109c.jpg,database/images/miniRoom/room109d.jpg,database/images/miniRoom/room109e.jpg'),
+(110, 18, N'Superior Double', N'Phòng đôi cao cấp', 2, 120.00, 8, 8, 'WiFi,Minibar', 'database/images/miniRoom/room110a.jpg,database/images/miniRoom/room110b.jpg,database/images/miniRoom/room110c.jpg,database/images/miniRoom/room110d.jpg,database/images/miniRoom/room110e.jpg'),
 
--- HOTEL ID 19: Bình Thuận Ocean Star (3 bản ghi)
-(111, 19, N'Private Pool Villa', N'Biệt thự hồ bơi riêng biệt', 2, 850.00, 5, 5, 'PrivatePool,Massage,Seaview', 'room111a.jpg,room111b.jpg'),
-(112, 19, N'Deluxe King', N'Phòng King Deluxe nhìn ra biển', 2, 350.00, 10, 9, 'Balcony,Seaview', 'room112a.jpg,room112b.jpg'),
-(113, 19, N'Ocean Star Suite', N'Phòng Suite cao cấp nhất của resort', 4, 1500.00, 1, 1, 'ButlerService,PrivateBar', 'room113a.jpg,room113b.jpg'),
+(111, 19, N'Private Pool Villa', N'Biệt thự hồ bơi riêng biệt', 2, 850.00, 5, 5, 'PrivatePool,Massage,Seaview', 'database/images/miniRoom/room111a.jpg,database/images/miniRoom/room111b.jpg,database/images/miniRoom/room111c.jpg,database/images/miniRoom/room111d.jpg,database/images/miniRoom/room111e.jpg'),
+(112, 19, N'Deluxe King', N'Phòng King Deluxe nhìn ra biển', 2, 350.00, 10, 9, 'Balcony,Seaview', 'database/images/miniRoom/room112a.jpg,database/images/miniRoom/room112b.jpg,database/images/miniRoom/room112c.jpg,database/images/miniRoom/room112d.jpg,database/images/miniRoom/room112e.jpg'),
+(113, 19, N'Ocean Star Suite', N'Phòng Suite cao cấp nhất của resort', 4, 1500.00, 1, 1, 'ButlerService,PrivateBar', 'database/images/miniRoom/room113a.jpg,database/images/miniRoom/room113b.jpg,database/images/miniRoom/room113c.jpg,database/images/miniRoom/room113d.jpg,database/images/miniRoom/room113e.jpg'),
 
--- HOTEL ID 20: Hà Giang Grand View (1 bản ghi)
-(114, 20, N'Mountain View Double', N'Phòng đôi có tầm nhìn ra núi', 2, 100.00, 15, 15, 'Heating,MountainView', 'room114a.jpg,room114b.jpg'),
+(114, 20, N'Mountain View Double', N'Phòng đôi có tầm nhìn ra núi', 2, 100.00, 15, 15, 'Heating,MountainView', 'database/images/miniRoom/room114a.jpg,database/images/miniRoom/room114b.jpg,database/images/miniRoom/room114c.jpg,database/images/miniRoom/room114d.jpg,database/images/miniRoom/room114e.jpg'),
 
--- HOTEL ID 21: Ninh Bình Lotus (3 bản ghi)
-(115, 21, N'Superior Twin', N'Phòng Twin cao cấp', 2, 180.00, 10, 10, 'WiFi,GardenView', 'room115a.jpg,room115b.jpg'),
-(116, 21, N'Bungalow Garden', N'Bungalow có vườn riêng', 2, 250.00, 5, 5, 'Terrace,BikeRental', 'room116a.jpg,room116b.jpg'),
-(117, 21, N'Family Connected', N'Phòng gia đình có cửa thông', 4, 380.00, 3, 3, 'TwoRooms,FourBeds', 'room117a.jpg,room117b.jpg'),
+(115, 21, N'Superior Twin', N'Phòng Twin cao cấp', 2, 180.00, 10, 10, 'WiFi,GardenView', 'database/images/miniRoom/room115a.jpg,database/images/miniRoom/room115b.jpg,database/images/miniRoom/room115c.jpg,database/images/miniRoom/room115d.jpg,database/images/miniRoom/room115e.jpg'),
+(116, 21, N'Bungalow Garden', N'Bungalow có vườn riêng', 2, 250.00, 5, 5, 'Terrace,BikeRental', 'database/images/miniRoom/room116a.jpg,database/images/miniRoom/room116b.jpg,database/images/miniRoom/room116c.jpg,database/images/miniRoom/room116d.jpg,database/images/miniRoom/room116e.jpg'),
+(117, 21, N'Family Connected', N'Phòng gia đình có cửa thông', 4, 380.00, 3, 3, 'TwoRooms,FourBeds', 'database/images/miniRoom/room117a.jpg,database/images/miniRoom/room117b.jpg,database/images/miniRoom/room117c.jpg,database/images/miniRoom/room117d.jpg,database/images/miniRoom/room117e.jpg'),
 
--- HOTEL ID 22: Bạc Liêu Heritage (2 bản ghi)
-(118, 22, N'Standard Double', N'Phòng đôi tiêu chuẩn', 2, 95.00, 15, 15, 'WiFi,Desk', 'room118a.jpg,room118b.jpg'),
-(119, 22, N'Business King', N'Phòng King cho khách công tác', 2, 150.00, 8, 8, 'BusinessCenter,Desk', 'room119a.jpg,room119b.jpg'),
+(118, 22, N'Standard Double', N'Phòng đôi tiêu chuẩn', 2, 95.00, 15, 15, 'WiFi,Desk', 'database/images/miniRoom/room118a.jpg,database/images/miniRoom/room118b.jpg,database/images/miniRoom/room118c.jpg,database/images/miniRoom/room118d.jpg,database/images/miniRoom/room118e.jpg'),
+(119, 22, N'Business King', N'Phòng King cho khách công tác', 2, 150.00, 8, 8, 'BusinessCenter,Desk', 'database/images/miniRoom/room119a.jpg,database/images/miniRoom/room119b.jpg,database/images/miniRoom/room119c.jpg,database/images/miniRoom/room119d.jpg,database/images/miniRoom/room119e.jpg'),
 
--- HOTEL ID 23: Tokyo Sky Tower Hotel (2 bản ghi)
-(120, 23, 'Executive King', 'High floor room with premium amenities', 2, 450.00, 10, 9, 'Concierge,Minibar,CityView', 'room120a.jpg,room120b.jpg'),
-(121, 23, 'Tokyo Suite', 'Spacious suite with skyline view', 3, 900.00, 3, 3, 'SpaAccess,PrivateBar', 'room121a.jpg,room121b.jpg'),
+(120, 23, 'Executive King', 'High floor room with premium amenities', 2, 450.00, 10, 9, 'Concierge,Minibar,CityView', 'database/images/miniRoom/room120a.jpg,database/images/miniRoom/room120b.jpg,database/images/miniRoom/room120c.jpg,database/images/miniRoom/room120d.jpg,database/images/miniRoom/room120e.jpg'),
+(121, 23, 'Tokyo Suite', 'Spacious suite with skyline view', 3, 900.00, 3, 3, 'SpaAccess,PrivateBar', 'database/images/miniRoom/room121a.jpg,database/images/miniRoom/room121b.jpg,database/images/miniRoom/room121c.jpg,database/images/miniRoom/room121d.jpg,database/images/miniRoom/room121e.jpg'),
 
--- HOTEL ID 24: Rome Historic Stay (1 bản ghi)
-(122, 24, 'Standard Double', 'Double room overlooking the street', 2, 175.00, 15, 15, 'WiFi,Breakfast', 'room122a.jpg,room122b.jpg'),
+(122, 24, 'Standard Double', 'Double room overlooking the street', 2, 175.00, 15, 15, 'WiFi,Breakfast', 'database/images/miniRoom/room122a.jpg,database/images/miniRoom/room122b.jpg,database/images/miniRoom/room122c.jpg,database/images/miniRoom/room122d.jpg,database/images/miniRoom/room122e.jpg'),
 
--- HOTEL ID 25: Bangkok Riverside (3 bản ghi)
-(123, 25, 'Single Economy', 'Small single room, shared bathroom option', 1, 40.00, 20, 20, 'Fan,AC', 'room123a.jpg,room123b.jpg'),
-(124, 25, 'Standard Twin', 'Twin room with river access', 2, 80.00, 15, 13, 'WiFi,RiverAccess', 'room124a.jpg,room124b.jpg'),
-(125, 25, 'Family Room', 'Basic room for 4 people', 4, 120.00, 5, 5, 'AC,FourBeds', 'room125a.jpg,room125b.jpg'),
+(123, 25, 'Single Economy', 'Small single room, shared bathroom option', 1, 40.00, 20, 20, 'Fan,AC', 'database/images/miniRoom/room123a.jpg,database/images/miniRoom/room123b.jpg,database/images/miniRoom/room123c.jpg,database/images/miniRoom/room123d.jpg,database/images/miniRoom/room123e.jpg'),
+(124, 25, 'Standard Twin', 'Twin room with river access', 2, 80.00, 15, 13, 'WiFi,RiverAccess', 'database/images/miniRoom/room124a.jpg,database/images/miniRoom/room124b.jpg,database/images/miniRoom/room124c.jpg,database/images/miniRoom/room124d.jpg,database/images/miniRoom/room124e.jpg'),
+(125, 25, 'Family Room', 'Basic room for 4 people', 4, 120.00, 5, 5, 'AC,FourBeds', 'database/images/miniRoom/room125a.jpg,database/images/miniRoom/room125b.jpg,database/images/miniRoom/room125c.jpg,database/images/miniRoom/room125d.jpg,database/images/miniRoom/room125e.jpg'),
 
--- HOTEL ID 26: Dubai Marina Resort (2 bản ghi)
-(126, 26, 'Deluxe Seaview', 'Luxury room with direct sea view', 2, 600.00, 10, 9, 'Seaview,Balcony,SpaAccess', 'room126a.jpg,room126b.jpg'),
-(127, 26, 'Royal Suite', 'Highest tier suite with personalized service', 4, 2500.00, 1, 1, 'ButlerService,PrivatePool', 'room127a.jpg,room127b.jpg'),
+(126, 26, 'Deluxe Seaview', 'Luxury room with direct sea view', 2, 600.00, 10, 9, 'Seaview,Balcony,SpaAccess', 'database/images/miniRoom/room126a.jpg,database/images/miniRoom/room126b.jpg,database/images/miniRoom/room126c.jpg,database/images/miniRoom/room126d.jpg,database/images/miniRoom/room126e.jpg'),
+(127, 26, 'Royal Suite', 'Highest tier suite with personalized service', 4, 2500.00, 1, 1, 'ButlerService,PrivatePool', 'database/images/miniRoom/room127a.jpg,database/images/miniRoom/room127b.jpg,database/images/miniRoom/room127c.jpg,database/images/miniRoom/room127d.jpg,database/images/miniRoom/room127e.jpg'),
 
--- HOTEL ID 27: London Central Suite (3 bản ghi)
-(128, 27, 'Studio Apartment', 'Self-catering studio with kitchenette', 2, 230.00, 10, 10, 'Kitchenette,WiFi,SelfCheckIn', 'room128a.jpg,room128b.jpg'),
-(129, 27, 'One-Bedroom Suite', 'Separate living room and bedroom', 3, 350.00, 5, 4, 'FullKitchen,Laundry', 'room129a.jpg,room129b.jpg'),
-(130, 27, 'Executive Studio', 'Larger studio with premium furnishings', 2, 280.00, 8, 8, 'Kitchenette,Desk', 'room130a.jpg,room130b.jpg'),
+(128, 27, 'Studio Apartment', 'Self-catering studio with kitchenette', 2, 230.00, 10, 10, 'Kitchenette,WiFi,SelfCheckIn', 'database/images/miniRoom/room128a.jpg,database/images/miniRoom/room128b.jpg,database/images/miniRoom/room128c.jpg,database/images/miniRoom/room128d.jpg,database/images/miniRoom/room128e.jpg'),
+(129, 27, 'One-Bedroom Suite', 'Separate living room and bedroom', 3, 350.00, 5, 4, 'FullKitchen,Laundry', 'database/images/miniRoom/room129a.jpg,database/images/miniRoom/room129b.jpg,database/images/miniRoom/room129c.jpg,database/images/miniRoom/room129d.jpg,database/images/miniRoom/room129e.jpg'),
+(130, 27, 'Executive Studio', 'Larger studio with premium furnishings', 2, 280.00, 8, 8, 'Kitchenette,Desk', 'database/images/miniRoom/room130a.jpg,database/images/miniRoom/room130b.jpg,database/images/miniRoom/room130c.jpg,database/images/miniRoom/room130d.jpg,database/images/miniRoom/room130e.jpg'),
 
--- HOTEL ID 28: Sydney Harbour View (1 bản ghi)
-(131, 28, 'Opera View Deluxe', 'Room with direct view of the Opera House', 2, 350.00, 15, 15, 'HarbourView,Balcony,PoolAccess', 'room131a.jpg,room131b.jpg'),
+(131, 28, 'Opera View Deluxe', 'Room with direct view of the Opera House', 2, 350.00, 15, 15, 'HarbourView,Balcony,PoolAccess', 'database/images/miniRoom/room131a.jpg,database/images/miniRoom/room131b.jpg,database/images/miniRoom/room131c.jpg,database/images/miniRoom/room131d.jpg,database/images/miniRoom/room131e.jpg'),
+(132, 29, 'Standard Double', 'Double room with city view', 2, 150.00, 20, 18, 'WiFi,AC', 'database/images/miniRoom/room132a.jpg,database/images/miniRoom/room132b.jpg,database/images/miniRoom/room132c.jpg,database/images/miniRoom/room132d.jpg,database/images/miniRoom/room132e.jpg'),
+(133, 29, 'Hammam Suite', 'Suite with private access to Hammam area', 2, 300.00, 5, 5, 'HammamAccess,Minibar', 'database/images/miniRoom/room133a.jpg,database/images/miniRoom/room133b.jpg,database/images/miniRoom/room133c.jpg,database/images/miniRoom/room133d.jpg,database/images/miniRoom/room133e.jpg'),
+(134, 30, 'Standard Single', 'Single room near the beach', 1, 100.00, 10, 10, 'WiFi,BeachService', 'database/images/miniRoom/room134a.jpg,database/images/miniRoom/room134b.jpg,database/images/miniRoom/room134c.jpg,database/images/miniRoom/room134d.jpg,database/images/miniRoom/room134e.jpg'),
+(135, 30, 'Ocean View Double', 'Double room with Copacabana view', 2, 180.00, 15, 14, 'Seaview,Balcony', 'database/images/miniRoom/room135a.jpg,database/images/miniRoom/room135b.jpg,database/images/miniRoom/room135c.jpg,database/images/miniRoom/room135d.jpg,database/images/miniRoom/room135e.jpg'),
+(136, 30, 'Family Room', 'Room for 4 people with bunk beds', 4, 250.00, 5, 5, 'FourBeds,AC', 'database/images/miniRoom/room136a.jpg,database/images/miniRoom/room136b.jpg,database/images/miniRoom/room136c.jpg,database/images/miniRoom/room136d.jpg,database/images/miniRoom/room136e.jpg'),
+(137, 31, 'Business King', 'King room with large working area', 1, 200.00, 15, 15, 'Desk,BusinessCenter', 'database/images/miniRoom/room137a.jpg,database/images/miniRoom/room137b.jpg,database/images/miniRoom/room137c.jpg,database/images/miniRoom/room137d.jpg,database/images/miniRoom/room137e.jpg'),
+(138, 31, 'Meeting Suite', 'Suite with small conference table', 3, 400.00, 5, 5, 'ConferenceTable,Minibar', 'database/images/miniRoom/room138a.jpg,database/images/miniRoom/room138b.jpg,database/images/miniRoom/room138c.jpg,database/images/miniRoom/room138d.jpg,database/images/miniRoom/room138e.jpg'),
+(139, 32, 'Shared Dorm Bed', 'Bed in a 6-person shared dorm', 1, 35.00, 50, 45, 'SharedKitchen,Lockers', 'database/images/miniRoom/room139a.jpg,database/images/miniRoom/room139b.jpg,database/images/miniRoom/room139c.jpg,database/images/miniRoom/room139d.jpg,database/images/miniRoom/room139e.jpg'),
+(140, 33, 'Deluxe Mountain View', 'Room overlooking Table Mountain', 2, 300.00, 10, 9, 'MountainView,Balcony,SpaAccess', 'database/images/miniRoom/room140a.jpg,database/images/miniRoom/room140b.jpg,database/images/miniRoom/room140c.jpg,database/images/miniRoom/room140d.jpg,database/images/miniRoom/room140e.jpg'),
+(141, 33, 'Ocean King', 'King room with ocean view', 2, 380.00, 8, 8, 'Seaview,Minibar', 'database/images/miniRoom/room141a.jpg,database/images/miniRoom/room141b.jpg,database/images/miniRoom/room141c.jpg,database/images/miniRoom/room141d.jpg,database/images/miniRoom/room141e.jpg'),
+(142, 33, 'Infinity Pool Suite', 'Suite with access to infinity pool area', 4, 700.00, 3, 3, 'InfinityPoolAccess,WineTours', 'database/images/miniRoom/room142a.jpg,database/images/miniRoom/room142b.jpg,database/images/miniRoom/room142c.jpg,database/images/miniRoom/room142d.jpg,database/images/miniRoom/room142e.jpg'),
+(143, 34, 'Art Studio King', 'Unique room with local art pieces', 2, 190.00, 10, 10, 'ArtGalleryAccess,WiFi', 'database/images/miniRoom/room143a.jpg,database/images/miniRoom/room143b.jpg,database/images/miniRoom/room143c.jpg,database/images/miniRoom/room143d.jpg,database/images/miniRoom/room143e.jpg'),
+(144, 34, 'Gallery Suite', 'Spacious suite near the on-site gallery', 3, 320.00, 5, 5, 'GalleryAccess,Bar', 'database/images/miniRoom/room144a.jpg,database/images/miniRoom/room144b.jpg,database/images/miniRoom/room144c.jpg,database/images/miniRoom/room144d.jpg,database/images/miniRoom/room144e.jpg'),
+(145, 35, 'Standard Double', 'Double room in historic center', 2, 160.00, 15, 15, 'WiFi,AC', 'database/images/miniRoom/room145a.jpg,database/images/miniRoom/room145b.jpg,database/images/miniRoom/room145c.jpg,database/images/miniRoom/room145d.jpg,database/images/miniRoom/room145e.jpg'),
+(146, 35, 'Rooftop View King', 'King room with view of the Zocalo', 2, 240.00, 10, 8, 'RooftopAccess,CityView', 'database/images/miniRoom/room146a.jpg,database/images/miniRoom/room146b.jpg,database/images/miniRoom/room146c.jpg,database/images/miniRoom/room146d.jpg,database/images/miniRoom/room146e.jpg'),
+(147, 35, 'Colonial Suite', 'Suite with traditional furnishings', 3, 400.00, 5, 5, 'SaunaAccess,PoolAccess', 'database/images/miniRoom/room147a.jpg,database/images/miniRoom/room147b.jpg,database/images/miniRoom/room147c.jpg,database/images/miniRoom/room147d.jpg,database/images/miniRoom/room147e.jpg'),
+(148, 36, 'Deluxe River View', 'Luxury room overlooking the river', 2, 220.00, 15, 15, 'RiverView,CasinoAccess', 'database/images/miniRoom/room148a.jpg,database/images/miniRoom/room148b.jpg,database/images/miniRoom/room148c.jpg,database/images/miniRoom/room148d.jpg,database/images/miniRoom/room148e.jpg'),
+(149, 37, 'Standard Double', 'Double room with pet access', 2, 215.00, 10, 10, 'PetFriendly,WiFi', 'database/images/miniRoom/room149a.jpg,database/images/miniRoom/room149b.jpg,database/images/miniRoom/room149c.jpg,database/images/miniRoom/room149d.jpg,database/images/miniRoom/room149e.jpg'),
+(150, 37, 'Golden Gate Balcony', 'Room with balcony view of Golden Gate Bridge', 2, 380.00, 5, 5, 'BridgeView,Balcony', 'database/images/miniRoom/room150a.jpg,database/images/miniRoom/room150b.jpg,database/images/miniRoom/room150c.jpg,database/images/miniRoom/room150d.jpg,database/images/miniRoom/room150e.jpg'),
+(151, 38, 'Courtyard Single', 'Small room overlooking the courtyard', 1, 80.00, 10, 10, 'GardenView,TeaHouseAccess', 'database/images/miniRoom/room151a.jpg,database/images/miniRoom/room151b.jpg,database/images/miniRoom/room151c.jpg,database/images/miniRoom/room151d.jpg,database/images/miniRoom/room151e.jpg'),
+(152, 38, 'Traditional Double', 'Double room with traditional Chinese decor', 2, 120.00, 8, 8, 'BikeRental,AC', 'database/images/miniRoom/room152a.jpg,database/images/miniRoom/room152b.jpg,database/images/miniRoom/room152c.jpg,database/images/miniRoom/room152d.jpg,database/images/miniRoom/room152e.jpg'),
+(153, 38, 'Hutong Family Room', 'Large room for 4 people', 4, 200.00, 5, 5, 'FourBeds,GardenAccess', 'database/images/miniRoom/room153a.jpg,database/images/miniRoom/room153b.jpg,database/images/miniRoom/room153c.jpg,database/images/miniRoom/room153d.jpg,database/images/miniRoom/room153e.jpg'),
+(154, 39, 'Canal View Double', 'Double room overlooking the canal', 2, 200.00, 10, 10, 'CanalView,Breakfast', 'database/images/miniRoom/room154a.jpg,database/images/miniRoom/room154b.jpg,database/images/miniRoom/room154c.jpg,database/images/miniRoom/room154d.jpg,database/images/miniRoom/room154e.jpg'),
+(155, 40, 'Opera View King', 'King room with view of the Opera House', 2, 350.00, 10, 10, 'MusicLoungeAccess,CityView', 'database/images/miniRoom/room155a.jpg,database/images/miniRoom/room155b.jpg,database/images/miniRoom/room155c.jpg,database/images/miniRoom/room155d.jpg,database/images/miniRoom/room155e.jpg'),
+(157, 40, 'Standard Double', 'Standard double room', 2, 250.00, 15, 12, 'WiFi,AC', 'database/images/miniRoom/room157a.jpg,database/images/miniRoom/room157b.jpg,database/images/miniRoom/room157c.jpg,database/images/miniRoom/room157d.jpg,database/images/miniRoom/room157e.jpg'),
+(158, 41, 'Mughal King', 'King room with Mughal-inspired decor', 2, 160.00, 15, 15, 'PoolAccess,AC', 'database/images/miniRoom/room158a.jpg,database/images/miniRoom/room158b.jpg,database/images/miniRoom/room158c.jpg,database/images/miniRoom/room158d.jpg,database/images/miniRoom/room158e.jpg'),
+(159, 41, 'Events Suite', 'Suite near event and conference areas', 3, 300.00, 5, 4, 'CateringService,Minibar', 'database/images/miniRoom/room159a.jpg,database/images/miniRoom/room159b.jpg,database/images/miniRoom/room159c.jpg,database/images/miniRoom/room159d.jpg,database/images/miniRoom/room159e.jpg'),
+(160, 42, N'Standard Twin', N'Phòng Twin tiêu chuẩn, tiện nghi cơ bản', 2, 50.00, 10, 10, 'CommonAreaAccess,AC', 'database/images/miniRoom/room160a.jpg,database/images/miniRoom/room160b.jpg,database/images/miniRoom/room160c.jpg,database/images/miniRoom/room160d.jpg,database/images/miniRoom/room160e.jpg');
+-- Dữ liệu mẫu cho bảng Booking
+INSERT INTO Booking (userId, hotelId, roomId, checkInDate, checkOutDate, numberOfRooms, numberOfGuests, guestName, guestEmail, guestPhone, specialRequests, totalAmount, bookingStatus, createdAt, paymentMethod, paymentStatus) VALUES
+-- Booking đã hoàn thành
+(1, 1, 1, '2024-12-01', '2024-12-05', 1, 2, 'Nguyễn Văn An', 'nguyenvanan@email.com', '0901234567', 'Giường đôi, tầng cao, view biển', 12000000.00, 'Completed', '2024-11-20 10:30:00', 'Credit Card', 'Paid'),
+(2, 2, 5, '2024-12-10', '2024-12-12', 1, 1, 'Trần Thị Bình', 'tranbinhthi@email.com', '0912345678', 'Check-in sớm nếu có thể', 3500000.00, 'Completed', '2024-12-01 14:20:00', 'Bank Transfer', 'Paid'),
+(3, 3, 9, '2024-12-15', '2024-12-20', 2, 4, 'Lê Hoàng Cường', 'lehoangcuong@email.com', '0923456789', 'Cần 2 phòng kế bên nhau, có nôi em bé', 18000000.00, 'Completed', '2024-12-05 09:15:00', 'Cash', 'Paid'),
 
--- HOTEL ID 29: Istanbul Grand Bazaar Hotel (2 bản ghi)
-(132, 29, 'Standard Double', 'Double room with city view', 2, 150.00, 20, 18, 'WiFi,AC', 'room132a.jpg,room132b.jpg'),
-(133, 29, 'Hammam Suite', 'Suite with private access to Hammam area', 2, 300.00, 5, 5, 'HammamAccess,Minibar', 'room133a.jpg,room133b.jpg'),
+-- Booking đã xác nhận (sắp tới)
+(4, 1, 2, '2025-01-15', '2025-01-18', 1, 2, 'Phạm Minh Đức', 'phamminhduc@email.com', '0934567890', 'Phòng yên tĩnh, tránh xa thang máy', 9000000.00, 'Confirmed', '2024-12-28 16:45:00', 'Credit Card', 'Paid'),
+(5, 4, 13, '2025-01-20', '2025-01-25', 1, 3, 'Hoàng Thị Hoa', 'hoangthihoa@email.com', '0945678901', 'Cần thêm 1 giường phụ cho trẻ em', 7500000.00, 'Confirmed', '2025-01-02 11:30:00', 'E-wallet', 'Paid'),
+(1, 5, 17, '2025-02-01', '2025-02-05', 1, 2, 'Nguyễn Văn An', 'nguyenvanan@email.com', '0901234567', 'Kỷ niệm ngày cưới, muốn trang trí lãng mạn', 16000000.00, 'Confirmed', '2025-01-05 10:00:00', 'Credit Card', 'Paid'),
+(6, 2, 6, '2025-01-25', '2025-01-28', 1, 2, 'Vũ Đức Anh', 'vuducanh@email.com', '0956789012', 'Không hút thuốc, cần bàn làm việc', 5250000.00, 'Confirmed', '2025-01-08 13:20:00', 'Bank Transfer', 'Paid'),
 
--- HOTEL ID 30: Rio de Janeiro Copacabana (3 bản ghi)
-(134, 30, 'Standard Single', 'Single room near the beach', 1, 100.00, 10, 10, 'WiFi,BeachService', 'room134a.jpg,room134b.jpg'),
-(135, 30, 'Ocean View Double', 'Double room with Copacabana view', 2, 180.00, 15, 14, 'Seaview,Balcony', 'room135a.jpg,room135b.jpg'),
-(136, 30, 'Family Room', 'Room for 4 people with bunk beds', 4, 250.00, 5, 5, 'FourBeds,AC', 'room136a.jpg,room136b.jpg'),
+-- Booking đang chờ xử lý
+(7, 3, 10, '2025-01-30', '2025-02-03', 1, 2, 'Đặng Thị Mai', 'dangthimai@email.com', '0967890123', 'Dị ứng lông động vật', 8000000.00, 'Pending', '2025-01-07 15:30:00', 'Credit Card', 'Pending'),
+(8, 1, 3, '2025-02-10', '2025-02-15', 2, 5, 'Bùi Văn Hùng', 'buivanhung@email.com', '0978901234', 'Đoàn gia đình, cần 2 phòng liền kề, có bữa sáng', 15000000.00, 'Pending', '2025-01-08 09:45:00', 'Bank Transfer', 'Pending'),
 
--- HOTEL ID 31: Seoul Gangnam Place (2 bản ghi)
-(137, 31, 'Business King', 'King room with large working area', 1, 200.00, 15, 15, 'Desk,BusinessCenter', 'room137a.jpg,room137b.jpg'),
-(138, 31, 'Meeting Suite', 'Suite with small conference table', 3, 400.00, 5, 5, 'ConferenceTable,Minibar', 'room138a.jpg,room138b.jpg'),
+-- Booking đã hủy
+(2, 4, 14, '2024-12-20', '2024-12-23', 1, 1, 'Trần Thị Bình', 'tranbinhthi@email.com', '0912345678', 'Có việc đột xuất, cần hủy', 4500000.00, 'Cancelled', '2024-12-10 08:00:00', 'Credit Card', 'Refunded'),
+(9, 5, 18, '2025-01-10', '2025-01-12', 1, 2, 'Ngô Quốc Tuấn', 'ngoquoctuan@email.com', '0989012345', 'Thay đổi kế hoạch du lịch', 6400000.00, 'Cancelled', '2024-12-25 14:30:00', 'E-wallet', 'Refunded'),
 
--- HOTEL ID 32: Toronto Downtown Hostel (1 bản ghi)
-(139, 32, 'Shared Dorm Bed', 'Bed in a 6-person shared dorm', 1, 35.00, 50, 45, 'SharedKitchen,Lockers', 'room139a.jpg,room139b.jpg'),
+-- Booking đang Check-in (khách đang ở)
+(10, 2, 7, '2025-01-07', '2025-01-10', 1, 2, 'Phan Thị Lan', 'phanthilan@email.com', '0990123456', 'Cần phòng view đẹp', 5250000.00, 'Checked-in', '2025-01-01 10:20:00', 'Cash', 'Paid'),
+(3, 1, 4, '2025-01-06', '2025-01-09', 1, 3, 'Lê Hoàng Cường', 'lehoangcuong@email.com', '0923456789', 'Cần giường phụ', 9000000.00, 'Checked-in', '2024-12-30 16:00:00', 'Credit Card', 'Paid'),
 
--- HOTEL ID 33: Cape Town Table View (3 bản ghi)
-(140, 33, 'Deluxe Mountain View', 'Room overlooking Table Mountain', 2, 300.00, 10, 9, 'MountainView,Balcony,SpaAccess', 'room140a.jpg,room140b.jpg'),
-(141, 33, 'Ocean King', 'King room with ocean view', 2, 380.00, 8, 8, 'Seaview,Minibar', 'room141a.jpg,room141b.jpg'),
-(142, 33, 'Infinity Pool Suite', 'Suite with access to infinity pool area', 4, 700.00, 3, 3, 'InfinityPoolAccess,WineTours', 'room142a.jpg,room142b.jpg'),
+-- Booking đã Check-out
+(4, 3, 11, '2025-01-01', '2025-01-05', 1, 2, 'Phạm Minh Đức', 'phamminhduc@email.com', '0934567890', 'Đón năm mới', 10000000.00, 'Checked-out', '2024-12-20 11:00:00', 'Bank Transfer', 'Paid'),
 
--- HOTEL ID 34: Berlin Art Hotel (2 bản ghi)
-(143, 34, 'Art Studio King', 'Unique room with local art pieces', 2, 190.00, 10, 10, 'ArtGalleryAccess,WiFi', 'room143a.jpg,room143b.jpg'),
-(144, 34, 'Gallery Suite', 'Spacious suite near the on-site gallery', 3, 320.00, 5, 5, 'GalleryAccess,Bar', 'room144a.jpg,room144b.jpg'),
+-- Booking với yêu cầu đặc biệt
+(11, 4, 15, '2025-02-14', '2025-02-16', 1, 2, 'Trương Văn Nam', 'truongvannam@email.com', '0901112233', 'Ngày Valentine, cần hoa tươi và rượu vang trong phòng', 6000000.00, 'Confirmed', '2025-01-08 18:00:00', 'Credit Card', 'Paid'),
+(12, 5, 19, '2025-03-01', '2025-03-07', 1, 1, 'Lý Thị Thu', 'lythithu@email.com', '0912223344', 'Công tác, cần hóa đơn VAT', 19200000.00, 'Confirmed', '2025-01-07 09:30:00', 'Bank Transfer', 'Paid'),
 
--- HOTEL ID 35: Mexico City Palace (3 bản ghi)
-(145, 35, 'Standard Double', 'Double room in historic center', 2, 160.00, 15, 15, 'WiFi,AC', 'room145a.jpg,room145b.jpg'),
-(146, 35, 'Rooftop View King', 'King room with view of the Zocalo', 2, 240.00, 10, 8, 'RooftopAccess,CityView', 'room146a.jpg,room146b.jpg'),
-(147, 35, 'Colonial Suite', 'Suite with traditional furnishings', 3, 400.00, 5, 5, 'SaunaAccess,PoolAccess', 'room147a.jpg,room147b.jpg'),
+-- Booking nhóm lớn
+(1, 1, 1, '2025-03-15', '2025-03-20', 3, 6, 'Nguyễn Văn An', 'nguyenvanan@email.com', '0901234567', 'Du lịch gia đình lớn, cần 3 phòng gần nhau', 36000000.00, 'Pending', '2025-01-08 14:00:00', 'Bank Transfer', 'Pending'),
 
--- HOTEL ID 36: Phnom Penh Diamond (1 bản ghi)
-(148, 36, 'Deluxe River View', 'Luxury room overlooking the river', 2, 220.00, 15, 15, 'RiverView,CasinoAccess', 'room148a.jpg,room148b.jpg'),
+-- Booking đặt trước lâu
+(13, 2, 8, '2025-04-25', '2025-04-30', 1, 2, 'Đinh Thị Hương', 'dinhthihuong@email.com', '0923334455', 'Lễ 30/4, đặt trước', 8750000.00, 'Confirmed', '2025-01-05 10:30:00', 'E-wallet', 'Paid'),
 
--- HOTEL ID 37: San Francisco Bridge View (2 bản ghi)
-(149, 37, 'Standard Double', 'Double room with pet access', 2, 215.00, 10, 10, 'PetFriendly,WiFi', 'room149a.jpg,room149b.jpg'),
-(150, 37, 'Golden Gate Balcony', 'Room with balcony view of Golden Gate Bridge', 2, 380.00, 5, 5, 'BridgeView,Balcony', 'room150a.jpg,room150b.jpg'),
+-- Booking cuối tuần
+(14, 3, 12, '2025-01-17', '2025-01-19', 1, 2, 'Võ Minh Tuấn', 'vominhtuan@email.com', '0934445566', 'Nghỉ cuối tuần', 4800000.00, 'Confirmed', '2025-01-08 08:15:00', 'Credit Card', 'Paid'),
 
--- HOTEL ID 38: Beijing Hutong Stay (3 bản ghi)
-(151, 38, 'Courtyard Single', 'Small room overlooking the courtyard', 1, 80.00, 10, 10, 'GardenView,TeaHouseAccess', 'room151a.jpg,room151b.jpg'),
-(152, 38, 'Traditional Double', 'Double room with traditional Chinese decor', 2, 120.00, 8, 8, 'BikeRental,AC', 'room152a.jpg,room152b.jpg'),
-(153, 38, 'Hutong Family Room', 'Large room for 4 people', 4, 200.00, 5, 5, 'FourBeds,GardenAccess', 'room153a.jpg,room153b.jpg'),
+-- Booking với thanh toán tại chỗ
+(15, 4, 16, '2025-01-22', '2025-01-24', 1, 1, 'Mai Thị Nga', 'maithinga@email.com', '0945556677', 'Thanh toán khi nhận phòng', 3000000.00, 'Confirmed', '2025-01-08 12:00:00', 'Cash', 'Pending'),
 
--- HOTEL ID 39: Amsterdam Canal House (1 bản ghi)
-(154, 39, 'Canal View Double', 'Double room overlooking the canal', 2, 200.00, 10, 10, 'CanalView,Breakfast', 'room154a.jpg,room154b.jpg'),
+-- Booking dài hạn
+(5, 5, 20, '2025-02-01', '2025-02-28', 1, 1, 'Đỗ Văn Phong', 'dovanphong@email.com', '0956667788', 'Thuê dài hạn 1 tháng, công tác', 56000000.00, 'Confirmed', '2025-01-08 16:30:00', 'Bank Transfer', 'Paid'),
 
--- HOTEL ID 40: Vienna Concert Hotel (3 bản ghi)
-(155, 40, 'Opera View King', 'King room with view of the Opera House', 2, 350.00, 10, 10, 'MusicLoungeAccess,CityView', 'room155a.jpg,room155b.jpg'),
-(156, 40, 'Concert Suite', 'Luxury suite dedicated to music', 2, 600.00, 5, 5, 'SpaAccess,ValetService', 'room156a.jpg,room156b.jpg'),
-(157, 40, 'Standard Double', 'Standard double room', 2, 250.00, 15, 12, 'WiFi,AC', 'room157a.jpg,room157b.jpg'),
-
--- HOTEL ID 41: New Delhi Royal Residency (2 bản ghi)
-(158, 41, 'Mughal King', 'King room with Mughal-inspired decor', 2, 160.00, 15, 15, 'PoolAccess,AC', 'room158a.jpg,room158b.jpg'),
-(159, 41, 'Events Suite', 'Suite near event and conference areas', 3, 300.00, 5, 4, 'CateringService,Minibar', 'room159a.jpg,room159b.jpg'),
-
--- HOTEL ID 42: Hanoi Cozy Corner (1 bản ghi)
-(160, 42, N'Standard Twin', N'Phòng Twin tiêu chuẩn, tiện nghi cơ bản', 2, 50.00, 10, 10, 'CommonAreaAccess,AC', 'room160a.jpg,room160b.jpg');
-
-INSERT INTO Booking (bookingId, userId, hotelId, roomId, checkInDate, checkOutDate, totalAmount, bookingStatus)
-VALUES
--- Bookings in December 2025
-(4, 4, 3, 8, '2025-12-08', '2025-12-10', 180.00, 'Confirmed'),       -- 2 nights @ 90.00
-(5, 5, 5, 4, '2025-12-19', '2025-12-23', 1400.00, 'Pending'),      -- 4 nights @ 350.00
-(6, 6, 10, 7, '2025-12-01', '2025-12-03', 640.00, 'Confirmed'),      -- 2 nights @ 320.00
-(7, 7, 8, 5, '2025-12-24', '2025-12-26', 360.00, 'Confirmed'),      -- 2 nights @ 180.00
-(8, 8, 9, 13, '2025-12-28', '2026-01-01', 4800.00, 'Confirmed'),    -- 4 nights @ 1200.00
-(9, 9, 4, 11, '2025-12-11', '2025-12-14', 450.00, 'Pending'),      -- 3 nights @ 150.00
-(10, 10, 6, 9, '2025-12-04', '2025-12-06', 960.00, 'Confirmed'),     -- 2 nights @ 480.00
-(11, 11, 7, 10, '2025-12-17', '2025-12-21', 1000.00, 'Confirmed'),   -- 4 nights @ 250.00
-(12, 12, 1, 6, '2025-12-03', '2025-12-08', 2750.00, 'Confirmed'),    -- 5 nights @ 550.00
-(13, 13, 2, 12, '2025-12-26', '2025-12-28', 420.00, 'Cancelled'),    -- 2 nights @ 210.00
-(14, 14, 15, 103, '2025-12-06', '2025-12-09', 390.00, 'Confirmed'),    -- 3 nights @ 130.00
-(15, 15, 23, 120, '2025-12-20', '2025-12-22', 900.00, 'Pending'),     -- 2 nights @ 450.00
-(16, 16, 30, 135, '2025-12-14', '2025-12-18', 720.00, 'Confirmed'),   -- 4 nights @ 180.00
-(17, 17, 34, 143, '2025-12-10', '2025-12-12', 380.00, 'Confirmed'),   -- 2 nights @ 190.00
-(18, 18, 38, 152, '2025-12-07', '2025-12-10', 360.00, 'Pending'),     -- 3 nights @ 120.00
-(19, 19, 19, 111, '2025-12-23', '2025-12-27', 3400.00, 'Confirmed'),   -- 4 nights @ 850.00
-(20, 20, 27, 128, '2025-12-02', '2025-12-05', 690.00, 'Confirmed'),   -- 3 nights @ 230.00
-(21, 21, 16, 105, '2025-12-13', '2025-12-15', 500.00, 'Pending'),     -- 2 nights @ 250.00
-(22, 22, 40, 156, '2025-12-29', '2026-01-02', 2400.00, 'Confirmed'),   -- 4 nights @ 600.00
-(23, 23, 1, 16, '2025-12-05', '2025-12-07', 760.00, 'Confirmed'),     -- 2 nights @ 380.00
-(24, 24, 2, 22, '2025-12-18', '2025-12-22', 780.00, 'Confirmed'),     -- 4 nights @ 195.00
-(25, 25, 3, 18, '2025-12-16', '2025-12-19', 600.00, 'Pending'),      -- 3 nights @ 200.00
-(26, 26, 4, 21, '2025-12-25', '2025-12-27', 320.00, 'Cancelled'),    -- 2 nights @ 160.00
-(27, 27, 5, 24, '2025-12-09', '2025-12-11', 340.00, 'Confirmed'),     -- 2 nights @ 170.00
-(28, 28, 6, 19, '2025-12-12', '2025-12-15', 930.00, 'Confirmed'),     -- 3 nights @ 310.00
-(29, 29, 7, 20, '2025-12-20', '2025-12-24', 1600.00, 'Pending'),     -- 4 nights @ 400.00
-(30, 30, 8, 25, '2025-12-01', '2025-12-05', 1120.00, 'Confirmed'),   -- 4 nights @ 280.00
-(31, 31, 9, 23, '2025-12-15', '2025-12-18', 1950.00, 'Confirmed'),   -- 3 nights @ 650.00
-(32, 32, 10, 27, '2025-12-27', '2025-12-30', 780.00, 'Cancelled'),    -- 3 nights @ 260.00
-(33, 33, 11, 96, '2025-12-04', '2025-12-06', 500.00, 'Confirmed'),    -- 2 nights @ 250.00
-(34, 1, 12, 97, '2025-12-10', '2025-12-14', 1520.00, 'Confirmed'),   -- 4 nights @ 380.00
-(35, 2, 14, 100, '2025-12-16', '2025-12-18', 440.00, 'Pending'),     -- 2 nights @ 220.00
-(36, 3, 26, 126, '2025-12-21', '2025-12-24', 1800.00, 'Confirmed'),   -- 3 nights @ 600.00
-(37, 4, 32, 139, '2025-12-07', '2025-12-11', 140.00, 'Confirmed'),   -- 4 nights @ 35.00
-(38, 5, 36, 148, '2025-12-19', '2025-12-21', 440.00, 'Pending'),     -- 2 nights @ 220.00
-
--- Bookings in January 2026 and mixed dates
-(39, 6, 33, 140, '2026-01-03', '2026-01-06', 900.00, 'Confirmed'),    -- 3 nights @ 300.00
-(40, 7, 28, 131, '2026-01-10', '2026-01-13', 1050.00, 'Confirmed'),   -- 3 nights @ 350.00
-(41, 8, 42, 160, '2026-01-01', '2026-01-03', 100.00, 'Confirmed'),    -- 2 nights @ 50.00
-(42, 9, 39, 154, '2026-01-15', '2026-01-19', 800.00, 'Pending'),      -- 4 nights @ 200.00
-(43, 10, 41, 158, '2026-01-22', '2026-01-24', 320.00, 'Confirmed'),   -- 2 nights @ 160.00
-(44, 11, 25, 124, '2026-01-05', '2026-01-07', 160.00, 'Confirmed'),   -- 2 nights @ 80.00
-(45, 12, 19, 112, '2026-01-12', '2026-01-16', 1400.00, 'Pending'),    -- 4 nights @ 350.00
-(46, 13, 22, 119, '2026-01-08', '2026-01-13', 750.00, 'Confirmed'),   -- 5 nights @ 150.00
-(47, 14, 17, 108, '2026-01-14', '2026-01-16', 170.00, 'Confirmed'),   -- 2 nights @ 85.00
-(48, 15, 35, 146, '2026-01-20', '2026-01-24', 960.00, 'Pending'),     -- 4 nights @ 240.00
-(49, 16, 20, 114, '2026-01-03', '2026-01-05', 200.00, 'Cancelled'),    -- 2 nights @ 100.00
-(50, 17, 1, 36, '2026-01-25', '2026-01-28', 1200.00, 'Confirmed'),   -- 3 nights @ 400.00
-(51, 18, 3, 49, '2026-01-11', '2026-01-13', 1000.00, 'Confirmed'),   -- 2 nights @ 500.00
-(52, 19, 6, 50, '2026-01-17', '2026-01-20', 435.00, 'Pending'),      -- 3 nights @ 145.00
-(53, 20, 9, 71, '2026-01-29', '2026-02-01', 5400.00, 'Confirmed');   -- 3 nights @ 1800.00
-
+-- Booking khẩn cấp (same day)
+(16, 1, 2, '2025-01-08', '2025-01-09', 1, 1, 'Lê Thị Tâm', 'lethitam@email.com', '0967778899', 'Đặt phòng khẩn cấp, chuyến bay delay', 3000000.00, 'Confirmed', '2025-01-08 19:00:00', 'Credit Card', 'Paid');
 INSERT INTO Payment (paymentId, bookingId, paymentMethod, amount, paymentStatus, transactionId)
 VALUES
 (4, 4, 'Bank Transfer', 180.00, 'Completed', 'TXN004A'),
