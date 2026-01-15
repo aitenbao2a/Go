@@ -1,215 +1,226 @@
-package dao; 
+package dao;
 
 import model.Review;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewDAO {
-    private Review extractReviewFromResultSet(ResultSet rs) throws SQLException {
-        Review review = new Review();
-        review.setReviewId(rs.getInt("review_id"));
-        review.setUserId(rs.getInt("user_id"));
-        review.setHotelId(rs.getInt("hotel_id"));
-        review.setBookingId(rs.getInt("booking_id"));
-        review.setRating(rs.getInt("rating"));
-        review.setComment(rs.getString("comment"));
-        review.setCreatedAt(rs.getTimestamp("created_at"));
-        
-        // Lấy tên người dùng (chỉ có khi dùng JOIN)
-        try {
-            review.setUserName(rs.getString("user_name"));
-        } catch (SQLException e) {
-            // Bỏ qua nếu cột 'user_name' không tồn tại (ví dụ: truy vấn không có JOIN)
-        }
-        
-        return review;
-    }
 
-    // --- CRUD và Phương thức Thống kê ---
-
-    // 1. Tạo review mới
-    public boolean createReview(Review review) {
-        String sql = "INSERT INTO reviews (user_id, hotel_id, booking_id, rating, comment) " +
-                    "VALUES (?, ?, ?, ?, ?)";
-        
-        // Sử dụng try-with-resources
-        try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            
-            pstmt.setInt(1, review.getUserId());
-            pstmt.setInt(2, review.getHotelId());
-            pstmt.setInt(3, review.getBookingId());
-            pstmt.setInt(4, review.getRating());
-            pstmt.setString(5, review.getComment());
-            
-            int affectedRows = pstmt.executeUpdate();
-            
-            if (affectedRows > 0) {
-                // Lấy ID tự động tạo
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        review.setReviewId(rs.getInt(1));
-                    }
-                }
-                return true;
-            }
-        } catch (SQLException e) {
-            System.err.println("Lỗi tạo review: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
-    }
-    
-    // 2. Lấy tất cả review của hotel
+    /**
+     * Lấy tất cả đánh giá của một khách sạn
+     * JOIN với bảng User để lấy thông tin người dùng
+     */
     public List<Review> getReviewsByHotelId(int hotelId) {
         List<Review> reviews = new ArrayList<>();
-        // Đã cập nhật JOIN sử dụng user_id để lấy full_name
-        String sql = "SELECT r.*, u.full_name AS user_name " + 
-                    "FROM reviews r " + 
-                    "JOIN users u ON r.user_id = u.user_id " + 
-                    "WHERE r.hotel_id = ? " + 
-                    "ORDER BY r.created_at DESC";
-        
+        String sql = "SELECT r.reviewId, r.userId, r.hotelId, r.rating, r.comment, r.createdAt, " +
+                     "u.fullName, u.avatar " +
+                     "FROM Review r " +
+                     "INNER JOIN User u ON r.userId = u.userId " +
+                     "WHERE r.hotelId = ? " +
+                     "ORDER BY r.createdAt DESC";
+
         try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, hotelId);
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    reviews.add(extractReviewFromResultSet(rs));
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, hotelId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Review review = new Review();
+                review.setReviewId(rs.getInt("reviewId"));
+                review.setUserId(rs.getInt("userId"));
+                review.setHotelId(rs.getInt("hotelId"));
+                review.setRating(rs.getInt("rating"));
+                review.setComment(rs.getString("comment"));
+                
+                Timestamp timestamp = rs.getTimestamp("createdAt");
+                if (timestamp != null) {
+                    review.setCreatedAt(timestamp.toLocalDateTime());
                 }
+                
+                // Thông tin từ User
+                review.setUserName(rs.getString("fullName"));
+                
+                // Avatar: nếu null hoặc rỗng thì dùng default
+                String avatar = rs.getString("avatar");
+                if (avatar == null || avatar.trim().isEmpty()) {
+                    String name = rs.getString("fullName");
+                    avatar = "https://ui-avatars.com/api/?name=" + 
+                             (name != null ? name.replace(" ", "+") : "User") +
+                             "&background=667eea&color=fff&size=128";
+                }
+                review.setUserAvatar(avatar);
+                
+                reviews.add(review);
             }
+
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy review theo Hotel ID: " + e.getMessage());
             e.printStackTrace();
         }
+
         return reviews;
     }
-    
-    // 3. Lấy review theo booking ID
-    public Review getReviewByBookingId(int bookingId) {
-        String sql = "SELECT r.*, u.full_name AS user_name " +
-                    "FROM reviews r " +
-                    "JOIN users u ON r.user_id = u.user_id " +
-                    "WHERE r.booking_id = ?";
-        
+
+    /**
+     * Thêm đánh giá mới
+     * Chỉ lưu userId, hotelId, rating, comment
+     */
+    public boolean addReview(Review review) {
+        String sql = "INSERT INTO Review (userId, hotelId, rating, comment) VALUES (?, ?, ?, ?)";
+
         try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, bookingId);
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return extractReviewFromResultSet(rs);
-                }
-            }
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, review.getUserId());
+            stmt.setInt(2, review.getHotelId());
+            stmt.setInt(3, review.getRating());
+            stmt.setString(4, review.getComment());
+
+            return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy review theo Booking ID: " + e.getMessage());
             e.printStackTrace();
+            return false;
         }
-        return null;
     }
-    
-    // 4. Lấy điểm đánh giá trung bình của hotel
+
+    /**
+     * Tính điểm trung bình của khách sạn
+     */
     public double getAverageRating(int hotelId) {
-        String sql = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE hotel_id = ?";
-        
+        String sql = "SELECT AVG(rating) as avgRating FROM Review WHERE hotelId = ?";
+
         try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, hotelId);
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    // Sử dụng getDouble để lấy giá trị AVG (luôn trả về double)
-                    return rs.getDouble("avg_rating");
-                }
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, hotelId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("avgRating");
             }
+
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy điểm trung bình: " + e.getMessage());
             e.printStackTrace();
         }
+
         return 0.0;
     }
-    
-    // 5. Đếm số lượng review của hotel
+
+    /**
+     * Đếm số lượng đánh giá của khách sạn
+     */
     public int getReviewCount(int hotelId) {
-        String sql = "SELECT COUNT(review_id) AS review_count FROM reviews WHERE hotel_id = ?";
-        
+        String sql = "SELECT COUNT(*) as total FROM Review WHERE hotelId = ?";
+
         try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, hotelId);
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("review_count");
-                }
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, hotelId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("total");
             }
+
         } catch (SQLException e) {
-            System.err.println("Lỗi đếm review: " + e.getMessage());
             e.printStackTrace();
         }
+
         return 0;
     }
-    
-    // 6. Kiểm tra user đã review booking này chưa
-    public boolean hasUserReviewedBooking(int userId, int bookingId) {
-        String sql = "SELECT review_id FROM reviews WHERE user_id = ? AND booking_id = ?";
-        
+
+    /**
+     * Kiểm tra user đã đánh giá khách sạn này chưa
+     */
+    public boolean hasUserReviewed(int userId, int hotelId) {
+        String sql = "SELECT COUNT(*) as count FROM Review WHERE userId = ? AND hotelId = ?";
+
         try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, userId);
-            pstmt.setInt(2, bookingId);
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2, hotelId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("count") > 0;
             }
+
         } catch (SQLException e) {
-            System.err.println("Lỗi kiểm tra review: " + e.getMessage());
             e.printStackTrace();
         }
+
         return false;
     }
-    
-    // 7. Cập nhật review
-    public boolean updateReview(Review review) {
-        String sql = "UPDATE reviews SET rating = ?, comment = ? WHERE review_id = ? AND user_id = ?";
-        
-        try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, review.getRating());
-            pstmt.setString(2, review.getComment());
-            pstmt.setInt(3, review.getReviewId());
-            pstmt.setInt(4, review.getUserId());
-            
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Lỗi cập nhật review: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
-    }
-    
-    // 8. Xóa review
+
+    /**
+     * Xóa đánh giá (chỉ user tạo ra mới được xóa)
+     */
     public boolean deleteReview(int reviewId, int userId) {
-        String sql = "DELETE FROM reviews WHERE review_id = ? AND user_id = ?";
-        
+        String sql = "DELETE FROM Review WHERE reviewId = ? AND userId = ?";
+
         try (Connection conn = DBCon.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, reviewId);
-            pstmt.setInt(2, userId);
-            
-            return pstmt.executeUpdate() > 0;
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, reviewId);
+            stmt.setInt(2, userId);
+            return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            System.err.println("Lỗi xóa review: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Lấy một review theo ID với thông tin user
+     */
+    public Review getReviewById(int reviewId) {
+        String sql = "SELECT r.*, u.fullName, u.avatar " +
+                     "FROM Review r " +
+                     "INNER JOIN User u ON r.userId = u.userId " +
+                     "WHERE r.reviewId = ?";
+
+        try (Connection conn = DBCon.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, reviewId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Review review = new Review();
+                review.setReviewId(rs.getInt("reviewId"));
+                review.setUserId(rs.getInt("userId"));
+                review.setHotelId(rs.getInt("hotelId"));
+                review.setRating(rs.getInt("rating"));
+                review.setComment(rs.getString("comment"));
+                
+                Timestamp timestamp = rs.getTimestamp("createdAt");
+                if (timestamp != null) {
+                    review.setCreatedAt(timestamp.toLocalDateTime());
+                }
+                
+                review.setUserName(rs.getString("fullName"));
+                
+                String avatar = rs.getString("avatar");
+                if (avatar == null || avatar.trim().isEmpty()) {
+                    String name = rs.getString("fullName");
+                    avatar = "https://ui-avatars.com/api/?name=" + 
+                             (name != null ? name.replace(" ", "+") : "User") +
+                             "&background=667eea&color=fff&size=128";
+                }
+                review.setUserAvatar(avatar);
+                
+                return review;
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
+        return null;
     }
 }

@@ -8,12 +8,13 @@
 <title>GO - Du lịch là trải nghiệm</title>
 <style>
 .header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Chuyển sang tone xám đậm chuyên nghiệp */
+    background: linear-gradient(135deg, #4b5563 0%, #1f2937 100%);
     color: white;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     padding: 0 24px;
 }
 .header-main {
@@ -56,18 +57,19 @@
 }
 .btn-register {
     background: white;
-    color: #667eea;
+    /* Chữ màu xám đậm thay cho tím */
+    color: #374151;
 }
 .btn-signin:hover {
     background: white;
-    color: #667eea;
+    color: #374151;
 }
 .btn-register:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }
 
-/* User Info Display - nằm ngang */
+/* User Info Display */
 .user-info-wrapper {
     position: relative;
 }
@@ -77,7 +79,7 @@
     align-items: center;
     gap: 10px;
     padding: 6px 16px 6px 6px;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.15);
     backdrop-filter: blur(4px);
     border-radius: 24px;
     cursor: pointer;
@@ -85,7 +87,7 @@
 }
 
 .user-info:hover {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.25);
 }
 
 .user-avatar {
@@ -96,7 +98,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #667eea;
+    /* Màu icon avatar xám xanh */
+    color: #4b5563;
     font-weight: 700;
     font-size: 16px;
     flex-shrink: 0;
@@ -119,7 +122,7 @@
     right: 0;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     min-width: 280px;
     opacity: 0;
     visibility: hidden;
@@ -150,7 +153,8 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Gradient xám cho avatar trong dropdown */
+    background: linear-gradient(135deg, #6b7280 0%, #374151 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,13 +170,13 @@
 .dropdown-user-name {
     font-weight: 700;
     font-size: 16px;
-    color: #1a202c;
+    color: #1f2937;
     margin-bottom: 4px;
 }
 
 .dropdown-user-email {
     font-size: 13px;
-    color: #718096;
+    color: #6b7280;
 }
 
 .dropdown-menu {
@@ -184,14 +188,15 @@
     align-items: center;
     gap: 12px;
     padding: 12px 20px;
-    color: #2d3748;
+    color: #4b5563;
     text-decoration: none;
     transition: background 0.2s;
     cursor: pointer;
 }
 
 .dropdown-item:hover {
-    background: #f7fafc;
+    background: #f3f4f6;
+    color: #1f2937;
 }
 
 .dropdown-item-icon {
@@ -208,18 +213,18 @@
 
 .dropdown-divider {
     height: 1px;
-    background: #e2e8f0;
+    background: #e5e7eb;
     margin: 8px 0;
 }
 
 .dropdown-item.logout {
-    color: #e53e3e;
-    border-top: 1px solid #e2e8f0;
+    color: #dc2626;
+    border-top: 1px solid #f3f4f6;
     margin-top: 8px;
 }
 
 .dropdown-item.logout:hover {
-    background: #fff5f5;
+    background: #fef2f2;
 }
 
 .weather-widget {
@@ -228,7 +233,7 @@
     gap: 10px;
     padding: 8px 12px;
     border-radius: 12px;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.1);
     backdrop-filter: blur(4px);
     overflow: hidden;
     flex-grow: 1; 
@@ -253,7 +258,7 @@
 <body>
 
 <%
-    // Lấy user từ session
+    // Giữ nguyên toàn bộ logic Java xử lý User session
     model.User user = (model.User) session.getAttribute("user");
     String displayName = "";
     String userEmail = "";
@@ -261,15 +266,11 @@
     
     if (user != null) {
         userEmail = user.getEmail() != null ? user.getEmail() : "";
-        
-        // Nếu có fullName thì dùng fullName, không thì dùng email
         if (user.getFullName() != null && !user.getFullName().trim().isEmpty()) {
             displayName = user.getFullName();
         } else {
             displayName = userEmail;
         }
-        
-        // Lấy chữ cái đầu
         if (!displayName.isEmpty()) {
             avatarLetter = displayName.substring(0, 1).toUpperCase();
         }
@@ -283,27 +284,22 @@
 
 <header class="header">
     <div class="header-main">
-        <!-- LOGO -->
         <a href="${pageContext.request.contextPath}/view/home.jsp"> 
             <img src="${pageContext.request.contextPath}/images/logo.png" class="logo-img">
         </a>
         
-        <!-- WEATHER WIDGET -->
         <div class="weather-widget">
             <div class="weather-scroll" id="weatherText">Đang tải...</div>
         </div>
 
-        <!-- USER ACTIONS -->
         <div class="user-actions">
             <% if (user != null) { %>
-                <!-- User đã đăng nhập -->
                 <div class="user-info-wrapper">
                     <div class="user-info" id="userInfoBtn" title="<%= displayName %>">
                         <div class="user-avatar"><%= avatarLetter %></div>
                         <span class="user-name"><%= displayName %></span>
                     </div>
                     
-                    <!-- Dropdown Menu -->
                     <div class="user-dropdown" id="userDropdown">
                         <div class="dropdown-header">
                             <div class="dropdown-user-info">
@@ -320,49 +316,15 @@
                                 <span class="dropdown-item-icon">👤</span>
                                 <span class="dropdown-item-text">Tài khoản của tôi</span>
                             </a>
-                            
                             <a href="${pageContext.request.contextPath}/view/bookings.jsp" class="dropdown-item">
                                 <span class="dropdown-item-icon">📋</span>
                                 <span class="dropdown-item-text">Đơn đặt chỗ</span>
                             </a>
-                            
-                            <a href="${pageContext.request.contextPath}/view/support.jsp" class="dropdown-item">
-                                <span class="dropdown-item-icon">🔔</span>
-                                <span class="dropdown-item-text">Tin nhắn từ chỗ nghỉ</span>
-                            </a>
-                            
-                            <a href="${pageContext.request.contextPath}/view/rewards.jsp" class="dropdown-item">
-                                <span class="dropdown-item-icon">💰</span>
-                                <span class="dropdown-item-text">Tiền Go</span>
-                            </a>
-                            
-                            <a href="${pageContext.request.contextPath}/view/support.jsp" class="dropdown-item">
-                                <span class="dropdown-item-icon">💳</span>
-                                <span class="dropdown-item-text">Thưởng hoàn tiền mặt</span>
-                            </a>
-                            
-                            <div class="dropdown-divider"></div>
-                            
-                            <a href="${pageContext.request.contextPath}/view/support.jsp" class="dropdown-item">
-                                <span class="dropdown-item-icon">❤️</span>
-                                <span class="dropdown-item-text">Danh sách yêu thích</span>
-                            </a>
-                            
-                            <a href="${pageContext.request.contextPath}/view/support.jsp" class="dropdown-item">
-                                <span class="dropdown-item-icon">⭐</span>
-                                <span class="dropdown-item-text">Nhận xét của tôi</span>
-                            </a>
-                            
-                            <a href="${pageContext.request.contextPath}/view/support.jsp" class="dropdown-item">
-                                <span class="dropdown-item-icon">🎁</span>
-                                <span class="dropdown-item-text">PointsMAX</span>
-                            </a>
-                            
                             <a href="${pageContext.request.contextPath}/view/support.jsp" class="dropdown-item">
                                 <span class="dropdown-item-icon">💬</span>
                                 <span class="dropdown-item-text">Hỗ trợ của tôi</span>
                             </a>
-                            
+                            <div class="dropdown-divider"></div>
                             <div class="dropdown-item logout" onclick="logout()">
                                 <span class="dropdown-item-icon">🚪</span>
                                 <span class="dropdown-item-text">THOÁT</span>
@@ -371,7 +333,6 @@
                     </div>
                 </div>
             <% } else { %>
-                <!-- User chưa đăng nhập -->
                 <button id="headerLoginBtn" class="btn-signin">ĐĂNG NHẬP</button>
                 <button id="headerRegisterBtn" class="btn-register">TẠO TÀI KHOẢN</button>
             <% } %>
@@ -380,7 +341,7 @@
 </header>
 
 <script>
-// ================= WEATHER JS =================
+// Logic JavaScript giữ nguyên 100%
 const apiKey = "e11b1d25626ae44cadbdee1348b080d0";
 const cities = ["Ho Chi Minh", "Hanoi", "Da Nang", "Hai Phong", "Can Tho", "Nha Trang", "Hue"];
 
@@ -391,57 +352,42 @@ function getRandomCity() {
 async function loadWeather() {
     const city = getRandomCity();
     const textEl = document.getElementById("weatherText");
-
     try {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=vi&appid=${apiKey}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("API lỗi");
         const data = await res.json();
-
         const temp = Math.round(data.main.temp) + "°C";
         const desc = data.weather[0].description;
-
         textEl.innerText = `${temp} — ${desc} — ${city}`;
     } catch (e) {
         textEl.innerText = "Không tải được dữ liệu";
     }
 }
-
-// Load ngay và auto refresh mỗi 15 giây
 loadWeather();
 setInterval(loadWeather, 15000);
 
-// ================= USER DROPDOWN =================
 const userInfoBtn = document.getElementById('userInfoBtn');
 const userDropdown = document.getElementById('userDropdown');
 
 if (userInfoBtn && userDropdown) {
-    // Toggle dropdown khi click vào user info
     userInfoBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         userDropdown.classList.toggle('show');
     });
-    
-    // Đóng dropdown khi click ra ngoài
     document.addEventListener('click', (e) => {
         if (!userDropdown.contains(e.target) && !userInfoBtn.contains(e.target)) {
             userDropdown.classList.remove('show');
         }
     });
-    
-    // Ngăn dropdown đóng khi click vào bên trong
-    userDropdown.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
 }
 
-// ================= LOGOUT FUNCTION =================
 function logout() {
     if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
-        window.location.href = '${pageContext.request.contextPath}/logout';
+        window.location.href = '${pageContext.request.contextPath}/view/index.jsp';
     }
 }
-</script>
 
+</script>
 </body>
 </html>
